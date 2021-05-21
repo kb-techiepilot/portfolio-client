@@ -39,6 +39,48 @@ export const ExternalApi = () => {
     }
   };
 
+  const getWishlist = async() => {
+    try {
+      const token = await getAccessTokenSilently();
+
+      const response = await fetch(
+        `https://kb-shares.azurewebsites.net/wishlist`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      const responseData = await response.json();
+
+      setMessage(responseData);
+    } catch(error) {
+      setMessage(error.message);
+    }
+  };
+
+  const getHoldings = async() => {
+    try {
+      const token = await getAccessTokenSilently();
+
+      const response = await fetch(
+        `https://kb-shares.azurewebsites.net/holdings`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      const responseData = await response.json();
+
+      setMessage(responseData);
+    } catch(error) {
+      setMessage(error.message);
+    }
+  };
+
   return (
     <Container className="mb-5">
       <h1>External API</h1>
@@ -48,11 +90,11 @@ export const ExternalApi = () => {
         <strong>This route should be private</strong>.
       </p>
       <ButtonGroup>
-        <Button onClick={callAPI} color="primary" className="mt-5">
-          Get Public Message
+        <Button onClick={getWishlist} color="primary" className="mt-5">
+          Get Wishlist
         </Button>
-        <Button onClick={callSecureApi} color="primary" className="mt-5">
-          Get Private Message
+        <Button onClick={getHoldings} color="primary" className="mt-5">
+          Get Holdings
         </Button>
       </ButtonGroup>
 
