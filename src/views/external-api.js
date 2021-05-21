@@ -8,36 +8,36 @@ export const ExternalApi = () => {
 
   const { getAccessTokenSilently } = useAuth0();
 
-  const callAPI = async() => {
-    try {
-      const response = await fetch(`http://localhost:7001/api/public-message`);
-      const responseData = await response.json();
-      setMessage(responseData);
-    } catch(error) {
-      setMessage("Error");
-    }
-  };
+  // const callAPI = async() => {
+  //   try {
+  //     const response = await fetch(`http://localhost:7001/api/public-message`);
+  //     const responseData = await response.json();
+  //     setMessage(responseData);
+  //   } catch(error) {
+  //     setMessage("Error");
+  //   }
+  // };
 
-  const callSecureApi = async() => {
-    try {
-      const token = await getAccessTokenSilently();
+  // const callSecureApi = async() => {
+  //   try {
+  //     const token = await getAccessTokenSilently();
 
-      const response = await fetch(
-        `http://localhost:7001/api/private-message`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+  //     const response = await fetch(
+  //       `http://localhost:7001/api/private-message`,
+  //       {
+  //         headers: {
+  //           Authorization: `Bearer ${token}`,
+  //         },
+  //       }
+  //     );
 
-      const responseData = await response.json();
+  //     const responseData = await response.json();
 
-      setMessage(responseData);
-    } catch(error) {
-      setMessage(error.message);
-    }
-  };
+  //     setMessage(responseData);
+  //   } catch(error) {
+  //     setMessage(error.message);
+  //   }
+  // };
 
   const getWishlist = async() => {
     try {
