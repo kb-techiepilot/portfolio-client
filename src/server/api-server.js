@@ -13,7 +13,7 @@ require("dotenv").config({
 const app = express();
 
 const port = "7001";
-const appOrigin = "http://localhost:3000";
+const appOrigin = "https://compassionate-mclean-2e87bb.netlify.app";
 const audience = "https://techiepilot.in";
 const issuer = "https://dev-604foaig.us.auth0.com/";
 

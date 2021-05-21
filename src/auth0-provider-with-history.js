@@ -6,7 +6,7 @@ const Auth0ProviderWithHistory = ({ children }) => {
     const history = useHistory();
     const domain = "dev-604foaig.us.auth0.com";
     const clientId = "vInTF8GX7bFcbTdwEecK6I7JVMUsWLw2";
-    const audience = "http://techiepilot.in";
+    const audience = "https://compassionate-mclean-2e87bb.netlify.app";
 
     const onRedirectCallback = ( appState ) => {
         history.push(appState?.returnTo || window.location.pathname );
