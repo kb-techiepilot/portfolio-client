@@ -4,14 +4,14 @@ import { Auth0Provider } from "@auth0/auth0-react";
 
 const Auth0ProviderWithHistory = ({ children }) => {
     const history = useHistory();
-    // //dev
-    // const domain = "dev-604foaig.us.auth0.com";
-    // const clientId = "AsCWiw4HIadVWBYgf8uyFoleopawaGtF";
-
-    //prod
-    const domain = "dev-604foaig.us.auth0.com";
-    const clientId = "vInTF8GX7bFcbTdwEecK6I7JVMUsWLw2";
-    const audience = "https://techiepilot.in";
+    let clientId;
+    if(process.env.NODE_ENV === "development") {
+        clientId = process.env.REACT_APP_AUTH0_CLIENT_ID_DEV;
+    } else {
+        clientId = process.env.REACT_APP_AUTH0_CLIENT_ID;
+    }
+    const domain = process.env.REACT_APP_AUTH0_DOMAIN;
+    const audience = process.env.REACT_APP_AUTH0_AUDIENCE;
 
     const onRedirectCallback = ( appState ) => {
         history.push(appState?.returnTo || window.location.pathname );
