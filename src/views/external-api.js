@@ -44,7 +44,7 @@ export const ExternalApi = () => {
       const token = await getAccessTokenSilently();
 
       const response = await fetch(
-        `https://kb-shares.azurewebsites.net/wishlist`,
+        `https://kb-shares.azurewebsites.net/api/v1/wishlist`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -65,7 +65,7 @@ export const ExternalApi = () => {
       const token = await getAccessTokenSilently();
 
       const response = await fetch(
-        `https://kb-shares.azurewebsites.net/holdings`,
+        `https://kb-shares.azurewebsites.net/api/v1/holdings`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
