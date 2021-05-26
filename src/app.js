@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { Route, Switch } from "react-router-dom";
 import { Container } from "react-bootstrap";
 import { NseIndia } from "stock-nse-india";
@@ -18,7 +18,6 @@ const App = () => {
     console.log(res);
   })
 
-  console.log(details);
 
   if( isLoading ) {
     return <Loading />;
