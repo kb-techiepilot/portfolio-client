@@ -11,7 +11,6 @@ import "./app.css";
 
 const App = () => {
   const { isLoading } = useAuth0();
-  const { details, setDetails } = useState("");
   
   const nseIndia = new NseIndia();
 
