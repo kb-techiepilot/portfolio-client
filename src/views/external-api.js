@@ -81,6 +81,27 @@ export const ExternalApi = () => {
     }
   };
 
+  const getSummary = async() => {
+    try {
+      const token = await getAccessTokenSilently();
+
+      const response = await fetch(
+        `https://kb-shares.azurewebsites.net/api/v1/summary`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      const responseData = await response.json();
+
+      setMessage(responseData);
+    } catch(error) {
+      setMessage(error.message);
+    }
+  };
+
   return (
     <Container className="mb-5">
       <h1>External API</h1>
@@ -95,6 +116,9 @@ export const ExternalApi = () => {
         </Button>
         <Button onClick={getHoldings} color="primary" className="mt-5">
           Get Holdings
+        </Button>
+        <Button onClick={getSummary} color="primary" className="mt-5">
+          Get Summary
         </Button>
       </ButtonGroup>
 
