@@ -9,7 +9,7 @@ const Auth0ProviderWithHistory = ({ children }) => {
     // const domain = "dev-604foaig.us.auth0.com";
     // const clientId = "AsCWiw4HIadVWBYgf8uyFoleopawaGtF";
 
-    prod
+    // prod 
     const domain = "dev-604foaig.us.auth0.com";
     const clientId = "vInTF8GX7bFcbTdwEecK6I7JVMUsWLw2";
 
