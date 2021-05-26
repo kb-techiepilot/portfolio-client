@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import { Route, Switch } from "react-router-dom";
 import { Container } from "react-bootstrap";
+import { NseIndia } from "stock-nse-india";
 
 import { NavBar, Footer, Loading, PrivateRoute } from "./components";
 import { Home, Profile, ExternalApi } from "./views";
@@ -10,6 +11,15 @@ import "./app.css";
 
 const App = () => {
   const { isLoading } = useAuth0();
+  const { details, setDetails } = useState("");
+  
+  const nseIndia = new NseIndia();
+
+  nseIndia.getEquityDetails("SBIN").then(res => {
+    console.log(res);
+  })
+
+  console.log(details);
 
   if( isLoading ) {
     return <Loading />;
