@@ -24,7 +24,7 @@ function SummaryCards() {
     useEffect(async () => {
         const token = await getAccessTokenSilently();
         axios
-        .get("http://localhost:2000/api/v1/summary/", {
+        .get("https://kb-shares.azurewebsites.net/api/v1/summary/", {
             headers: {
               Authorization: `Bearer ${token}`,
             }})

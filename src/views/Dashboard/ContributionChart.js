@@ -13,7 +13,7 @@ function ContributionChart() {
     useEffect(async () => {
         const token = await getAccessTokenSilently();
         axios
-        .get("http://localhost:2000/api/v1/summary/chart", {
+        .get("https://kb-shares.azurewebsites.net/api/v1/summary/chart", {
             headers: {
               Authorization: `Bearer ${token}`,
             }})
