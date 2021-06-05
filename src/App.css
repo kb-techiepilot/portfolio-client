@@ -21,6 +21,10 @@
     padding: 4%!important
 }
 
+.padding-15 {
+    padding: 15% !important;
+}
+
 /* margin */
 .no-margin {
     margin: 0!important

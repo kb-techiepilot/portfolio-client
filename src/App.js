@@ -13,6 +13,7 @@ function App() {
         <div className="App">
           <NavBar />
           <Switch>
+            <PrivateRoute path="/loading" exact component={ Loading } />
             <PrivateRoute path="/" exact component={ Dashboard } />
             <PrivateRoute path="/dashboard" component={ Dashboard } />
           </Switch>

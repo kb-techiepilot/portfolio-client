@@ -23,18 +23,21 @@ function SummaryCards() {
 
     useEffect(async () => {
         const token = await getAccessTokenSilently();
-        axios
-        .get("https://kb-shares.azurewebsites.net/api/v1/summary/", {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            }})
-        .then(res => {
-          setLoading(false);
-          setSummary(res.data);
-        })
-        .catch(err =>{
-          console.log(err.message);
-        });
+        const intervalId = setInterval(() => { 
+            axios
+            .get("https://kb-shares.azurewebsites.net/api/v1/summary/", {
+                headers: {
+                Authorization: `Bearer ${token}`,
+                }})
+            .then(res => {
+            setLoading(false);
+            setSummary(res.data);
+            })
+            .catch(err =>{
+            console.log(err.message);
+            });
+        }, 10000);
+        return () => clearInterval(intervalId);
     },[]);
     return(
             <div className="row pt-0">
@@ -42,14 +45,14 @@ function SummaryCards() {
                     <div className="card gradient-45deg-light-blue-cyan gradient-shadow min-height-100 white-text animate fadeLeft">
                         <div className="padding-4">
                             <div className="row">
-                                <div className="col s5 m4">
+                                <div className="col s7 m4">
                                     <i className="material-icons background-round mt-5">add_shopping_cart</i>
                                     <p><h5>Investment</h5></p>
                                 </div>
                                 <div className="col s7 m8 right-align">
                                     <BeatLoader loading={loading} css={override} size={15} />
                                     { !loading ? 
-                                    <h3 className="mb-0 white-text">{NumberFormat(summary.total_amount)}</h3>
+                                    <h4 className="mb-0 white-text">{NumberFormat(summary.total_amount)}</h4>
                                     : <></> }
                                 </div>
                             </div>
@@ -67,7 +70,7 @@ function SummaryCards() {
                                 <div className="col s7 m8 right-align">
                                     <BeatLoader loading={loading} css={override} size={15} />
                                     { !loading ? 
-                                    <h3 className="mb-0 white-text">{NumberFormat(summary.current_amount)}</h3>
+                                    <h4 className="mb-0 white-text">{NumberFormat(summary.current_amount)}</h4>
                                     : <></> }
                                 </div>
                             </div>
@@ -85,7 +88,7 @@ function SummaryCards() {
                                 <div className="col s7 m8 right-align">
                                     <BeatLoader loading={loading} css={override} size={15} />
                                     { !loading ? 
-                                    <h3 className="mb-0 white-text">{NumberFormat(summary.difference)}</h3>
+                                    <h4 className="mb-0 white-text">{NumberFormat(summary.difference)}</h4>
                                     : <></> }
                                 </div>
                             </div>
@@ -103,7 +106,7 @@ function SummaryCards() {
                                 <div className="col s7 m8 right-align">
                                     <BeatLoader loading={loading} css={override} size={15} />
                                     { !loading ? 
-                                    <h3 className="mb-0 white-text">{summary.percentage}%</h3>
+                                    <h4 className="mb-0 white-text">{summary.percentage}%</h4>
                                     : <></> }
                                 </div>
                             </div>
