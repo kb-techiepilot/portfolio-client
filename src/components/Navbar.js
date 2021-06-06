@@ -83,7 +83,7 @@ function NavBar(props) {
                 </Link>
               </li>
         <li>
-          <a onClick={ () => { callSecureApi() } } className="header-text">Print Token</a>
+          <a href="#!" onClick={ () => { callSecureApi() } } className="header-text">Print Token</a>
         </li>
               {isAuthenticated ?
                 <li>
@@ -91,7 +91,7 @@ function NavBar(props) {
                 </li>
               :
                 <li>
-                  <a
+                  <a href="#!" 
                       onClick={ () => loginWithRedirect() }
                       className="btn waves-effect white blue-text header-auth-btn hoverable"
                   >
@@ -135,11 +135,11 @@ function NavBar(props) {
                   My Profile
               </Link>
             </li>
-            <li><a onClick={ () => { logout() } } className="header-text">LogOut</a></li>
+            <li><a href="#!" onClick={ () => { logout() } } className="header-text">LogOut</a></li>
             </>
           :
             <li>
-              <a
+              <a href="#!" 
                   onClick={ () => { loginWithRedirect() } }
                   className="header-text sidenav-close"
               >
@@ -153,9 +153,3 @@ function NavBar(props) {
 }
 
 export default NavBar;
-
-{/* <i class="fas fa-percentage"></i>
-<i class="fas fa-wallet"></i>
-<i class="fas fa-rupee-sign"></i>
-<i class="fas fa-thumbs-up"></i>
-<i class="fas fa-thumbs-down"></i> */}
