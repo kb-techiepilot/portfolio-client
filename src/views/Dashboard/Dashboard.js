@@ -9,12 +9,12 @@ function Dashboard(){
         <div>
             <SummaryCards/>
             <div className="row">
-                <div class="col s12 m6 l6">
+                <div class="col s12 m6 l12">
                     <InvestmentChart/>
                 </div>
-                <div class="col s12 m6 l6">
+                {/* <div class="col s12 m6 l6">
                     <ContributionChart/>
-                </div>
+                </div> */}
             </div>
         </div>
     )
