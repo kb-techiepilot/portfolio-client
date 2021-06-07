@@ -11,7 +11,7 @@ function Dashboard(){
             <SummaryCards/>
             <div className="row">
                 <div class="col s12 m6 l6">
-                    <CandleBarChart/>
+                    <InvestmentChart/>
                 </div>
                 <div class="col s12 m6 l6">
                     <ContributionChart/>

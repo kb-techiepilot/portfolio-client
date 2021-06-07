@@ -1,50 +1,38 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth0 } from '@auth0/auth0-react';
-import M from 'materialize-css';
 import axios from 'axios';
 import moment from "moment";
-import Chart, {exec} from "react-apexcharts";
+import Chart from "react-apexcharts";
 
-function CandleBarChart() {
+function CandleBarChart(props) {
+    console.log(props);
     const { getAccessTokenSilently } = useAuth0();
 
     const [loading, setLoading] = useState(true);
-
-    const [symbol, setSymbol] = useState("SBIN");
-    const [symbols, setSymbols] = useState({});
+    const [symbol, setSymbol] = useState(props.symbol);
     const [history, setHistory] = useState([]);
+
 
     useEffect(async () => {
         const token = await getAccessTokenSilently();
+        var startDate = moment().subtract(1, 'year').format("YYYY-MM-DD");
+        var endDate = moment().format("YYYY-MM-DD");
         axios
-        .get("https://kb-shares.azurewebsites.net/api/v1/symbols", {
+        .get("https://kb-shares.azurewebsites.net/api/v1/history/" + props.symbol, {
             headers: {
               Authorization: `Bearer ${token}`,
+            },
+            params: {
+                'start': startDate,
+                'end': endDate
             }})
         .then(res => {
-            var symbolsJson = {};
-            res.data.forEach((data) => {
-                symbolsJson[data] = null;
-            });
-            setSymbols(symbolsJson);
-          setLoading(false);
-        })
+            setHistory(res.data);
+            })
         .catch(err =>{
           console.log(err.message);
         });
-    },[]);
-
-
-    useEffect(()=> {
-        var elems = document.querySelectorAll('.autocomplete');
-        M.Autocomplete.init(elems, {
-            data : symbols,
-            limit : 5,
-            onAutocomplete : function(symbol) {
-                getHistoryData(symbol);
-            }
-        });
-    });
+    },[props.symbol]);
     
     async function getHistoryData(timeLine) {
         console.log("inside getHistoryData " + timeLine);
@@ -109,7 +97,7 @@ function CandleBarChart() {
         }
       },
       title: {
-        text: 'CandleStick Chart',
+        text: props.symbol,
         align: 'left'
       },
       xaxis: {
@@ -119,47 +107,10 @@ function CandleBarChart() {
         tooltip: {
           enabled: true
         }
-      }
+      },
+      selection: 'one_year',
       };
-
     return(
-
-<div id="revenue-chart" className="card animate fadeUp">
-    <div className="card-content">
-        <div className="header mt-0 row">
-            <div className="col s9 input-field">
-                <i className="material-icons prefix">timeline</i>
-                <input type="text" id="autocomplete-input" className="autocomplete" />
-                <label for="autocomplete-input">Search for an Equity</label>
-            </div>
-            <div class=" col s3 toolbar">
-                    <button id="one_month"
-                        onClick={ () => { getHistoryData('one_month')}}
-                    >
-                        1M
-                    </button>
-                    &nbsp;
-                    <button id="six_months"
-                    onClick={ () => { getHistoryData('six_months')}}
-                        >
-                    6M
-                    </button>
-                    &nbsp;
-                    <button id="ytd"
-                    onClick={ () => { getHistoryData('ytd')}}
-            
-                    >
-                        YTD
-                    </button>
-                    &nbsp;
-                    <button id="one_year"
-                    onClick={ () => { getHistoryData('one_year')}}
-            
-                    >
-                        1Y
-                    </button>
-                </div>
-        </div>
         <div className="row">
             <div id="chart">
                 <div id="chart-timeline">
@@ -169,8 +120,6 @@ function CandleBarChart() {
                 </div>
             </div>
         </div>
-    </div>
-</div>
     )
 }
 
