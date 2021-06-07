@@ -63,7 +63,7 @@ function CandleBarChart() {
         const token = await getAccessTokenSilently();
         
         axios
-        .get("http://localhost:2000/api/v1/history/"+symbol,
+        .get("https://kb-shares.azurewebsites.net/api/v1/history/"+symbol,
         {
             headers: {
                 Authorization: `Bearer ${token}`,
