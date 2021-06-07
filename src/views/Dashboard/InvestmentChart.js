@@ -6,14 +6,17 @@ import axios from 'axios';
 
 import CandleBarChart from './CandleBarChart';
 
+import '../../../src/assets/css/btn-group.css';
+
 function InvestmentChart() {
     const { getAccessTokenSilently } = useAuth0();
 
 
-    const [symbol, setSymbol] = useState();
+    const [symbol, setSymbol] = useState("SBIN");
 
     const [symbols, setSymbols] = useState({});
-    const [loading, setLoading] = useState(true);
+
+    const [timeLine, setTimeLine] = useState();
 
     useEffect(async () => {
         const token = await getAccessTokenSilently();
@@ -28,7 +31,6 @@ function InvestmentChart() {
                 symbolsJson[data] = null;
             });
             setSymbols(symbolsJson);
-          setLoading(false);
         })
         .catch(err =>{
           console.log(err.message);
@@ -43,10 +45,16 @@ function InvestmentChart() {
             limit : 5,
             onAutocomplete : function(sym) {
                 setSymbol(sym);
-                console.log("iiii" + symbol);
             }
         });
     });
+
+    function updateTimeLine(event) {
+        event.preventDefault();
+        setSymbol(symbol);
+        setTimeLine(event.target.name);
+    }
+
     return(
         <div id="revenue-chart" className="card animate fadeUp">
             <div className="card-content">
@@ -56,8 +64,15 @@ function InvestmentChart() {
                         <input type="text" id="autocomplete-input" className="autocomplete" />
                         <label for="autocomplete-input">Search for an Equity</label>
                     </div>
+
+                    <div class="btn-group col s4" role="group">
+                        <a class="btn btn-inactive" href="#" onClick={updateTimeLine} name="one_month">1M</a>
+                        <a class="btn" href="#" onClick={updateTimeLine} name="six_months">6M</a>
+                        <a class="btn btn-inactive" onClick={updateTimeLine} name="ytd">YTD</a>
+                        <a class="btn" href="#" onClick={updateTimeLine} name="one_year">1Y</a>
+                    </div>
                 </div>
-                    <CandleBarChart symbol = {symbol} />
+                    <CandleBarChart symbol = {symbol} timeLine = {timeLine} />
             </div>
         </div>
     )

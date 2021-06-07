@@ -2,7 +2,6 @@ import React from 'react';
 import SummaryCards from './SummaryCards';
 import InvestmentChart from './InvestmentChart';
 import ContributionChart from './ContributionChart';
-import CandleBarChart from './CandleBarChart';
 
 function Dashboard(){
 

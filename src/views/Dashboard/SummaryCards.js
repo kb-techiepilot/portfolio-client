@@ -23,7 +23,7 @@ function SummaryCards() {
 
     useEffect(async () => {
         const token = await getAccessTokenSilently();
-        const intervalId = setInterval(() => { 
+        // const intervalId = setInterval(() => { 
             axios
             .get("https://kb-shares.azurewebsites.net/api/v1/summary/", {
                 headers: {
@@ -36,8 +36,8 @@ function SummaryCards() {
             .catch(err =>{
             console.log(err.message);
             });
-        }, 10000);
-        return () => clearInterval(intervalId);
+        // }, 10000000);
+        // return () => clearInterval(intervalId);
     },[]);
     return(
             <div className="row pt-0">
