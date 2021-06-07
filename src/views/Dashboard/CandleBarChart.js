@@ -5,17 +5,17 @@ import moment from "moment";
 import Chart from "react-apexcharts";
 
 import Loading from '../../components/Loading';
+import config from '../../config';
 
 function CandleBarChart(props) {
     const { getAccessTokenSilently } = useAuth0();
 
     const [loading, setLoading] = useState(true);
-    const [symbol, setSymbol] = useState(props.symbol);
     const [history, setHistory] = useState([]);
 
 
     useEffect(async () => {
-        setLoading(true);
+        // setLoading(true);
         const token = await getAccessTokenSilently();
 
         var startDate;
@@ -32,7 +32,7 @@ function CandleBarChart(props) {
         }
 
         axios
-        .get("https://kb-shares.azurewebsites.net/api/v1/history/" + props.symbol, {
+        .get(config.apiBaseUrl+"/api/v1/history/" + props.symbol, {
             headers: {
               Authorization: `Bearer ${token}`,
             },

@@ -5,6 +5,7 @@ import axios from 'axios';
 import { useAuth0 } from '@auth0/auth0-react';
 
 import NumberFormat from './../../util/NumberFormat';
+import config from '../../config';
 
 function SummaryCards() {
 
@@ -25,7 +26,7 @@ function SummaryCards() {
         const token = await getAccessTokenSilently();
         // const intervalId = setInterval(() => { 
             axios
-            .get("https://kb-shares.azurewebsites.net/api/v1/summary/", {
+            .get(config.apiBaseUrl+"/api/v1/summary/", {
                 headers: {
                 Authorization: `Bearer ${token}`,
                 }})

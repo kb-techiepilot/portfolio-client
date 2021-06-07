@@ -3,6 +3,8 @@ import { Line } from 'react-chartjs-2';
 import axios from 'axios';
 import { useAuth0 } from '@auth0/auth0-react';
 
+import config from '../../config';
+
 function ContributionChart() {
     const { getAccessTokenSilently } = useAuth0();
 
@@ -13,7 +15,7 @@ function ContributionChart() {
     useEffect(async () => {
         const token = await getAccessTokenSilently();
         axios
-        .get("https://kb-shares.azurewebsites.net/api/v1/summary/chart", {
+        .get(config.apiBaseUrl+"/api/v1/summary/chart", {
             headers: {
               Authorization: `Bearer ${token}`,
             }})

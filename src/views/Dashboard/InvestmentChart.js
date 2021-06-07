@@ -8,6 +8,8 @@ import CandleBarChart from './CandleBarChart';
 
 import '../../../src/assets/css/btn-group.css';
 
+import config from '../../config';
+
 function InvestmentChart() {
     const { getAccessTokenSilently } = useAuth0();
 
@@ -21,7 +23,7 @@ function InvestmentChart() {
     useEffect(async () => {
         const token = await getAccessTokenSilently();
         axios
-        .get("https://kb-shares.azurewebsites.net/api/v1/symbols", {
+        .get(config.apiBaseUrl+"/api/v1/symbols", {
             headers: {
               Authorization: `Bearer ${token}`,
             }})
