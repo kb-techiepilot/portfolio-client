@@ -2,6 +2,7 @@ import React from 'react';
 import SummaryCards from './SummaryCards';
 import InvestmentChart from './InvestmentChart';
 import ContributionChart from './ContributionChart';
+import CandleBarChart from './CandleBarChart';
 
 function Dashboard(){
 
@@ -10,7 +11,7 @@ function Dashboard(){
             <SummaryCards/>
             <div className="row">
                 <div class="col s12 m6 l6">
-                    <InvestmentChart/>
+                    <CandleBarChart/>
                 </div>
                 <div class="col s12 m6 l6">
                     <ContributionChart/>
