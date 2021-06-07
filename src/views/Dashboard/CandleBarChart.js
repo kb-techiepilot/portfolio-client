@@ -3,13 +3,14 @@ import { useAuth0 } from '@auth0/auth0-react';
 import M from 'materialize-css';
 import axios from 'axios';
 import moment from "moment";
-import Chart from "react-apexcharts";
+import Chart, {exec} from "react-apexcharts";
 
 function CandleBarChart() {
     const { getAccessTokenSilently } = useAuth0();
 
     const [loading, setLoading] = useState(true);
 
+    const [symbol, setSymbol] = useState("SBIN");
     const [symbols, setSymbols] = useState({});
     const [history, setHistory] = useState([]);
 
@@ -45,14 +46,24 @@ function CandleBarChart() {
         });
     });
     
-    async function getHistoryData(symbol) {
-        console.log("inside getHistoryData " + symbol);
-        let endDate = moment().format("YYYY-MM-DD");
-        const startDate = moment().subtract(1, 'year').format("YYYY-MM-DD");
+    async function getHistoryData(timeLine) {
+        console.log("inside getHistoryData " + timeLine);
+        var startDate;
+        var endDate = moment().format("YYYY-MM-DD");
+        if(timeLine === 'one_month') {
+            startDate = moment().subtract(1, 'month').format("YYYY-MM-DD");
+        }else if(timeLine === 'six_months') {
+            startDate = moment().subtract(6, 'month').format("YYYY-MM-DD");
+        }else if(timeLine === 'ytd') {
+            startDate = moment().year() + "-01-01";
+            console.log(startDate);
+        }else {
+            startDate = moment().subtract(1, 'year').format("YYYY-MM-DD");
+        }
         const token = await getAccessTokenSilently();
         
         axios
-        .get("https://kb-shares.azurewebsites.net/api/v1/history/"+symbol,
+        .get("http://localhost:2000/api/v1/history/"+symbol,
         {
             headers: {
                 Authorization: `Bearer ${token}`,
@@ -91,7 +102,11 @@ function CandleBarChart() {
     var options = {
         chart: {
         type: 'candlestick',
-        height: '10%'
+        zoom: {
+            enabled: true,
+            type: 'x',  
+            autoScaleYaxis: true, 
+        }
       },
       title: {
         text: 'CandleStick Chart',
@@ -111,23 +126,48 @@ function CandleBarChart() {
 
 <div id="revenue-chart" className="card animate fadeUp">
     <div className="card-content">
-        <h4 className="header mt-0">
-            <div className="input-field">
-            <i className="material-icons prefix">timeline</i>
-            <input type="text" id="autocomplete-input" className="autocomplete" />
-            <label for="autocomplete-input">Search for an Equity</label>
+        <div className="header mt-0 row">
+            <div className="col s9 input-field">
+                <i className="material-icons prefix">timeline</i>
+                <input type="text" id="autocomplete-input" className="autocomplete" />
+                <label for="autocomplete-input">Search for an Equity</label>
             </div>
-        </h4>
+            <div class=" col s3 toolbar">
+                    <button id="one_month"
+                        onClick={ () => { getHistoryData('one_month')}}
+                    >
+                        1M
+                    </button>
+                    &nbsp;
+                    <button id="six_months"
+                    onClick={ () => { getHistoryData('six_months')}}
+                        >
+                    6M
+                    </button>
+                    &nbsp;
+                    <button id="ytd"
+                    onClick={ () => { getHistoryData('ytd')}}
+            
+                    >
+                        YTD
+                    </button>
+                    &nbsp;
+                    <button id="one_year"
+                    onClick={ () => { getHistoryData('one_year')}}
+            
+                    >
+                        1Y
+                    </button>
+                </div>
+        </div>
         <div className="row">
-        <div className="mixed-chart">
-            <Chart
-              options={options}
-              series={getData(history)}
-              type="candlestick"
-              width="100%"
-              height="100%"
-            />
-          </div>
+            <div id="chart">
+                <div id="chart-timeline">
+                    <Chart options={options}
+                        series={getData(history)}
+                        type="candlestick" height={350} />
+                </div>
+            </div>
         </div>
     </div>
 </div>
