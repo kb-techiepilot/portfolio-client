@@ -1,28 +1,20 @@
 import React, { useState, useEffect } from 'react';
-import { useAuth0 } from '@auth0/auth0-react';
 import axios from 'axios';
-import moment from "moment";
 import Chart from "react-apexcharts";
 
 import Loading from '../../components/Loading';
 import config from '../../config';
 
 function LineChart(props) {
-    const { getAccessTokenSilently } = useAuth0();
 
     const [loading, setLoading] = useState(true);
     const [history, setHistory] = useState([]);
 
 
     useEffect(async () => {
-        // setLoading(true);
-        const token = await getAccessTokenSilently();
 
         axios
         .get(config.apiBaseUrl+"/api/v1/symbols/intraday", {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
             params: {
                 'symbol': props.symbol,
             }})
@@ -66,7 +58,7 @@ function LineChart(props) {
           height: 350,
           zoom: {
             autoScaleYaxis: true
-          }
+          },
         },
         dataLabels: {
           enabled: false
@@ -92,6 +84,7 @@ function LineChart(props) {
             stops: [0, 100]
           }
         },
+        colors: ['#66DA26']
       }
     return(
         <>

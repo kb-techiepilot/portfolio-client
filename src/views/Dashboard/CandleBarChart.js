@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { useAuth0 } from '@auth0/auth0-react';
 import axios from 'axios';
 import moment from "moment";
 import Chart from "react-apexcharts";
@@ -8,34 +7,29 @@ import Loading from '../../components/Loading';
 import config from '../../config';
 
 function CandleBarChart(props) {
-    const { getAccessTokenSilently } = useAuth0();
 
     const [loading, setLoading] = useState(true);
     const [history, setHistory] = useState([]);
 
 
     useEffect(async () => {
-        // setLoading(true);
-        const token = await getAccessTokenSilently();
 
         var startDate;
         var endDate = moment().format("YYYY-MM-DD");
-        if(props.timeLine === 'one_month') {
+        if(props.timeLine === 'five_days') {
+            startDate = moment().subtract(5, 'day').format("YYYY-MM-DD");
+        }else if(props.timeLine === 'one_month') {
             startDate = moment().subtract(1, 'month').format("YYYY-MM-DD");
         }else if(props.timeLine === 'six_months') {
             startDate = moment().subtract(6, 'month').format("YYYY-MM-DD");
         }else if(props.timeLine === 'ytd') {
             startDate = moment().year() + "-01-01";
-            console.log(startDate);
         }else {
             startDate = moment().subtract(1, 'year').format("YYYY-MM-DD");
         }
 
         axios
         .get(config.apiBaseUrl+"/api/v1/history/" + props.symbol, {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
             params: {
                 'start': startDate,
                 'end': endDate

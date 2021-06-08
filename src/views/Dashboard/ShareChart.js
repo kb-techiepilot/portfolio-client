@@ -1,6 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { Line } from 'react-chartjs-2';
-import { useAuth0 } from '@auth0/auth0-react';
 import M from 'materialize-css';
 import axios from 'axios';
 
@@ -12,22 +10,17 @@ import '../../../src/assets/css/btn-group.css';
 import config from '../../config';
 
 function ShareChart() {
-    const { getAccessTokenSilently } = useAuth0();
 
 
     const [symbol, setSymbol] = useState("SBIN");
 
     const [symbols, setSymbols] = useState({});
 
-    const [timeLine, setTimeLine] = useState();
+    const [timeLine, setTimeLine] = useState("one_day");
 
     useEffect(async () => {
-        const token = await getAccessTokenSilently();
         axios
-        .get(config.apiBaseUrl+"/api/v1/symbols", {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            }})
+        .get(config.apiBaseUrl+"/api/v1/symbols")
         .then(res => {
             var symbolsJson = {};
             res.data.forEach((data) => {
@@ -69,10 +62,11 @@ function ShareChart() {
                     </div>
                     <div className="btn-group col s12 m3" role="group">
                         <a className="btn" href="#" onClick={updateTimeLine} name="one_day">1D</a>
-                        <a className="btn btn-inactive" href="#" onClick={updateTimeLine} name="one_month">1M</a>
-                        <a className="btn" href="#" onClick={updateTimeLine} name="six_months">6M</a>
-                        <a className="btn btn-inactive" onClick={updateTimeLine} name="ytd">YTD</a>
-                        <a className="btn" href="#" onClick={updateTimeLine} name="one_year">1Y</a>
+                        <a className="btn btn-inactive" href="#" onClick={updateTimeLine} name="five_days">5D</a>
+                        <a className="btn" href="#" onClick={updateTimeLine} name="one_month">1M</a>
+                        <a className="btn btn-inactive" onClick={updateTimeLine} name="six_months">6M</a>
+                        <a className="btn" href="#" onClick={updateTimeLine} name="ytd">YTD</a>
+                        <a className="btn btn-inactive" onClick={updateTimeLine} name="one_year">1Y</a>
                     </div>
                 </div>
                 {timeLine === 'one_day'
