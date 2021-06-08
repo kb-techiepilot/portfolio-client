@@ -48,7 +48,7 @@ function SummaryCards() {
                             <div className="row">
                                 <div className="col s7 m4">
                                     <i className="material-icons background-round mt-5">add_shopping_cart</i>
-                                    <p><h5>Investment</h5></p>
+                                    <h5>Investment</h5>
                                 </div>
                                 <div className="col s7 m8 right-align">
                                     <BeatLoader loading={loading} css={override} size={15} />
@@ -66,7 +66,7 @@ function SummaryCards() {
                             <div className="row">
                                 <div className="col s7 m4">
                                     <i className="material-icons background-round mt-5">account_balance_wallet</i>
-                                    <p><h5>Asset</h5></p>
+                                    <h5>Asset</h5>
                                 </div>
                                 <div className="col s7 m8 right-align">
                                     <BeatLoader loading={loading} css={override} size={15} />
@@ -84,7 +84,7 @@ function SummaryCards() {
                             <div className="row">
                                 <div className="col s7 m4">
                                     <i className="material-icons background-round mt-5">timeline</i>
-                                    <p><h5>Difference</h5></p>
+                                    <h5>Difference</h5>
                                 </div>
                                 <div className="col s7 m8 right-align">
                                     <BeatLoader loading={loading} css={override} size={15} />
@@ -102,7 +102,7 @@ function SummaryCards() {
                             <div className="row">
                                 <div className="col s7 m4">
                                     <i className="material-icons background-round mt-5">attach_money</i>
-                                    <p><h5>Profit</h5></p>
+                                    <h5>Profit</h5>
                                 </div>
                                 <div className="col s7 m8 right-align">
                                     <BeatLoader loading={loading} css={override} size={15} />

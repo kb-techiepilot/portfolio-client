@@ -9,10 +9,10 @@ function Dashboard(){
         <div>
             <SummaryCards/>
             <div className="row">
-                <div class="col s12 m6 l6">
+                <div className="col s12 m6 l6">
                     <ShareChart/>
                 </div>
-                <div class="col s12 m6 l6">
+                <div className="col s12 m6 l6">
                     <ContributionChart/>
                 </div>
             </div>

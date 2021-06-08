@@ -47,7 +47,7 @@ function CandleBarChart(props) {
         .catch(err =>{
           console.log(err.message);
         });
-    },[props.symbol, props.timeLine]);
+    },[props]);
     
 
     function getData(history) {
@@ -84,6 +84,9 @@ function CandleBarChart(props) {
         }
       },
       selection: 'one_year',
+      noData: {
+        text: 'Loading...'
+      }
       };
     return(
         <>
