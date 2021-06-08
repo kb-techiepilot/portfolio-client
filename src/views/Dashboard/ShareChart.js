@@ -10,7 +10,7 @@ import '../../../src/assets/css/btn-group.css';
 
 import config from '../../config';
 
-function InvestmentChart() {
+function ShareChart() {
     const { getAccessTokenSilently } = useAuth0();
 
 
@@ -61,13 +61,13 @@ function InvestmentChart() {
         <div id="revenue-chart" className="card animate fadeUp">
             <div className="card-content">
                 <div className="header mt-0 row">
-                    <div className="col s8 input-field">
+                    <div className="col s12 m8 input-field">
                         <i className="material-icons prefix">timeline</i>
                         <input type="text" id="autocomplete-input" className="autocomplete" />
                         <label for="autocomplete-input">Search for an Equity</label>
                     </div>
 
-                    <div class="btn-group col s4" role="group">
+                    <div class="btn-group col s12 m4" role="group">
                         <a class="btn btn-inactive" href="#" onClick={updateTimeLine} name="one_month">1M</a>
                         <a class="btn" href="#" onClick={updateTimeLine} name="six_months">6M</a>
                         <a class="btn btn-inactive" onClick={updateTimeLine} name="ytd">YTD</a>
@@ -80,5 +80,4 @@ function InvestmentChart() {
     )
 }
 
-
-export default InvestmentChart;
+export default ShareChart;

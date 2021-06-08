@@ -1,6 +1,6 @@
 import React from 'react';
 import SummaryCards from './SummaryCards';
-import InvestmentChart from './InvestmentChart';
+import ShareChart from './ShareChart';
 import ContributionChart from './ContributionChart';
 
 function Dashboard(){
@@ -10,7 +10,7 @@ function Dashboard(){
             <SummaryCards/>
             <div className="row">
                 <div class="col s12 m6 l6">
-                    <InvestmentChart/>
+                    <ShareChart/>
                 </div>
                 <div class="col s12 m6 l6">
                     <ContributionChart/>
