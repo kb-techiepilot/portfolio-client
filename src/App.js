@@ -16,11 +16,6 @@ function App() {
           <NavBar />
           <Switch>
             <Route path="/loading" exact component={ Loading } />
-            {isAuthenticated ? 
-              <PrivateRoute path="/" exact component={ Dashboard } />
-            :
-              <Route path="/" exact component={ ShareChart } />
-            }
             <PrivateRoute path="/" exact component={ Dashboard } />
             <PrivateRoute path="/dashboard" component={ Dashboard } />
             <Route path="/chart" component={ShareChart} />

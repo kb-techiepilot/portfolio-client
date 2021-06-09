@@ -16,9 +16,9 @@ function ShareChart() {
 
     const [symbols, setSymbols] = useState({});
 
-    const [timeLine, setTimeLine] = useState("one_day");
+    const [timeLine, setTimeLine] = useState("line_chart");
 
-    useEffect(async () => {
+    useEffect(() => {
         axios
         .get(config.apiBaseUrl+"/api/v1/symbols")
         .then(res => {
@@ -43,6 +43,9 @@ function ShareChart() {
                 setSymbol(sym);
             }
         });
+
+        elems = document.querySelectorAll('.tabs');
+        M.Tabs.init(elems, {});
     });
 
     function updateTimeLine(event) {
@@ -55,21 +58,19 @@ function ShareChart() {
         <div id="revenue-chart" className="card animate fadeUp">
             <div className="card-content">
                 <div className="header mt-0 row">
-                    <div className="col s12 m10 input-field">
+                    <div className="col s12 m6 input-field">
                         <i className="material-icons prefix">timeline</i>
                         <input type="text" id="autocomplete-input" className="autocomplete" />
                         <label htmlFor="autocomplete-input">Search for an Equity</label>
                     </div>
-                    <div className="btn-group col s12 m3" role="group">
-                        <a className="btn" href="#" onClick={updateTimeLine} name="one_day">1D</a>
-                        <a className="btn btn-inactive" href="#" onClick={updateTimeLine} name="five_days">5D</a>
-                        <a className="btn" href="#" onClick={updateTimeLine} name="one_month">1M</a>
-                        <a className="btn btn-inactive" onClick={updateTimeLine} name="six_months">6M</a>
-                        <a className="btn" href="#" onClick={updateTimeLine} name="ytd">YTD</a>
-                        <a className="btn btn-inactive" onClick={updateTimeLine} name="one_year">1Y</a>
+                    <div className="btn-group col s12 m6" role="group">
+                        <ul className="tabs tabs-fixed-width tab-demo z-depth-1">
+                            <li className="tab"><a className="active" href="#" onClick={updateTimeLine} name="line_chart">Line Chart</a></li>
+                            <li className="tab"><a href="#" onClick={updateTimeLine} name="candle_stick">Candlestick Chart</a></li>
+                        </ul>
                     </div>
                 </div>
-                {timeLine === 'one_day'
+                {timeLine === 'line_chart'
                 ?
                 <LineChart symbol = {symbol}/>
                 :

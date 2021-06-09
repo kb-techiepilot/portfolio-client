@@ -1,50 +1,52 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import Chart from "react-apexcharts";
+import moment from 'moment';
+import Chart from 'react-apexcharts';
+import ApexCharts from 'apexcharts';
 
 import Loading from '../../components/Loading';
 import config from '../../config';
+import IntraDayChart from './IntraDayChart';
 
 function LineChart(props) {
 
     const [loading, setLoading] = useState(true);
     const [history, setHistory] = useState([]);
 
+    const[timeLine, setTimeLine] = useState("");
 
-    useEffect(async () => {
 
-        axios
-        .get(config.apiBaseUrl+"/api/v1/symbols/intraday", {
-            params: {
-                'symbol': props.symbol,
-            }})
-        .then(res => {
-            setHistory(res.data);
-            if(res.data !== []) {
-                setLoading(false);
-            }
-            })
-        .catch(err =>{
-          console.log(err.message);
-        });
-    },[props.symbol, props.timeLine]);
+    useEffect(() => {
+
+      var startDate = moment().subtract(1, 'year').format("YYYY-MM-DD");
+      var endDate = moment().format("YYYY-MM-DD");
+
+      axios
+      .get(config.apiBaseUrl+"/api/v1/history/" + props.symbol, {
+          params: {
+              'start': startDate,
+              'end': endDate
+          }})
+      .then(res => {
+          setLoading(false);
+          setHistory(res.data);
+          })
+      .catch(err =>{
+        console.log(err.message);
+      });
+  },[props]);
     
 
     function getLineData(history) {
-
-        var responseData = []
-        var dataObj = {};
         var data = [];
-        // dataObj.data = history;
-        
-        var j = 1;
-        data[0] = history[0];
-        for(var i = 1; i < history.length-1; i++){
-            if(history[i][0] - data[j-1][0] > 300000 ){
-                data[j] = history[i];
-                j++;
-            }
-        }
+        var dataObj = {};
+        var i = 0;
+        history.forEach(ele => {
+          var date = new Date(ele.CH_TIMESTAMP).getTime();
+            data[i] = [date, ele.CH_CLOSING_PRICE];
+            i++;
+        });
+        var responseData = [];
         dataObj.data = data;
         dataObj.name = props.symbol;
         responseData.push(dataObj);
@@ -72,7 +74,7 @@ function LineChart(props) {
         },
         tooltip: {
           x: {
-            format: 'HH:mm'
+            format: 'dd-MM-yyyy'
           }
         },
         fill: {
@@ -86,12 +88,61 @@ function LineChart(props) {
         },
         colors: ['#66DA26']
       }
+
+      function updateTimeLine(event) {
+          event.preventDefault();
+          setTimeLine(event.target.name);
+      }
+  
+      useEffect(() => {
+          var startDate;
+          var endDate = moment().format("DD MMM YYYY");
+          if(timeLine === 'one_year') {
+              ApexCharts.exec(
+                  'area-datetime',
+                  'resetSeries'
+              );
+          }
+          else {
+              switch(timeLine) {
+                case "five_days" :
+                    startDate = moment().subtract(5, 'day').format("DD MMM YYYY");
+                    break;
+                case "one_month" :
+                    startDate = moment().subtract(1, 'month').format("DD MMM YYYY");
+                    break;
+                  case "six_months":
+                      startDate = moment().subtract(6, 'month').format("DD MMM YYYY");
+                      break;
+                  case "default":
+                      startDate = "01 Jan " + moment().year();
+                      break;
+              }
+              ApexCharts.exec(
+                  'area-datetime',
+                  'zoomX',
+                  new Date(startDate).getTime(),
+                  new Date(endDate).getTime()
+              );
+          }
+      },[timeLine]);
     return(
         <>
+        <div className="btn-group" role="group">
+            <a className="btn" href="#!" onClick={updateTimeLine} name="one_day">1D</a>
+            <a className="btn btn-inactive" href="#!" onClick={updateTimeLine} name="five_days">5D</a>
+            <a className="btn" href="#!" onClick={updateTimeLine} name="one_month">1M</a>
+            <a className="btn btn-inactive" href="#!" onClick={updateTimeLine} name="six_months">6M</a>
+            <a className="btn" href="#!" onClick={updateTimeLine} name="ytd">YTD</a>
+            <a className="btn btn-inactive" href="#!" onClick={updateTimeLine} name="one_year">1Y</a>
+        </div>
         <div className="row">
             <div id="chart">
                 <div id="chart-timeline">
                     {!loading ? 
+                    timeLine === 'one_day' ?
+                    <IntraDayChart symbol={props.symbol} />
+                    :
                     <Chart options={lineOptions}
                         series={getLineData(history)}
                         type="area" height={350} />
