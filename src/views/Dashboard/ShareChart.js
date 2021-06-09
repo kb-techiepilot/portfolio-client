@@ -44,14 +44,16 @@ function ShareChart() {
             }
         });
 
-        elems = document.querySelectorAll('.tabs');
-        M.Tabs.init(elems, {});
+        elems = document.querySelectorAll('select');
+        M.FormSelect.init(elems, {});
+
+        M.updateTextFields();
     });
 
     function updateTimeLine(event) {
         event.preventDefault();
         setSymbol(symbol);
-        setTimeLine(event.target.name);
+        setTimeLine(event.target.value);
     }
 
     return(
@@ -64,11 +66,14 @@ function ShareChart() {
                         <label htmlFor="autocomplete-input">Search for an Equity</label>
                     </div>
                     <div className="btn-group col s12 m6" role="group">
-                        <ul className="tabs tabs-fixed-width tab-demo z-depth-1">
-                            <li className="tab"><a className="active" href="#" onClick={updateTimeLine} name="line_chart">Line Chart</a></li>
-                            <li className="tab"><a href="#" onClick={updateTimeLine} name="candle_stick">Candlestick Chart</a></li>
-                        </ul>
-                    </div>
+                        <div class="input-field col s12">
+                            <select onChange={updateTimeLine}>
+                                <option value="line_chart">Line</option>
+                                <option value="candle_stick">Candlestick</option>
+                            </select>
+                            <label>Chart Type</label>
+                        </div>
+                                        </div>
                 </div>
                 {timeLine === 'line_chart'
                 ?

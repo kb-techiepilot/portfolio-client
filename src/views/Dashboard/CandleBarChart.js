@@ -69,6 +69,10 @@ function CandleBarChart(props) {
           enabled: true
         }
       },
+      title: {
+        text: props.symbol,
+        align: 'center'
+      },
       selection: 'one_year',
       noData: {
         text: 'Loading...'
@@ -81,34 +85,36 @@ function CandleBarChart(props) {
     }
 
     useEffect(() => {
-        var startDate;
-        var endDate = moment().format("DD MMM YYYY");
-        console.log(endDate);
-        if(timeLine === 'one_year') {
-            ApexCharts.exec(
-                'area-datetime',
-                'resetSeries'
-            );
-        }
-        else {
-            switch(timeLine) {
-                case "one_month" :
-                    startDate = moment().subtract(1, 'month').format("DD MMM YYYY");
-                    break;
-                case "six_months":
-                    startDate = moment().subtract(6, 'month').format("DD MMM YYYY");
-                    break;
-                case "ytd":
-                    startDate = "01 Jan " + moment().year();
-                    break;
+        if(history.length != 0) {
+            var startDate;
+            var endDate = moment().format("DD MMM YYYY");
+            console.log(endDate);
+            if(timeLine === 'one_year') {
+                ApexCharts.exec(
+                    'area-datetime',
+                    'resetSeries'
+                );
             }
-            console.log(startDate);
-            ApexCharts.exec(
-                'area-datetime',
-                'zoomX',
-                new Date(startDate).getTime(),
-                new Date(endDate).getTime()
-            );
+            else {
+                switch(timeLine) {
+                    case "one_month" :
+                        startDate = moment().subtract(1, 'month').format("DD MMM YYYY");
+                        break;
+                    case "six_months":
+                        startDate = moment().subtract(6, 'month').format("DD MMM YYYY");
+                        break;
+                    case "ytd":
+                        startDate = "01 Jan " + moment().year();
+                        break;
+                }
+                console.log(startDate);
+                ApexCharts.exec(
+                    'area-datetime',
+                    'zoomX',
+                    new Date(startDate).getTime(),
+                    new Date(endDate).getTime()
+                );
+            }
         }
     },[timeLine]);
     return(

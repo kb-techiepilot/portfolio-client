@@ -16,9 +16,9 @@ function App() {
           <NavBar />
           <Switch>
             <Route path="/loading" exact component={ Loading } />
-            <PrivateRoute path="/" exact component={ Dashboard } />
+            {/* <PrivateRoute path="/" exact component={ Dashboard } /> */}
             <PrivateRoute path="/dashboard" component={ Dashboard } />
-            <Route path="/chart" component={ShareChart} />
+            <Route path="/" exact component={ShareChart} />
           </Switch>
       </div>
     </Router>

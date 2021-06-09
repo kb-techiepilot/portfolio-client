@@ -77,6 +77,10 @@ function LineChart(props) {
             format: 'dd-MM-yyyy'
           }
         },
+        title: {
+          text: props.symbol,
+          align: 'center'
+        },
         fill: {
           type: 'gradient',
           gradient: {
@@ -95,6 +99,7 @@ function LineChart(props) {
       }
   
       useEffect(() => {
+        if(history.length != 0) {
           var startDate;
           var endDate = moment().format("DD MMM YYYY");
           if(timeLine === 'one_year') {
@@ -114,7 +119,7 @@ function LineChart(props) {
                   case "six_months":
                       startDate = moment().subtract(6, 'month').format("DD MMM YYYY");
                       break;
-                  case "default":
+                  case "ytd":
                       startDate = "01 Jan " + moment().year();
                       break;
               }
@@ -125,6 +130,7 @@ function LineChart(props) {
                   new Date(endDate).getTime()
               );
           }
+        }
       },[timeLine]);
     return(
         <>

@@ -75,6 +75,10 @@ function IntraDayChart(props) {
             format: 'HH:mm'
           }
         },
+        title: {
+          text: props.symbol,
+          align: 'center'
+        },
         fill: {
           type: 'gradient',
           gradient: {
