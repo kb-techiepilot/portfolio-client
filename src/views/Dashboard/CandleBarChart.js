@@ -6,11 +6,13 @@ import ApexCharts from 'apexcharts';
 
 import Loading from '../../components/Loading';
 import config from '../../config';
+import ChartHeader from './ChartHeader';
 
 function CandleBarChart(props) {
-
+    
     const [loading, setLoading] = useState(true);
     const [history, setHistory] = useState([]);
+    const [previousPrice, setPreviousPrice] = useState(0);
 
     const[timeLine, setTimeLine] = useState("one_year");
 
@@ -89,7 +91,7 @@ function CandleBarChart(props) {
 
     useEffect(() => {
         if(history.history != undefined) {
-            var startDate;
+            var startDate = moment().subtract(1, 'year').format("DD MMM YYYY")
             var endDate = moment().format("DD MMM YYYY");
             console.log(endDate);
             if(timeLine === 'one_year') {
@@ -124,8 +126,28 @@ function CandleBarChart(props) {
                     new Date(endDate).getTime()
                 );
             }
+
+            var momentDate = moment(startDate);
+            var sub = momentDate.day() - 5;
+            momentDate = momentDate.day() > 5 
+            ? momentDate.subtract(sub, 'day')
+              : 
+              momentDate;
+            getPreviousPrice(momentDate.format("YYYY-MM-DD"));
         }
     },[timeLine]);
+
+    function getPreviousPrice(date) {
+      if(history.history !== undefined && timeLine === 'one_day') {
+        setPreviousPrice(history.current.priceInfo.previousClose);
+      } else {
+        history.history !== undefined && history.history.forEach(ele => {
+          if(date === ele.CH_TIMESTAMP) {
+            setPreviousPrice(ele.CH_CLOSING_PRICE);
+          }
+        });
+      }
+    }
     return(
         <>
         <div className="btn-group" role="group">
@@ -136,6 +158,11 @@ function CandleBarChart(props) {
             <a className={timeLine === 'ytd' ? btnClassWithActive : btnClass }  href="#" onClick={updateTimeLine} name="ytd">YTD</a>
             <a className={timeLine === 'one_year' ? btnClassWithActive : btnClass }  onClick={updateTimeLine} name="one_year">1Y</a>
         </div>
+        {history.current != undefined ? 
+          <ChartHeader current={history.current} previousClosing={previousPrice} timeLine={timeLine}/>
+        :
+        <></>
+        }
         <div className="row">
             <div id="chart">
                 <div id="chart-timeline">

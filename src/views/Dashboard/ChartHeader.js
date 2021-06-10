@@ -9,8 +9,6 @@ function ChartHeader(props){
     const change = props.current.priceInfo.lastPrice - props.previousClosing;
     const pChange = (change / props.previousClosing) * 100;
 
-    console.log(change + " = " + pChange.toFixed(2));
-
     function getTimeText(){
         var timeLine = props.timeLine;
         var timeText = "";
@@ -21,11 +19,17 @@ function ChartHeader(props){
             case 'five_days':
                 timeText="past 5 days";
                 break;
-            case 'one_month':
-                timeText="past month";
-                break;
+              case 'one_month':
+                  timeText="past month";
+                  break;
+              case 'three_months':
+                  timeText="past 3 months";
+                  break;
             case 'six_months':
                 timeText="past 6 months";
+                break;
+            case 'nine_months':
+                timeText="past 9 months";
                 break;
             case 'ytd':
                 timeText="year to date";

@@ -7,32 +7,57 @@ import Loading from '../../components/Loading';
 import config from '../../config';
 
 function IntraDayChart(props) {
+  console.log(props.history);
+    const [data, setData] = useState([]);
+    // const [history, setHistory] = useState([]);
 
-    const [loading, setLoading] = useState(true);
-    const [history, setHistory] = useState([]);
 
+    // useEffect(() => {
+    //     axios
+    //     .get(config.apiBaseUrl+"/api/v1/symbols/intraday", {
+    //         params: {
+    //             'symbol': props.symbol,
+    //         }})
+    //     .then(res => {
+    //         setHistory(res.data);
+    //         if(res.data !== []) {
+    //             setLoading(false);
+    //         }
+    //         })
+    //     .catch(err =>{
+    //       console.log(err.message);
+    //     });
+    // },[props.symbol, props.timeLine]);
 
-    useEffect(() => {
-        axios
-        .get(config.apiBaseUrl+"/api/v1/symbols/intraday", {
-            params: {
-                'symbol': props.symbol,
-            }})
-        .then(res => {
-            setHistory(res.data);
-            if(res.data !== []) {
-                setLoading(false);
-            }
-            })
-        .catch(err =>{
-          console.log(err.message);
-        });
-    },[props.symbol, props.timeLine]);
+    // useEffect(() => {
+    //   var history = props.history;
+    //   var responseData = []
+    //   var dataObj = {};
+    //   var data = [];
+    //   // dataObj.data = history;
+      
+    //   var j = 1;
+    //   data[0] = history.intra[0];
+    //   for(var i = 1; i < history.intra.length-1; i++){
+    //       if(history.intra[i][0] - data[j-1][0] > 300000 ){
+    //           data[j] = history.intra[i];
+    //           j++;
+    //       }
+    //   }
+    //   dataObj.data = data;
+    //   dataObj.name = props.symbol;
+    //   responseData.push(dataObj);
+
+    //   setData(responseData);
+    //   console.log(data);
+
+    // },[props.symbol, props.timeLine]);
     
 
     function getLineData(history) {
 
-        var responseData = []
+      var responseData = []
+      if(history !== undefined) {
         var dataObj = {};
         var data = [];
         // dataObj.data = history;
@@ -49,6 +74,7 @@ function IntraDayChart(props) {
         dataObj.name = props.symbol;
         responseData.push(dataObj);
         return responseData;
+      }
     }
 
     var lineOptions = {
@@ -84,38 +110,38 @@ function IntraDayChart(props) {
             stops: [0, 100]
           }
         },
+        annotations : {
+          yaxis : [{
+            y: props.history.current.priceInfo.previousClose,
+              borderColor: '#999',
+              label: {
+                show: true,
+                text: 'previous close ' + props.history.current.priceInfo.previousClose,
+              }
+          }]
+        },
         colors: ['#34A853']
       }
 
       useEffect(() => {
-        if(history.current !== undefined){
-          ApexCharts.exec(
-            'area-datetime',
-            'addYaxisAnnotation',
-            {
-              offsetY: 0,
-              y: history.current.priceInfo.previousClose,
-              borderColor: '#999',
-              label: {
-                show: true,
-                text: 'previous close ' + history.current.priceInfo.previousClose,
-              }
-            }
+        if(props.history.current !== undefined){
+
+
+
+        ApexCharts.exec(
+          'area-datetime',
+          'resetSeries'
         );
       }
-    },[history]);
+    },[]);
     return(
         <>
         <div className="row">
             <div id="chart">
                 <div id="chart-timeline">
-                    {!loading ? 
                     <Chart options={lineOptions}
-                        series={getLineData(history)}
+                        series={getLineData(props.history)}
                         type="area" height={350} />
-                        :
-                        <Loading />
-                    }
                 </div>
             </div>
         </div>

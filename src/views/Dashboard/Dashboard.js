@@ -12,9 +12,9 @@ function Dashboard(){
                 <div className="col s12 m6 l6">
                     <ShareChart/>
                 </div>
-                <div className="col s12 m6 l6">
+                {/* <div className="col s12 m6 l6">
                     <ContributionChart/>
-                </div>
+                </div> */}
             </div>
         </div>
     )
