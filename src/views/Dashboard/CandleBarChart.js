@@ -74,10 +74,6 @@ function CandleBarChart(props) {
           enabled: true
         }
       },
-      title: {
-        text: props.symbol,
-        align: 'center'
-      },
       selection: 'one_year',
       noData: {
         text: 'Loading...'
@@ -91,9 +87,8 @@ function CandleBarChart(props) {
 
     useEffect(() => {
         if(history.history != undefined) {
-            var startDate = moment().subtract(1, 'year').format("DD MMM YYYY")
+            var startDate = moment().subtract(1, 'year');
             var endDate = moment().format("DD MMM YYYY");
-            console.log(endDate);
             if(timeLine === 'one_year') {
                 ApexCharts.exec(
                     'area-datetime',
@@ -118,35 +113,32 @@ function CandleBarChart(props) {
                         startDate = "01 Jan " + moment().year();
                         break;
                 }
-                console.log(startDate);
+                startDate = moment(startDate);
+                if(startDate.day() === 6) {
+                  startDate = startDate.subtract(5, 'day');
+                } else if(startDate.day() === 0) {
+                    startDate = startDate.subtract(2, 'day');
+                }
+                startDate = startDate;
                 ApexCharts.exec(
                     'area-datetime',
                     'zoomX',
-                    new Date(startDate).getTime(),
+                    new Date(startDate.format("DD MMM YYYY")).getTime(),
                     new Date(endDate).getTime()
                 );
             }
-
-            var momentDate = moment(startDate);
-            var sub = momentDate.day() - 5;
-            momentDate = momentDate.day() > 5 
-            ? momentDate.subtract(sub, 'day')
-              : 
-              momentDate;
-            getPreviousPrice(momentDate.format("YYYY-MM-DD"));
+            getPreviousPrice(startDate.format("YYYY-MM-DD"));
         }
+        
     },[timeLine]);
 
     function getPreviousPrice(date) {
-      if(history.history !== undefined && timeLine === 'one_day') {
-        setPreviousPrice(history.current.priceInfo.previousClose);
-      } else {
+        console.log(date);
         history.history !== undefined && history.history.forEach(ele => {
-          if(date === ele.CH_TIMESTAMP) {
+            if(date === ele.CH_TIMESTAMP) {
             setPreviousPrice(ele.CH_CLOSING_PRICE);
-          }
+            }
         });
-      }
     }
     return(
         <>
