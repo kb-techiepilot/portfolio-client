@@ -288,3 +288,19 @@
 .gradient-45deg-purple-deep-orange.gradient-shadow {
     box-shadow: 0 6px 20px 0 rgba(255,110,64,.5)!important
 }
+
+.btn-group-border {
+    border-right: 1px solid #dadce0;
+}
+
+.btn-group-active-border {
+    border-bottom: 5px solid #34a853;
+}
+
+.price-green {
+    color: #188038;
+}
+
+.price-red {
+    color: #d93025;
+}

@@ -18,21 +18,6 @@ function ShareChart() {
 
     const [timeLine, setTimeLine] = useState("line_chart");
 
-    useEffect(() => {
-        axios
-        .get(config.apiBaseUrl+"/api/v1/symbols")
-        .then(res => {
-            var symbolsJson = {};
-            res.data.forEach((data) => {
-                symbolsJson[data] = null;
-            });
-            setSymbols(symbolsJson);
-        })
-        .catch(err =>{
-          console.log(err.message);
-        });
-    },[]);
-
 
     useEffect(()=> {
         var elems = document.querySelectorAll('.autocomplete');
@@ -49,6 +34,21 @@ function ShareChart() {
 
         M.updateTextFields();
     });
+
+    useEffect(() => {
+        axios
+        .get(config.apiBaseUrl+"/api/v1/symbols")
+        .then(res => {
+            var symbolsJson = {};
+            res.data.forEach((data) => {
+                symbolsJson[data] = null;
+            });
+            setSymbols(symbolsJson);
+        })
+        .catch(err =>{
+          console.log(err.message);
+        });
+    },[]);
 
     function updateTimeLine(event) {
         event.preventDefault();

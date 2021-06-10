@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Chart from 'react-apexcharts';
+import ApexCharts from 'apexcharts';
 
 import Loading from '../../components/Loading';
 import config from '../../config';
@@ -12,7 +13,6 @@ function IntraDayChart(props) {
 
 
     useEffect(() => {
-
         axios
         .get(config.apiBaseUrl+"/api/v1/symbols/intraday", {
             params: {
@@ -38,10 +38,10 @@ function IntraDayChart(props) {
         // dataObj.data = history;
         
         var j = 1;
-        data[0] = history[0];
-        for(var i = 1; i < history.length-1; i++){
-            if(history[i][0] - data[j-1][0] > 300000 ){
-                data[j] = history[i];
+        data[0] = history.intra[0];
+        for(var i = 1; i < history.intra.length-1; i++){
+            if(history.intra[i][0] - data[j-1][0] > 300000 ){
+                data[j] = history.intra[i];
                 j++;
             }
         }
@@ -75,10 +75,6 @@ function IntraDayChart(props) {
             format: 'HH:mm'
           }
         },
-        title: {
-          text: props.symbol,
-          align: 'center'
-        },
         fill: {
           type: 'gradient',
           gradient: {
@@ -88,8 +84,26 @@ function IntraDayChart(props) {
             stops: [0, 100]
           }
         },
-        colors: ['#66DA26']
+        colors: ['#34A853']
       }
+
+      useEffect(() => {
+        if(history.current !== undefined){
+          ApexCharts.exec(
+            'area-datetime',
+            'addYaxisAnnotation',
+            {
+              offsetY: 0,
+              y: history.current.priceInfo.previousClose,
+              borderColor: '#999',
+              label: {
+                show: true,
+                text: 'previous close ' + history.current.priceInfo.previousClose,
+              }
+            }
+        );
+      }
+    },[history]);
     return(
         <>
         <div className="row">

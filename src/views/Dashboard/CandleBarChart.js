@@ -12,7 +12,10 @@ function CandleBarChart(props) {
     const [loading, setLoading] = useState(true);
     const [history, setHistory] = useState([]);
 
-    const[timeLine, setTimeLine] = useState("");
+    const[timeLine, setTimeLine] = useState("one_year");
+
+    const btnClass = "btn white black-text btn-group-border";
+    const btnClassWithActive = "btn white black-text btn-group-border btn-group-active-border";
 
     useEffect(() => {
 
@@ -38,7 +41,7 @@ function CandleBarChart(props) {
     function getData(history) {
         var data = [];
         var dataObj = {};
-        history.forEach(ele => {
+        history.history !== undefined && history.history.forEach(ele => {
             dataObj.x = ele.CH_TIMESTAMP;
             dataObj.y = [ele.CH_OPENING_PRICE, ele.CH_TRADE_HIGH_PRICE, ele.CH_TRADE_LOW_PRICE, ele.CH_CLOSING_PRICE]
             data.push(dataObj);
@@ -85,7 +88,7 @@ function CandleBarChart(props) {
     }
 
     useEffect(() => {
-        if(history.length != 0) {
+        if(history.history != undefined) {
             var startDate;
             var endDate = moment().format("DD MMM YYYY");
             console.log(endDate);
@@ -100,8 +103,14 @@ function CandleBarChart(props) {
                     case "one_month" :
                         startDate = moment().subtract(1, 'month').format("DD MMM YYYY");
                         break;
+                    case "three_months" :
+                        startDate = moment().subtract(3, 'month').format("DD MMM YYYY");
+                        break;
                     case "six_months":
                         startDate = moment().subtract(6, 'month').format("DD MMM YYYY");
+                        break;
+                    case "nine_months" :
+                        startDate = moment().subtract(9, 'month').format("DD MMM YYYY");
                         break;
                     case "ytd":
                         startDate = "01 Jan " + moment().year();
@@ -120,10 +129,12 @@ function CandleBarChart(props) {
     return(
         <>
         <div className="btn-group" role="group">
-            <a className="btn" href="#" onClick={updateTimeLine} name="one_month">1M</a>
-            <a className="btn btn-inactive" onClick={updateTimeLine} name="six_months">6M</a>
-            <a className="btn" href="#" onClick={updateTimeLine} name="ytd">YTD</a>
-            <a className="btn btn-inactive" onClick={updateTimeLine} name="one_year">1Y</a>
+            <a className={timeLine === 'one_month' ? btnClassWithActive : btnClass }  href="#" onClick={updateTimeLine} name="one_month">1M</a>
+            <a className={timeLine === 'three_months' ? btnClassWithActive : btnClass }  href="#" onClick={updateTimeLine} name="three_months">3M</a>
+            <a className={timeLine === 'six_months' ? btnClassWithActive : btnClass }  onClick={updateTimeLine} name="six_months">6M</a>
+            <a className={timeLine === 'nine_months' ? btnClassWithActive : btnClass }  onClick={updateTimeLine} name="nine_months">9M</a>
+            <a className={timeLine === 'ytd' ? btnClassWithActive : btnClass }  href="#" onClick={updateTimeLine} name="ytd">YTD</a>
+            <a className={timeLine === 'one_year' ? btnClassWithActive : btnClass }  onClick={updateTimeLine} name="one_year">1Y</a>
         </div>
         <div className="row">
             <div id="chart">
