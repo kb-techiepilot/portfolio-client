@@ -17,7 +17,7 @@ function Dashboard(){
                 <></>
             }
             <div className="row">
-                <div className="col s12 m8">
+                <div className="col s12 m5">
                     <div className="card animate fadeUp card-height">            
                         <ShareChart/>
                     </div>

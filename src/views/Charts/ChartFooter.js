@@ -25,10 +25,10 @@ function ChartFooter(props){
         <div className="col s4">
             <table>
             <tbody>
-                <tr>
+                {/* <tr>
                 <td>Sector</td>
                 <td>{props.current.metadata.pdSectorInd}</td>
-                </tr>
+                </tr> */}
                 <tr>
                 <td>Low CP</td>
                 <td>{props.current.priceInfo.lowerCP}</td>

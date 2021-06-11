@@ -44,7 +44,7 @@ function ChartHeader(props){
         <>
         {props.current !== undefined && 
             <div className="row">
-              <div className="col s6">
+              <div className="col s9">
                 <h5>{props.current.info.companyName}</h5>
                 <h4><span>&#8377;</span>{props.current.priceInfo.lastPrice.toFixed(2)}</h4>
                 <h6 className={change > 0 ? green : red}>
