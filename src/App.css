@@ -304,3 +304,13 @@
 .price-red {
     color: #d93025;
 }
+
+.input-field .prefix.active {
+color: #000!important;
+}
+.dropdown-content li>a, .dropdown-content li>span {
+color: #000!important;
+}
+.autocomplete-content li .highlight {
+color: green!important;
+}

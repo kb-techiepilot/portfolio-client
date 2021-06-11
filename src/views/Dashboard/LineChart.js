@@ -121,17 +121,16 @@ function LineChart(props) {
     }
 
     function updateTimeLine(event) {
-        event.preventDefault();
-        setTimeLine(event.target.name);
+      event.preventDefault();
+      setTimeLine(event.target.name);
     }
+
     function getPreviousPrice(date) {
-      console.log("date : " + date);
       if(history.history !== undefined && timeLine === 'one_day') {
         setPreviousPrice(history.current.priceInfo.previousClose);
       } else {
         history.history !== undefined && history.history.forEach(ele => {
           if(date === ele.CH_TIMESTAMP) {
-            console.log("true : " + ele.CH_CLOSING_PRICE)
             setPreviousPrice(ele.CH_CLOSING_PRICE);
           }
         });
@@ -148,7 +147,7 @@ function LineChart(props) {
                 'resetSeries'
             );
         }
-        else {
+        else if(timeLine !== 'one_day'){
             switch(timeLine) {
               case "five_days" :
                   startDate = moment().subtract(5, 'day').format("DD MMM YYYY");
@@ -171,7 +170,6 @@ function LineChart(props) {
                 startDate = startDate.subtract(2, 'day');
             }
             startDate = startDate;
-
             ApexCharts.exec(
                 'area-datetime',
                 'zoomX',
@@ -179,17 +177,10 @@ function LineChart(props) {
                 new Date(endDate).getTime()
             );
         }
-        // var momentDate = moment(startDate);
-        // var sub = momentDate.day() - 5;
-        // momentDate = momentDate.day() > 5 
-        // ? momentDate.subtract(sub, 'day')
-        //   : 
-        //   momentDate;
-        console.log(startDate.format("YYYY-MM-DD"))
         getPreviousPrice(startDate.format("YYYY-MM-DD"));
 
       }
-    },[timeLine]);
+    });
   return(
       <>
       <div className="btn-group" role="group">

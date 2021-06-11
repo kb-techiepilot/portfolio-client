@@ -60,12 +60,12 @@ function ShareChart() {
         <div id="revenue-chart" className="card animate fadeUp">
             <div className="card-content">
                 <div className="header mt-0 row">
-                    <div className="col s12 m6 input-field">
+                    <div className="col s12 m12 input-field">
                         <i className="material-icons prefix">timeline</i>
-                        <input type="text" id="autocomplete-input" className="autocomplete" />
-                        <label htmlFor="autocomplete-input">Search for an Equity</label>
+                        <input type="text" id="autocomplete-input1" className="autocomplete" />
+                        <label htmlFor="autocomplete-input1">Search for an Equity</label>
                     </div>
-                    <div className="btn-group col s12 m6" role="group">
+                    {/* <div className="btn-group col s12 m6" role="group">
                         <div class="input-field col s12">
                             <select onChange={updateTimeLine}>
                                 <option value="line_chart">Line</option>
@@ -73,7 +73,7 @@ function ShareChart() {
                             </select>
                             <label>Chart Type</label>
                         </div>
-                                        </div>
+                    </div> */}
                 </div>
                 {timeLine === 'line_chart'
                 ?

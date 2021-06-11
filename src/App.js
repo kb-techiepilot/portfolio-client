@@ -17,8 +17,8 @@ function App() {
           <Switch>
             <Route path="/loading" exact component={ Loading } />
             {/* <PrivateRoute path="/" exact component={ Dashboard } /> */}
-            <PrivateRoute path="/dashboard" component={ Dashboard } />
-            <Route path="/" exact component={ShareChart} />
+            <Route path="/dashboard" component={ Dashboard } />
+            <Route path="/" exact component={Dashboard} />
           </Switch>
       </div>
     </Router>

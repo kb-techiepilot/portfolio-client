@@ -3,31 +3,30 @@ import Chart from 'react-apexcharts';
 import ApexCharts from 'apexcharts';
 
 function IntraDayChart(props) {
-  console.log(props.history);
-    
 
-    function getLineData(history) {
+  function getLineData(history) {
 
-      var responseData = []
-      if(history !== undefined) {
-        var dataObj = {};
-        var data = [];
-        
-        var j = 1;
-        data[0] = history.intra[0];
-        for(var i = 1; i < history.intra.length-1; i++){
-            if(history.intra[i][0] - data[j-1][0] > 300000 ){
-                data[j] = history.intra[i];
-                j++;
-            }
-        }
-        dataObj.data = data;
-        dataObj.name = props.symbol;
-        responseData.push(dataObj);
-        return responseData;
+    var responseData = []
+    if(history !== undefined) {
+      var dataObj = {};
+      var data = [];
+      
+      var j = 1;
+      data[0] = history.intra[0];
+      for(var i = 1; i < history.intra.length-1; i++){
+          if(history.intra[i][0] - data[j-1][0] > 300000 ){
+              data[j] = history.intra[i];
+              j++;
+          }
       }
+      dataObj.data = data;
+      dataObj.name = props.symbol;
+      responseData.push(dataObj);
+      return responseData;
     }
+  }
 
+  function getOptions() {
     var lineOptions = {
         chart: {
           id: 'area-datetime',
@@ -71,8 +70,13 @@ function IntraDayChart(props) {
               }
           }]
         },
-        colors: ['#34A853']
+        colors : ['#34A853']
       }
+      if(props.history.current.priceInfo.previousClose > props.history.current.priceInfo.lastPrice) {
+        lineOptions.colors = ['#EA4335'];
+      }
+      return lineOptions;
+    }
 
       useEffect(() => {
         if(props.history.current !== undefined){
@@ -90,7 +94,7 @@ function IntraDayChart(props) {
         <div className="row">
             <div id="chart">
                 <div id="chart-timeline">
-                    <Chart options={lineOptions}
+                    <Chart options={getOptions()}
                         series={getLineData(props.history)}
                         type="area" height={350} />
                 </div>
