@@ -57,7 +57,6 @@ function ShareChart() {
     }
 
     return(
-        <div id="revenue-chart" className="card animate fadeUp">
             <div className="card-content">
                 <div className="header mt-0 row">
                     <div className="col s12 m12 input-field">
@@ -82,7 +81,6 @@ function ShareChart() {
                 <CandleBarChart symbol = {symbol} timeLine = {timeLine} />
                 }
             </div>
-        </div>
     )
 }
 

@@ -5,7 +5,6 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { NavBar, Loading, PrivateRoute } from "./components";
 
 import { Dashboard } from './views';
-import ShareChart from './views/Dashboard/ShareChart';
 import { useAuth0 } from '@auth0/auth0-react';
 
 function App() {
