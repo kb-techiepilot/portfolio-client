@@ -358,6 +358,6 @@ color: green!important;
 }
 
 .card-height{
-    max-height: 690px;
+    height: 850px;
     overflow: scroll;
 }

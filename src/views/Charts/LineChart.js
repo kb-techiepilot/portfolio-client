@@ -8,6 +8,7 @@ import Loading from '../../components/Loading';
 import config from '../../config';
 import IntraDayChart from './IntraDayChart';
 import ChartHeader from './ChartHeader';
+import ChartFooter from './ChartFooter';
 
 function LineChart(props) {
 
@@ -212,6 +213,11 @@ function LineChart(props) {
               </div>
           </div>
       </div>
+      {history.current != undefined ? 
+        <ChartFooter current={history.current} previousClosing={previousPrice} timeLine={timeLine}/>
+      :
+      <></>
+      }
       </>
   )
 }
