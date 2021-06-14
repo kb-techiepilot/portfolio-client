@@ -25,7 +25,7 @@ function LineChart(props) {
 
   useEffect(() => {
 
-    var startDate = moment().subtract(1, 'year').format("YYYY-MM-DD");
+    var startDate = moment().subtract(5, 'year').format("YYYY-MM-DD");
     var endDate = moment().format("YYYY-MM-DD");
 
     axios
@@ -140,35 +140,38 @@ function LineChart(props) {
 
     useEffect(() => {
       if(history.history != undefined) {
-        var startDate = moment().subtract(1, 'year');
+        var startDate = moment().subtract(5, 'year');
         var endDate = moment().format("DD MMM YYYY");
-        if(timeLine === 'one_year') {
+        if(timeLine === 'five_years') {
             ApexCharts.exec(
                 'area-datetime',
                 'resetSeries'
             );
         }
         else if(timeLine !== 'one_day'){
-            switch(timeLine) {
-              case "five_days" :
-                  startDate = moment().subtract(5, 'day').format("DD MMM YYYY");
-                  break;
-              case "one_month" :
-                  startDate = moment().subtract(1, 'month').format("DD MMM YYYY");
-                  break;
-                case "six_months":
-                    startDate = moment().subtract(6, 'month').format("DD MMM YYYY");
-                    break;
-                case "ytd":
-                    startDate = "01 Jan " + moment().year();
-                    break;
-            }
-
+          switch(timeLine) {
+            case "five_days" :
+                startDate = moment().subtract(5, 'day').format("DD MMM YYYY");
+                break;
+            case "one_month" :
+                startDate = moment().subtract(1, 'month').format("DD MMM YYYY");
+                break;
+            case "six_months":
+                startDate = moment().subtract(6, 'month').format("DD MMM YYYY");
+                break;
+            case "ytd":
+                startDate = "01 Jan " + moment().year();
+                break;
+            case "one_year":
+                startDate = moment().subtract(1, 'year').format("DD MMM YYYY");
+                break;
+              }
+                  
             startDate = moment(startDate);
             if(startDate.day() === 6) {
-              startDate = startDate.subtract(5, 'day');
+              startDate = startDate.add(2, 'day');
             } else if(startDate.day() === 0) {
-                startDate = startDate.subtract(2, 'day');
+                startDate = startDate.add(1, 'day');
             }
             startDate = startDate;
             ApexCharts.exec(
@@ -177,6 +180,12 @@ function LineChart(props) {
                 new Date(startDate.format("DD MMM YYYY")).getTime(),
                 new Date(endDate).getTime()
             );
+        }
+        startDate = moment(startDate);
+        if(startDate.day() === 6) {
+          startDate = startDate.add(2, 'day');
+        } else if(startDate.day() === 0) {
+            startDate = startDate.add(1, 'day');
         }
         getPreviousPrice(startDate.format("YYYY-MM-DD"));
 
@@ -191,6 +200,7 @@ function LineChart(props) {
           <a className={timeLine === 'six_months' ? btnClassWithActive : btnClass } href="#!" onClick={updateTimeLine} name="six_months">6M</a>
           <a className={timeLine === 'ytd' ? btnClassWithActive : btnClass } href="#!" onClick={updateTimeLine} name="ytd">YTD</a>
           <a className={timeLine === 'one_year' ? btnClassWithActive : btnClass } href="#!" onClick={updateTimeLine} name="one_year">1Y</a>
+          <a className={timeLine === 'five_years' ? btnClassWithActive : btnClass } href="#!" onClick={updateTimeLine} name="five_years">5Y</a>
       </div>
       {history.current != undefined ? 
         <ChartHeader current={history.current} previousClosing={previousPrice} timeLine={timeLine}/>

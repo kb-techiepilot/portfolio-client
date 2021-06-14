@@ -37,6 +37,9 @@ function ChartHeader(props){
             case 'one_year':
                 timeText="past year";
                 break;
+            case 'five_years':
+                timeText="past 5 years";
+                break;
     }
     return timeText;
     }
