@@ -73,7 +73,7 @@ function IntraDayChart(props) {
         colors : ['#34A853']
       }
       if(props.history.current.priceInfo.previousClose > props.history.current.priceInfo.lastPrice) {
-        lineOptions.colors = ['#EA4335'];
+        lineOptions.colors = ['#EF6E63'];
       }
       return lineOptions;
     }

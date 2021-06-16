@@ -26,7 +26,7 @@ function SummaryCards() {
         const token = await getAccessTokenSilently();
         // const intervalId = setInterval(() => { 
             axios
-            .get(config.apiBaseUrl+"/api/v1/summary/", {
+            .get(config.apiBaseUrl+"/api/v2/summary/", {
                 headers: {
                 Authorization: `Bearer ${token}`,
                 }})

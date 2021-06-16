@@ -41,7 +41,7 @@ function ShareChart() {
         .then(res => {
             var symbolsJson = {};
             res.data.forEach((data) => {
-                symbolsJson[data] = null;
+                symbolsJson[data] = 'null';
             });
             setSymbols(symbolsJson);
         })

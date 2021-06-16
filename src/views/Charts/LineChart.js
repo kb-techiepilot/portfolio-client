@@ -25,6 +25,7 @@ function LineChart(props) {
 
   useEffect(() => {
 
+    setLoading(true);
     var startDate = moment().subtract(5, 'year').format("YYYY-MM-DD");
     var endDate = moment().format("YYYY-MM-DD");
 
@@ -107,7 +108,7 @@ function LineChart(props) {
           stops: [0, 100]
         }
       },
-      colors: ['#34A853'],
+      colors: ['#3ABB5D'],
       
       // [
       //   function ({ value, seriesIndex, dataPointIndex, w }) {
@@ -223,7 +224,7 @@ function LineChart(props) {
               </div>
           </div>
       </div>
-      {history.current != undefined ? 
+      {history.current != undefined ?
         <ChartFooter current={history.current} previousClosing={previousPrice} timeLine={timeLine}/>
       :
       <></>
