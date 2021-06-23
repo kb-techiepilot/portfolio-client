@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import Chart from 'react-apexcharts';
 import ApexCharts from 'apexcharts';
 
@@ -88,7 +88,7 @@ function IntraDayChart(props) {
           'resetSeries'
         );
       }
-    },[]);
+    });
     return(
         <>
         <div className="row">

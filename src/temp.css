@@ -1,0 +1,131 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap');
+
+main {
+    padding-left: 300px;
+}
+.news-img {
+    height: 100px !important;
+    width: 150px !important;
+}
+
+.news-title {
+    line-height: 20px;
+    color: rgb(47, 54, 63);
+}
+
+.news-info {
+    color: rgb(83, 91, 98);
+}
+
+.mb4 {
+    margin-bottom: 4px;
+}
+
+.text-13 {
+    font-size: 13px;
+}
+
+.text-15 {
+    font-size: 15px;
+}
+
+.font-medium {
+    font-family: 'Graphik Web Medium', 'Helvetica', 'Arial', sans-serif;
+    font-style: normal;
+    font-stretch: normal;
+    font-weight: normal;
+}
+
+.lh-157 {
+    line-height: 1.57;
+}
+
+.news-info-separator {
+    margin-left: 6px;
+    margin-right: 6px;
+}
+
+.marq-stocks {
+    height: 28px;
+    background: #151e28;
+    position: relative;
+    top: 0;
+    width: 100%;
+    border-bottom: solid 1px rgba(255,255,255,0.12);
+    z-index: 1;
+}
+
+.marq-items {
+    display: flex;
+    color: white;
+    margin: 4px 4px;
+    padding: 4px 0px;
+    flex-wrap: nowrap;
+    will-change: transform;
+}
+
+.symbol {
+    font-family: 'Roboto', sans-serif;
+}
+
+.price {
+    vertical-align: middle;
+    position: relative;
+    margin: 0px 4px;
+    line-height: 20px;
+    font-variant-numeric: tabular-nums;
+}
+
+.up {
+    color: rgb(25, 175, 85);
+}
+
+.down {
+    color: rgb(216, 47, 68);
+}
+
+.index-header {
+    display: flex;
+    width: 100%;
+    justify-content: space-evenly;
+    line-height: 1.3;
+}
+
+.val {
+    font-weight: bold;
+    font-size: 1.125rem;
+}
+
+.val-per {
+    font-weight: normal;
+    font-size: 0.875rem;
+}
+
+.open-val {
+    font-size: 1.125rem;
+    font-weight: bold;
+}
+
+.indicator-item {
+    background-color: gray !important;
+}
+.indicator-item.active {
+    background-color: green !important;
+}
+
+.footer-table{
+    width: 100% !important;
+}
+
+.carousel-item {
+    height: 0px !important;
+}
+.mobile-tr {
+    border: none !important;
+}
+
+@media only screen and (max-width : 992px) {
+	header, main, footer {
+		padding-left: 0px;
+	}
+}

@@ -2,34 +2,48 @@ import React from 'react';
 import { useAuth0 } from '@auth0/auth0-react';
 
 import SummaryCards from './SummaryCards';
-import ShareChart from '../Charts/ShareChart';
-// import ContributionChart from './ContributionChart';
-import News from './News';
+// import News from './News';
+import IndexCards from './IndexCards';
+import IndexChart from './IndexCharts/IndexChart';
+import DonutChart from './DonutChart.js/DonutChart';
 
 function Dashboard(){
     const { isAuthenticated } = useAuth0();
 
     return(
-        <div>
+        <main>
+            <div>
+                <IndexCards/>
+            </div>
             {isAuthenticated ? 
                 <SummaryCards/>
             :
                 <></>
             }
             <div className="row">
-                <div className="col s12 m5">
+                <div className="col s12 m8">
                     <div className="card animate fadeUp card-height">            
-                        <ShareChart/>
+                        <IndexChart/>
                     </div>
                 </div>
                 <div className="col s12 m4">
-                    <div className="card animate fadeUp card-height">
-                    {/* <ContributionChart/> */}
-                        <News />
-                    </div>
                 </div>
             </div>
-        </div>
+            {isAuthenticated &&
+                <div className="row">
+                    <div className="col s12 m6">
+                        <div className="card animate fadeUp card-height">            
+                            <DonutChart/>
+                        </div>
+                    </div>
+                    <div className="col s12 m6">
+                        <div className="card animate fadeUp card-height">            
+                            <DonutChart/>
+                        </div>
+                    </div>
+                </div>
+            }
+        </main>
     )
 };
 

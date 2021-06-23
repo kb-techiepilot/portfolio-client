@@ -26,11 +26,11 @@ function LineChart(props) {
   useEffect(() => {
 
     setLoading(true);
-    var startDate = moment().subtract(5, 'year').format("YYYY-MM-DD");
+    var startDate = moment().subtract(1, 'year').format("YYYY-MM-DD");
     var endDate = moment().format("YYYY-MM-DD");
 
     axios
-    .get(config.apiBaseUrl+"/api/v1/history/" + props.symbol, {
+    .get(config.apiBaseUrl+"/api/v2/history/" + props.symbol, {
         params: {
             'start': startDate,
             'end': endDate
@@ -60,16 +60,9 @@ function LineChart(props) {
     
 
   function getLineData(history) {
-      var data = [];
       var dataObj = {};
-      var i = 0;
-      history.history !== undefined && history.history.forEach(ele => {
-        var date = new Date(ele.CH_TIMESTAMP).getTime();
-          data[i] = [date, ele.CH_CLOSING_PRICE];
-          i++;
-      });
       var responseData = [];
-      dataObj.data = data;
+      dataObj.data = history.history !== undefined && history.history;
       dataObj.name = props.symbol;
       responseData.push(dataObj);
       return responseData;
@@ -109,17 +102,6 @@ function LineChart(props) {
         }
       },
       colors: ['#3ABB5D'],
-      
-      // [
-      //   function ({ value, seriesIndex, dataPointIndex, w }) {
-      //       if (history.current.priceInfo.lastPrice - previousPrice < 0) {
-      //         return "#EA4335";
-      //       } else {
-      //         return "##34A853";
-      //       }
-      //     }
-      // ]
-      // 
     }
 
     function updateTimeLine(event) {
@@ -131,19 +113,20 @@ function LineChart(props) {
       if(history.history !== undefined && timeLine === 'one_day') {
         setPreviousPrice(history.current.priceInfo.previousClose);
       } else {
+        console.log(history.history.length);
         history.history !== undefined && history.history.forEach(ele => {
-          if(date === ele.CH_TIMESTAMP) {
-            setPreviousPrice(ele.CH_CLOSING_PRICE);
+          if(date === ele[0]) {
+            setPreviousPrice(ele[1]);
           }
         });
       }
     }
 
     useEffect(() => {
-      if(history.history != undefined) {
-        var startDate = moment().subtract(5, 'year');
+      if(history.history !== undefined) {
+        var startDate = moment().subtract(1, 'year');
         var endDate = moment().format("DD MMM YYYY");
-        if(timeLine === 'five_years') {
+        if(timeLine === 'one_year') {
             ApexCharts.exec(
                 'area-datetime',
                 'resetSeries'
@@ -163,18 +146,17 @@ function LineChart(props) {
             case "ytd":
                 startDate = "01 Jan " + moment().year();
                 break;
-            case "one_year":
-                startDate = moment().subtract(1, 'year').format("DD MMM YYYY");
+            default:
                 break;
               }
                   
             startDate = moment(startDate);
+            console.log(startDate.day() + "-----" + startDate.format("YYYY-MM-DD"));
             if(startDate.day() === 6) {
               startDate = startDate.add(2, 'day');
             } else if(startDate.day() === 0) {
                 startDate = startDate.add(1, 'day');
             }
-            startDate = startDate;
             ApexCharts.exec(
                 'area-datetime',
                 'zoomX',
@@ -195,15 +177,14 @@ function LineChart(props) {
   return(
       <>
       <div className="btn-group" role="group">
-          <a className={timeLine === 'one_day' ? btnClassWithActive : btnClass } href="#!" onClick={updateTimeLine} name="one_day">1D</a>
-          <a className={timeLine === 'five_days' ? btnClassWithActive : btnClass } href="#!" onClick={updateTimeLine} name="five_days">5D</a>
-          <a className={timeLine === 'one_month' ? btnClassWithActive : btnClass } href="#!" onClick={updateTimeLine} name="one_month">1M</a>
-          <a className={timeLine === 'six_months' ? btnClassWithActive : btnClass } href="#!" onClick={updateTimeLine} name="six_months">6M</a>
-          <a className={timeLine === 'ytd' ? btnClassWithActive : btnClass } href="#!" onClick={updateTimeLine} name="ytd">YTD</a>
-          <a className={timeLine === 'one_year' ? btnClassWithActive : btnClass } href="#!" onClick={updateTimeLine} name="one_year">1Y</a>
-          <a className={timeLine === 'five_years' ? btnClassWithActive : btnClass } href="#!" onClick={updateTimeLine} name="five_years">5Y</a>
+          <a className={timeLine === 'one_day' ? btnClassWithActive : btnClass } href="#!" onClick={(event) => updateTimeLine(event)} name="one_day">1D</a>
+          <a className={timeLine === 'five_days' ? btnClassWithActive : btnClass } href="#!" onClick={(event) => updateTimeLine(event)} name="five_days">5D</a>
+          <a className={timeLine === 'one_month' ? btnClassWithActive : btnClass } href="#!" onClick={(event) => updateTimeLine(event)} name="one_month">1M</a>
+          <a className={timeLine === 'six_months' ? btnClassWithActive : btnClass } href="#!" onClick={(event) => updateTimeLine(event)} name="six_months">6M</a>
+          <a className={timeLine === 'ytd' ? btnClassWithActive : btnClass } href="#!" onClick={(event) => updateTimeLine(event)} name="ytd">YTD</a>
+          <a className={timeLine === 'one_year' ? btnClassWithActive : btnClass } href="#!" onClick={(event) => updateTimeLine(event)} name="one_year">1Y</a>
       </div>
-      {history.current != undefined ? 
+      {history.current !== undefined ? 
         <ChartHeader current={history.current} previousClosing={previousPrice} timeLine={timeLine}/>
       :
       <></>
@@ -224,7 +205,7 @@ function LineChart(props) {
               </div>
           </div>
       </div>
-      {history.current != undefined ?
+      {history.current !== undefined ?
         <ChartFooter current={history.current} previousClosing={previousPrice} timeLine={timeLine}/>
       :
       <></>
