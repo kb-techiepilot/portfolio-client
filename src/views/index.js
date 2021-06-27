@@ -1,3 +1,4 @@
 import Dashboard from './Dashboard/Dashboard';
+import Transaction from './Transactions';
 
-export { Dashboard };
+export { Dashboard, Transaction };

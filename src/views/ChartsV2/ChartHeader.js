@@ -58,18 +58,19 @@ function ChartHeader(props){
         return timeText;
     }
 
-    async function handleWishlist(symbol) {
+    async function handleWishlist(event) {
+        // event.preventDefault();
         const token = await getAccessTokenSilently();
         axios
         .post(config.apiBaseUrl+"/api/v2/wishlist/", {
-            symbol : symbol,
+            symbol : props.current.info.symbol,
             workspace : 'default'
         },{
             headers: {
             Authorization: `Bearer ${token}`,
             }})
         .then(res => {
-            M.toast({html: '<span>Added to wishlist &nbsp;</span><a href="/wishlists"> see all wishlists </a>'});
+            M.toast({html: '<span>Added to wishlist &nbsp;</span><a href="/wishlist"> see all wishlists </a>'});
         })
         .catch(err =>{
             console.log(err.message);
@@ -97,7 +98,7 @@ function ChartHeader(props){
                 <div className="col s3">
                     <div className="row">
                     <div className="col s4">
-                        <a onClick={() => handleWishlist(props.current.info.symbol)} className="tooltipped" data-position="bottom" data-tooltip="Bookmark" href="#!">
+                        <a onClick={(event) => handleWishlist(event)} className="tooltipped" data-position="bottom" data-tooltip="Bookmark" href="#!">
                             <i className="material-icons">bookmark_border</i>
                         </a>
                     </div>

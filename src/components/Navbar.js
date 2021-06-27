@@ -3,6 +3,7 @@ import M from 'materialize-css';
 import axios from 'axios';
 import { useAuth0 } from '@auth0/auth0-react';
 import 'material-icons/iconfont/material-icons.css';
+import { NavLink } from 'react-router-dom';
 
 import '../assets/css/navbar.css';
 
@@ -13,7 +14,6 @@ import LineChart from '../views/ChartsV2/LineChart';
 
 function Navbar() {
     const { isAuthenticated, loginWithRedirect, logout, getAccessTokenSilently } = useAuth0();
-    const [pageName, setPageName] = useState("Dashboard");
 
     useEffect(()=> {
         var elems = document.querySelectorAll('.sidenav');
@@ -21,7 +21,7 @@ function Navbar() {
             closeOnClick: true,
             draggable: true
         });
-    });
+    },[]);
 
     const [symbol, setSymbol] = useState("SBIN");
     const [symbols, setSymbols] = useState({});
@@ -65,11 +65,6 @@ function Navbar() {
           console.log(err.message);
         });
     },[]);
-
-    function updatePage(event) {
-        event.preventDefault();
-        setPageName(event.target.name);
-    }
 
     const callSecureAPI = async() => {
         try {
@@ -117,32 +112,56 @@ function Navbar() {
             <h5 className="logo-wrapper" style={{
                 fontFamily: "monospace"
               }}>
-                <a className="brand-logo darken-1" href="/dashboard">
+                <a className="brand-logo darken-1 sidenav-a" href="/dashboard">
                     <img className="hide-on-med-and-down " src={process.env.PUBLIC_URL + '../../images/logo.png'} alt="logo"/>
                     <span className="logo-text header-text hide-on-med-and-down">  PortfolioTracker
                     </span>
                 </a>
             </h5>
-                <li><a href="/" className={pageName === 'Dashboard' ? "active" : "" } onClick={(event) => updatePage(event)} name="Dashboard">Dashboard</a></li>
-                <li><a href="/holdings" className={pageName === 'Holdings' ? "active" : "" } onClick={(event) => updatePage(event)} name="Holdings">Holdings</a></li>
-                <li><a href="/wishlist" className={pageName === 'Wishlist' ? "active" : "" } onClick={(event) => updatePage(event)} name="Wishlist">Wishlist</a></li>
-                <li><a href="/transaction" className={pageName === 'Transactions' ? "active" : "" } onClick={(event) => updatePage(event)} name="Transactions">Transactions</a></li>
-                <li><a href="#!" onClick={ () => callSecureAPI() } name="token">Print Token</a></li>
-                {isAuthenticated ? 
+                <li>
+                    <NavLink to="/dashboard" className="sidenav-a" activeClassName="link-active">
+                        Dashboard
+                    </NavLink>
+                </li>
+                <li>
+                    <NavLink to="/holdings" className="sidenav-a" activeClassName="link-active">
+                        Holdings
+                    </NavLink>
+                </li>
+                <li>
+                    <NavLink to="/wishlist" className="sidenav-a" activeClassName="link-active">
+                        Wishlist
+                    </NavLink>
+                </li>
+                <li>
+                    <NavLink to="/transaction" className="sidenav-a" activeClassName="link-active">
+                        Transactions
+                    </NavLink>
+                </li>
+                <li>
+                    <a href="#!" onClick={ () => callSecureAPI() } className="sidenav-a" name="token">Print Token</a>
+                </li>
+                {isAuthenticated ?
                 <>
-                    <li><a href="/profile" className={pageName === 'Profile' ? "active" : "" } onClick={(event) => updatePage(event)} name="Profile">
-                    Profile</a></li>
-                    <li><a href="#!" onClick={ () => logout() }>
-                    Logout</a></li>
+                    <li>
+                        <NavLink to="/profile" className="sidenav-a" activeClassName="link-active">
+                            Profile
+                        </NavLink>
+                    </li>
+                    <li>
+                        <a href="#!" className="sidenav-a" onClick={ () => logout() }>Logout</a>
+                    </li>
                 </>
                 :
-                <li><a href="#!" onClick={ () => loginWithRedirect() }>
-                    Login</a></li>
+                    <li>
+                        <a href="#!" className="sidenav-a" onClick={ () => loginWithRedirect() }>Login</a>
+                    </li>
                 }
+
             </ul>
 
             <main>
-                <div id="modal" className="modal" style={{display: "block"}}>
+                <div id="modal" className="modal eq-modal" style={{display: "block"}}>
                     <div className="modal-content">
                         <LineChart symbol = {symbol}/>
                     </div>

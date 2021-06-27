@@ -78,10 +78,12 @@ main {
 
 .up {
     color: rgb(25, 175, 85);
+    font-weight: 500;
 }
 
 .down {
     color: rgb(216, 47, 68);
+    font-weight: 500;
 }
 
 .index-header {
@@ -122,6 +124,105 @@ main {
 }
 .mobile-tr {
     border: none !important;
+}
+
+.tabs-content{
+    overflow: scroll;
+}
+
+.card-m-height-565{
+    min-height: 565px;
+}
+
+.gainers-head {
+    background-color: #34A853;
+    color: #ffff;
+}
+
+.losers-head {
+    background-color: #EF6E63;
+    color: #ffff;
+}
+
+.gainers-percent {
+    color:rgb(25, 175, 85);
+    font-weight: 700;
+}
+
+.losers-percent {
+    color: rgb(216, 47, 68);
+    font-weight: 700;
+}
+
+.flex-apart{
+    display: -webkit-box;
+    display: flex;
+    -webkit-box-pack: justify;
+    justify-content: space-between;
+    -webkit-box-align: center;
+    align-items: center;
+}
+
+.slider-pos{
+    border-radius: 2px;
+    height: 4px;
+    background-color: rgb(203, 210, 217);
+}
+
+.year-slider{
+    position: absolute;
+    content: "";
+    top: -4px;
+    border-radius: 2px;
+    height: 12px;
+    width: 4px;
+    background-color: rgb(0, 0, 0);
+}
+
+.text-14 {
+    font-size: 14px;
+}
+
+.full-width {
+    width: 100%;
+}
+
+.mb4 {
+    margin-bottom: 4px;
+}
+
+.relative{
+    position: relative;
+}
+
+.content-wrapper-before {
+    position: absolute;
+    z-index: -1;
+    top: 64px;
+    left: 0;
+    width: 100%;
+    height: 185px;
+    -webkit-transition: .3s ease all;
+    transition: .3s ease all;
+}
+
+.wishlist-wrapper {
+    margin-top: 45px;
+    margin-bottom: 22px;
+}
+
+.section {
+    padding: .5rem 0;
+}
+
+.wishlist-wrapper .responsive-table .wishlist-data-table th {
+    width: auto!important;
+    padding: 19px 15px;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.wishlist-actions {
+    color: #9e9e9e;
 }
 
 @media only screen and (max-width : 992px) {

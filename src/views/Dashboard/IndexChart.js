@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import M from 'materialize-css';
 import axios from 'axios';
-import Loading from '../../../components/Loading';
+import Loading from '../../components/Loading';
 
-import IntraDayChart from '../../ChartsV2/IntraDayChart';
+import IntraDayChart from '../ChartsV2/IntraDayChart';
+import NumberFormat from '../../util/NumberFormat';
 
-import config from '../../../config';
+import config from '../../config';
 
 function IndexChart(){
     const [indexSymbols, setIndexSymbols] = useState([]);
@@ -79,18 +80,20 @@ function IndexChart(){
             <div>
                 <ul className="index-header">
                     <li className="tbVal">
-                        <span className="val">{selectedIndexDetails.last}</span>
+                        <span className="val">{NumberFormat(selectedIndexDetails.last)}</span>
                         <span className="arrow-down-red"></span><br/>
-                        <span className={selectedIndexDetails.variation > 0 ? "value-per up" : "value-per down"}>{selectedIndexDetails.variation} ({selectedIndexDetails.percentChange}%)</span>
+                        <span className={selectedIndexDetails.variation > 0 ? "value-per up" : "value-per down"}>
+                            {selectedIndexDetails.variation} ({selectedIndexDetails.percentChange}%)
+                        </span>
                     </li>
                     <li className="open"> <span>Open</span><br/>
-                        <span className="open-val">{selectedIndexDetails.open}</span>
+                        <span className="open-val">{NumberFormat(selectedIndexDetails.open)}</span>
                     </li>
                     <li className="high"> <span>High</span><br/>
-                        <span className="open-val up">{selectedIndexDetails.high}</span>
+                        <span className="open-val up">{NumberFormat(selectedIndexDetails.high)}</span>
                     </li>
                     <li className="low"> <span>Low</span><br/>
-                        <span className="open-val down">{selectedIndexDetails.low}</span>
+                        <span className="open-val down">{NumberFormat(selectedIndexDetails.low)}</span>
                     </li>
                     {/* <li className="prevclose"> <span>Prev. Close</span><br/>
                         <span>15,772.75</span>

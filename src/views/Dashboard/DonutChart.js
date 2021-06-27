@@ -3,7 +3,7 @@ import axios from 'axios';
 import Chart from 'react-apexcharts';
 import { useAuth0 } from '@auth0/auth0-react';
 
-import config from '../../../config';
+import config from '../../config';
 
 function DonutChart() {
 
