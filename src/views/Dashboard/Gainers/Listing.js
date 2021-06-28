@@ -28,7 +28,7 @@ function Listing(props){
                 <th>SYMBOL</th>
                 <th>LTP</th>
                 <th>%CHNG</th>
-                <th>PRV.CLOSE</th>
+                <th className="hide">PRV.CLOSE</th>
             </tr>
             </thead>
 
@@ -38,7 +38,7 @@ function Listing(props){
                     <td>{gainer.symbol}</td>  
                     <td>&#8377;{gainer.ltp}</td>  
                     <td className="gainers-percent">{gainer.netPrice}</td>  
-                    <td>&#8377;{gainer.previousPrice}</td>  
+                    <td className="hide">&#8377;{gainer.previousPrice}</td>  
                 </tr>)}
             </tbody>
         </table>

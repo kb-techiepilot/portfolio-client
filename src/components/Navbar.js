@@ -46,12 +46,6 @@ function Navbar() {
     });
 
     useEffect(() => {
-        var elems = document.querySelectorAll('.modal');
-        M.Modal.init(elems, {});
-        document.getElementById('modal');
-    },[symbol]);    
-
-    useEffect(() => {
         axios
         .get(config.apiBaseUrl+"/api/v1/symbols")
         .then(res => {
@@ -83,7 +77,7 @@ function Navbar() {
                     <div className="nav-wrapper">
                         <div className="row">
                             <div className="col s12">
-                                <a href="#!" data-target="sidenav-1" className="brand-logo darken-1 left sidenav-trigger hide-on-med-and-up"><img src={process.env.PUBLIC_URL + '../../images/logo.png'} alt="" />
+                                <a href="#!" data-target="sidenav-1" className="brand-logo darken-1 left sidenav-trigger hide-on-medium-and-up"><img src={process.env.PUBLIC_URL + '../../images/logo.png'} alt="" />
                                     {/* <span className="logo-text header-text">  PortfolioTracker</span> */}
                                 </a>
                                 

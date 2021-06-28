@@ -1,25 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useAuth0 } from '@auth0/auth0-react';
-import { Loading } from '../components';
+import { Loading } from '../../components';
 import M from 'materialize-css';
 
-import config from '../config';
+import config from '../../config';
+import WishlistDetail from './WishlistDetail';
 
 function Wishlist() {
 
     const { getAccessTokenSilently } = useAuth0();
     const [wishlists, setWishlists] = useState([]);
-    const [wishlistDetail, setWishlistDetail] = useState([]);
     const [token, setToken] = useState("");
     const [symbol, setSymbol] = useState("");
-    const [loading, setLoading] = useState(true);    
-    
-    useEffect(()=> {
-        console.log("open");
-        var elems = document.querySelectorAll('.modal');
-        M.Modal.init(elems, {});
-    },[]);
+    const [loading, setLoading] = useState(true);   
 
     useEffect(() => {
         console.log('all');
@@ -42,36 +36,17 @@ function Wishlist() {
         fetchWishlist();
     },[getAccessTokenSilently]);
 
-    useEffect(() => {
-        
-        console.log('single');
-        async function fetchWishlist() {
-            if(symbol !== "") {
-                const token = await getAccessTokenSilently();
-                axios
-                .get(config.apiBaseUrl+"/api/v2/wishlist/"+ symbol +"?workspace=default",{
-                    headers: {
-                    Authorization: `Bearer ${token}`,
-                    }})
-                .then(res => {
-                    setLoading(false);
-                    setWishlistDetail(res.data);
-                })
-                .catch(err =>{
-                console.log(err.message);
-                });
-            }
-        }
-        fetchWishlist();
-    },[symbol, getAccessTokenSilently]);
-
     function openModal(event, symbol){
         console.log(symbol)
         setSymbol(symbol);
         event.preventDefault();
+
+        var elems = document.querySelectorAll('#wishlist-modal');
+        M.Modal.init(elems, {});
+        elems[0].M_Modal.open();
     }
 
-    async function handleWishlist(event, id) {
+    async function deleteWishlist(event, id) {
         event.preventDefault();
         axios
         .delete(config.apiBaseUrl+"/api/v2/wishlist/"+id +"?workspace=default",{
@@ -99,8 +74,11 @@ function Wishlist() {
                         <div className="container">
                             <section className="wishlist-wrapper section">
 
+                            <div className="left mb-2">
+                                <h4 className="blue-text">Wishlist</h4>
+                            </div>
                             <div className="right mb-2">
-                                <a className="gradient-45deg-purple-deep-orange gradient-shadow btn-floating pulse" href="#!"><i class="material-icons">add</i></a>
+                                <a className="gradient-45deg-purple-deep-orange gradient-shadow btn-floating pulse" href="#!"><i className="material-icons">add</i></a>
                             </div>
 
                             <table className="highlight white responsive-table">
@@ -144,13 +122,13 @@ function Wishlist() {
                                             <span className="text-14">{wishlist.year_high}</span>
                                         </div>
                                         <div className="mb4 slider-pos relative full-width">
-                                            <span className="year-slider" style={{"left" : ((wishlist.current_price - wishlist.year_low) * 100 / (wishlist.year_high - wishlist.year_low) )}}>
+                                            <span className="year-slider" style={{"left" : ((wishlist.current_price - wishlist.year_low) * 100 / (wishlist.year_high - wishlist.year_low) ) + "%"}}>
                                             </span>
                                         </div>
                                     </td>
                                     <td className="center">
-                                        <a className="wishlist-actions modal-trigger" href="#wishlist-modal" onClick={(event) => openModal(event, wishlist.symbol)} ><i className="material-icons">remove_red_eye</i></a>
-                                        <a href="#!" className="wishlist-actions"><i className="material-icons" onClick={(event) => handleWishlist(event, wishlist.wishlist_id)}>delete</i></a>
+                                        <a className="wishlist-actions" href="#!" onClick={(event) => openModal(event, wishlist.symbol)}><i className="material-icons">remove_red_eye</i></a>
+                                        <a href="#!" className="wishlist-actions"><i className="material-icons" onClick={(event) => deleteWishlist(event, wishlist.wishlist_id)}>delete</i></a>
                                     </td>
                                 </tr>)}
                             </tbody>
@@ -161,11 +139,7 @@ function Wishlist() {
                 </div>
                 <div id="wishlist-modal" className="modal">
                     <div className="modal-content">
-                        <h4>{wishlistDetail.symbol}</h4>
-                        <p>A bunch of text</p>
-                    </div>
-                    <div className="modal-footer">
-                        <a href="#!" className="modal-close waves-effect waves-green btn-flat">Agree</a>
+                        <WishlistDetail symbol={symbol}/>
                     </div>
                 </div>
             </div>

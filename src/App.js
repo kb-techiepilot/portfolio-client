@@ -5,7 +5,7 @@ import { Dashboard, Transaction } from './views';
 
 import './App.css';
 import './temp.css';
-import Wishlist from './views/Wishlist';
+import Wishlist from './views/Wishlist/Wishlist';
 
 function App() {
   return (
