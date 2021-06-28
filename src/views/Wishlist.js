@@ -92,10 +92,18 @@ function Wishlist() {
             {loading ?
                 <Loading />
             :
-                <div className="card animate fadeUp">
-                    <div className="card-content">
-                        <span className="card-title">Wishlist</span>
-                        <table className="highlight responsive-table">
+            <div>
+                <div className="row">
+                    <div className="content-wrapper-before blue-grey lighten-5"></div>
+                    <div className="col s12">
+                        <div className="container">
+                            <section className="wishlist-wrapper section">
+
+                            <div className="right mb-2">
+                                <a className="gradient-45deg-purple-deep-orange gradient-shadow btn-floating pulse" href="#!"><i class="material-icons">add</i></a>
+                            </div>
+
+                            <table className="highlight white responsive-table">
                             <thead>
                                 <tr>
                                     <th style={{"width": "10"}}>Symbol</th>
@@ -147,17 +155,20 @@ function Wishlist() {
                                 </tr>)}
                             </tbody>
                         </table>
-                        <div id="wishlist-modal" className="modal">
-                            <div className="modal-content">
-                                <h4>{wishlistDetail.symbol}</h4>
-                                <p>A bunch of text</p>
-                            </div>
-                            <div className="modal-footer">
-                                <a href="#!" className="modal-close waves-effect waves-green btn-flat">Agree</a>
-                            </div>
+                            </section>
                         </div>
                     </div>
                 </div>
+                <div id="wishlist-modal" className="modal">
+                    <div className="modal-content">
+                        <h4>{wishlistDetail.symbol}</h4>
+                        <p>A bunch of text</p>
+                    </div>
+                    <div className="modal-footer">
+                        <a href="#!" className="modal-close waves-effect waves-green btn-flat">Agree</a>
+                    </div>
+                </div>
+            </div>
             }
         </main>
     )

@@ -36,10 +36,13 @@ function Transaction() {
             {loading ?
                 <Loading />
             :
-                <div className="card animate fadeUp">
-                    <div className="card-content">
-                        <span className="card-title">Transactions</span>
-                        <table className="highlight responsive-table">
+
+            <div className="row">
+                <div className="content-wrapper-before blue-grey lighten-5"></div>
+                <div className="col s12">
+                    <div className="container">
+                        <section className="wishlist-wrapper section">
+                        <table className="highlight white responsive-table">
                             <thead>
                                 <tr>
                                     <th>Symbol</th>
@@ -69,8 +72,10 @@ function Transaction() {
                                 </tr>)}
                             </tbody>
                         </table>
-                    </div>
+                        </section>
+                    </div> 
                 </div>
+            </div>
             }
         </main>
     )
