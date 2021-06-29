@@ -47,7 +47,7 @@ function Transactions(){
                     </thead>
 
                     <tbody>
-                        {transactions.map((transaction, index) => 
+                        {transactions !== undefined && transactions.map((transaction, index) => 
                         <tr key={index}>
                             <td>{transaction.symbol}</td>  
                             <td>{moment(transaction.date).format("YYYY-MM-DD")}</td>  
