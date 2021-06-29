@@ -59,7 +59,7 @@ function ChartHeader(props){
     }
 
     async function handleWishlist(event) {
-        // event.preventDefault();
+        event.preventDefault();
         const token = await getAccessTokenSilently();
         axios
         .post(config.apiBaseUrl+"/api/v2/wishlist/", {

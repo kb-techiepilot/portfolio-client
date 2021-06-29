@@ -14,9 +14,36 @@ function Wishlist() {
     const [token, setToken] = useState("");
     const [symbol, setSymbol] = useState("");
     const [loading, setLoading] = useState(true);   
+    const [symbols, setSymbols] = useState({});
+
+        useEffect(()=> {
+        var elems = document.querySelectorAll('.share-autocomplete');
+        M.Autocomplete.init(elems, {
+            data : symbols,
+            limit : 5,
+            onAutocomplete : function(sym) {
+                setSymbol(sym);
+            }
+        });
+    
+    });
 
     useEffect(() => {
-        console.log('all');
+        axios
+        .get(config.apiBaseUrl+"/api/v1/symbols")
+        .then(res => {
+            var symbolsJson = {};
+            res.data.forEach((data) => {
+                symbolsJson[data] = null;
+            });
+            setSymbols(symbolsJson);
+        })
+        .catch(err =>{
+          console.log(err.message);
+        });
+    },[]);
+
+    useEffect(() => {
         async function fetchWishlist() {
             const token = await getAccessTokenSilently();
             setToken(token);
@@ -34,6 +61,11 @@ function Wishlist() {
                 });
         }
         fetchWishlist();
+
+        const intervalId = setInterval(() => { 
+            fetchWishlist();
+        }, 2000 * 100);
+        return () => clearInterval(intervalId);
     },[getAccessTokenSilently]);
 
     function openModal(event, symbol){
@@ -46,10 +78,37 @@ function Wishlist() {
         elems[0].M_Modal.open();
     }
 
+    function openAddModal(event) {
+        event.preventDefault();
+
+        var elems = document.querySelectorAll('#add-wishlist-modal');
+        M.Modal.init(elems, {});
+        elems[0].M_Modal.open();
+    }
+
     async function deleteWishlist(event, id) {
         event.preventDefault();
         axios
         .delete(config.apiBaseUrl+"/api/v2/wishlist/"+id +"?workspace=default",{
+            headers: {
+            Authorization: `Bearer ${token}`,
+            }})
+        .then(res => {
+            M.toast({html: '<span>Wishlist deleted &nbsp;</span><a href="/wishlist"> see all wishlists </a>'});
+            setWishlists(res.data.data);
+        })
+        .catch(err =>{
+            console.log(err.message);
+        });
+    }
+
+    async function addWishlist(event) {
+        event.preventDefault();
+        axios
+        .post(config.apiBaseUrl+"/api/v2/wishlist/", {
+            symbol : symbol,
+            workspace : 'default'
+        },{
             headers: {
             Authorization: `Bearer ${token}`,
             }})
@@ -78,18 +137,18 @@ function Wishlist() {
                                 <h4 className="blue-text">Wishlist</h4>
                             </div>
                             <div className="right mb-2">
-                                <a className="gradient-45deg-purple-deep-orange gradient-shadow btn-floating pulse" href="#!"><i className="material-icons">add</i></a>
+                                <a className="gradient-45deg-purple-deep-orange gradient-shadow btn-floating pulse" href="#!" onClick={(event) => openAddModal(event)}><i className="material-icons">add</i></a>
                             </div>
 
                             <table className="highlight white responsive-table">
                             <thead>
                                 <tr>
-                                    <th style={{"width": "10"}}>Symbol</th>
-                                    <th style={{"width": "20"}}>Company Name</th>
-                                    <th style={{"width": "15"}}>Index</th>
-                                    <th style={{"width": "8"}}>LTP</th>
-                                    <th style={{"width": "8"}}>Day Change</th>
-                                    <th style={{"width": "8"}}>% Change</th>
+                                    <th style={{"width": "10%"}}>Symbol</th>
+                                    <th style={{"width": "20%"}}>Company Name</th>
+                                    <th style={{"width": "15%"}}>Index</th>
+                                    <th style={{"width": "8%"}}>LTP</th>
+                                    <th style={{"width": "8%"}}>Day Change</th>
+                                    <th style={{"width": "8%"}}>% Change</th>
                                     <th className="flex-apart">
                                         <span>1Y Low</span>
                                         <span>1Y High</span>
@@ -139,6 +198,27 @@ function Wishlist() {
                 </div>
                 <div id="wishlist-modal" className="modal">
                     <div className="modal-content">
+                        <WishlistDetail symbol={symbol}/>
+                    </div>
+                </div>
+                <div id="add-wishlist-modal" className="modal">
+                    <div className="modal-content">
+                        <div className="header mt-0 row">
+                            <div className="col s12 m12 input-field">
+                                <div className="col s8">
+                                    <i className="material-icons prefix hide-on-med-and-down">search</i>
+                                    <input type="text" id="share-symbol" className="share-autocomplete" autoComplete="new-password" placeholder="Search for an Equity"/>
+                                </div>
+                                <div className="col s4">
+                                    <button className="waves-effect waves-light btn gradient-45deg-purple-deep-orange gradient-shadow" onClick={(event) => addWishlist(event)}>
+                                        Add
+                                    </button>
+                                    {/* <button className="waves-effect waves-light btn gradient-45deg-purple-deep-orange gradient-shadow">
+                                        Delete
+                                    </button> */}
+                                </div>
+                            </div>
+                        </div>
                         <WishlistDetail symbol={symbol}/>
                     </div>
                 </div>

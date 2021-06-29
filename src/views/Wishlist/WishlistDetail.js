@@ -69,7 +69,7 @@ function WishlistDetail(props) {
                                     Market Stats
                                 </span>
                                 <div className="row">
-                                    <div className="wishlist-data col s6">
+                                    <div className="wishlist-data col s4">
                                         <div className="wishlist-index">
                                             Open
                                         </div>
@@ -77,17 +77,7 @@ function WishlistDetail(props) {
                                             {wishlistDetail.open}
                                         </div>
                                     </div>
-                                    <div className="wishlist-data col s6">
-                                        <div className="wishlist-index">
-                                            Close
-                                        </div>
-                                        <div className="wishlist-symbol">
-                                            {wishlistDetail.previous_close}
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="row">
-                                    <div className="wishlist-data col s6">
+                                    <div className="wishlist-data col s4">
                                         <div className="wishlist-index">
                                             Upper Circuit
                                         </div>
@@ -95,17 +85,7 @@ function WishlistDetail(props) {
                                             {wishlistDetail.higher_cp}
                                         </div>
                                     </div>
-                                    <div className="wishlist-data col s6">
-                                        <div className="wishlist-index">
-                                            Lower Circuit
-                                        </div>
-                                        <div className="wishlist-symbol">
-                                            {wishlistDetail.lower_cp}
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="row">
-                                    <div className="wishlist-data col s6">
+                                    <div className="wishlist-data col s4">
                                         <div className="wishlist-index">
                                             Volume
                                         </div>
@@ -113,7 +93,25 @@ function WishlistDetail(props) {
                                             {wishlistDetail.trade !== undefined && wishlistDetail.trade.volume}
                                         </div>
                                     </div>
-                                    <div className="wishlist-data col s6">
+                                </div>
+                                <div className="row">
+                                    <div className="wishlist-data col s4">
+                                        <div className="wishlist-index">
+                                            Close
+                                        </div>
+                                        <div className="wishlist-symbol">
+                                            {wishlistDetail.previous_close}
+                                        </div>
+                                    </div>
+                                    <div className="wishlist-data col s4">
+                                        <div className="wishlist-index">
+                                            Lower Circuit
+                                        </div>
+                                        <div className="wishlist-symbol">
+                                            {wishlistDetail.lower_cp}
+                                        </div>
+                                    </div>
+                                    <div className="wishlist-data col s4">
                                         <div className="wishlist-index">
                                             Avg. Traded Price
                                         </div>
@@ -121,6 +119,8 @@ function WishlistDetail(props) {
                                             {wishlistDetail.avg_price}
                                         </div>
                                     </div>
+                                </div>
+                                <div className="row">
                                 </div>
                                 <div className="row mt-5">
                                     <div className="mb4 slider-pos relative wishlist-1D full-width">
@@ -158,8 +158,10 @@ function WishlistDetail(props) {
                                 <div className="flex-apart">
                                     <table className="market-depth white mrr-10">
                                         <thead className="market-depth-th">
-                                            <th className="up">Bid Price</th>
-                                            <th className="wishlist-ta-rt">Quantity</th>
+                                            <tr>
+                                                <th className="up">Bid Price</th>
+                                                <th className="wishlist-ta-rt">Quantity</th>
+                                            </tr>
                                         </thead>
                                         <tbody>
                                             {wishlistDetail.trade !== undefined && wishlistDetail.trade.bids.map((bid, index) => 

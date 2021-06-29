@@ -33,7 +33,7 @@ function Listing(props){
             </thead>
 
             <tbody>
-                {gainers.map((gainer, index) => 
+                {gainers.length > 0 && gainers.map((gainer, index) => 
                 <tr key={index}>
                     <td>{gainer.symbol}</td>  
                     <td>&#8377;{gainer.ltp}</td>  
@@ -48,17 +48,17 @@ function Listing(props){
                 <th>SYMBOL</th>
                 <th>LTP</th>
                 <th>%CHNG</th>
-                <th>PRV.CLOSE</th>
+                <th className="hide">PRV.CLOSE</th>
             </tr>
             </thead>
 
             <tbody>
-                {losers.map((loser, index) => 
+                {losers.length > 0 && losers.map((loser, index) => 
                 <tr key={index}>
                     <td>{loser.symbol}</td>  
                     <td>&#8377;{loser.ltp}</td>  
                     <td className="losers-percent">{loser.netPrice}</td>  
-                    <td>&#8377;{loser.previousPrice}</td>  
+                    <td className="hide">&#8377;{loser.previousPrice}</td>  
                 </tr>)}
             </tbody>
         </table>

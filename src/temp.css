@@ -296,9 +296,9 @@ main {
     border-radius: 150px!important;
 }
 
-.btn, .btn-flat, .btn-large, .btn-small {
+/* .btn, .btn-flat, .btn-large, .btn-small {
     text-transform: capitalize;
-}
+} */
 
 .wishlist-card-title {
     font-size: 20px;
@@ -353,11 +353,11 @@ main {
 }
 
 .wishlist-slider {
-    font-size: 20px;
+    font-size: 15px;
     font-weight: 600;
 }
 
-#wishlist-modal{
+#wishlist-modal, #add-wishlist-modal{
     width: 35%;
 }
 

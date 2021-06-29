@@ -31,36 +31,53 @@ function IndexChart(){
     });
 
     useEffect(() => {
-        axios
-        .get(config.apiBaseUrl+"/api/v2/indexes/")
-        .then(res => {
-            var symbolsJson = {};
-            res.data.data.forEach((data) => {
-                symbolsJson[data.indexSymbol] = null;
+        function fetchIndex(){
+            axios
+            .get(config.apiBaseUrl+"/api/v2/indexes/")
+            .then(res => {
+                var symbolsJson = {};
+                res.data.data.forEach((data) => {
+                    symbolsJson[data.indexSymbol] = null;
+                });
+                setIndexList(symbolsJson);
+                setIndexSymbols(res.data);
+            })
+            .catch(err =>{
+            console.log(err.message);
             });
-            setIndexList(symbolsJson);
-            setIndexSymbols(res.data);
-        })
-        .catch(err =>{
-          console.log(err.message);
-        });
+        }
+        fetchIndex();
+
+        const intervalId = setInterval(() => { 
+            fetchIndex();
+        }, 5000);
+        return () => clearInterval(intervalId);
     },[]);
 
     useEffect(() => {
-        axios
-        .get(config.apiBaseUrl+"/api/v2/indexes/intraday/" + selectedIndex)
-        .then(res => {
-            indexSymbols.data.forEach(data => {
-                if(data.indexSymbol === selectedIndex){
-                    setSelectedIndexDetails(data);
-                }
-            })
-            setIntraDay(res.data);
-            setLoading(false);
-            })
-        .catch(err =>{
-            console.log(err.message);
-        });
+
+        function fetchIntraday(){
+            axios
+            .get(config.apiBaseUrl+"/api/v2/indexes/intraday/" + selectedIndex)
+            .then(res => {
+                indexSymbols.data.forEach(data => {
+                    if(data.indexSymbol === selectedIndex){
+                        setSelectedIndexDetails(data);
+                    }
+                })
+                setIntraDay(res.data);
+                setLoading(false);
+                })
+            .catch(err =>{
+                console.log(err.message);
+            });
+        }
+        fetchIntraday();
+
+        const intervalId = setInterval(() => { 
+            fetchIntraday();
+        }, 5000);
+        return () => clearInterval(intervalId);
     },[indexSymbols.data, selectedIndex, selectedIndexDetails]);
 
     return(
