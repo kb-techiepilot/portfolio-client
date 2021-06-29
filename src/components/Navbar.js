@@ -23,7 +23,7 @@ function Navbar() {
         });
     },[]);
 
-    const [symbol, setSymbol] = useState("SBIN");
+    const [navSymbol, setNavSymbol] = useState("");
     const [symbols, setSymbols] = useState({});
 
     useEffect(()=> {
@@ -32,7 +32,7 @@ function Navbar() {
             data : symbols,
             limit : 5,
             onAutocomplete : function(sym) {
-                setSymbol(sym);
+                setNavSymbol(sym);
             }
         });
 
@@ -43,7 +43,7 @@ function Navbar() {
 
         elems = document.querySelectorAll('.modal');
         M.Modal.init(elems, {});
-    });
+    },[navSymbol, symbols]);
 
     useEffect(() => {
         axios
@@ -157,7 +157,7 @@ function Navbar() {
             <main>
                 <div id="modal" className="modal eq-modal" style={{display: "block"}}>
                     <div className="modal-content">
-                        <LineChart symbol = {symbol}/>
+                        <LineChart symbol = {navSymbol}/>
                     </div>
                 </div>
             </main>

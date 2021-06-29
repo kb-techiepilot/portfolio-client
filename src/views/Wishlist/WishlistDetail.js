@@ -178,8 +178,10 @@ function WishlistDetail(props) {
 
                                     <table className="market-depth white mrl-10">
                                         <thead className="market-depth-th">
-                                            <th className="down">Ask Price</th>
-                                            <th className="wishlist-ta-rt">Quantity</th>
+                                            <tr>
+                                                <th className="down">Ask Price</th>
+                                                <th className="wishlist-ta-rt">Quantity</th>
+                                            </tr>
                                         </thead>
                                         <tbody>
                                             {wishlistDetail.trade !== undefined && wishlistDetail.trade.asks.map((ask, index) => 

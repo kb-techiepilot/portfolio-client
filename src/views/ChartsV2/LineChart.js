@@ -12,11 +12,15 @@ import ChartFooter from './ChartFooter';
 
 function LineChart(props) {
 
+  console.log(props);
+
   const [loading, setLoading] = useState(true);
   const [history, setHistory] = useState([]);
   const [intraDay, setIntraDay] = useState([]);
   const [current, setCurrent] = useState();
   const [previousPrice, setPreviousPrice] = useState(0);
+
+  const [currLoading,setCurrLoading] = useState(true);
 
   const[timeLine, setTimeLine] = useState("one_year");
 
@@ -25,6 +29,7 @@ function LineChart(props) {
 
 
   useEffect(() => {
+    setLoading(true);
     var startDate = moment.unix('-2993523744');
     var endDate = moment();
 
@@ -59,9 +64,9 @@ function LineChart(props) {
       .get('https://priceapi.moneycontrol.com/techCharts/techChartController/history?symbol=' + props.symbol + '&resolution=1D&from=' + startDate + '&to=' + endDate, {
           })
       .then(res => {
-          setLoading(false);
-          setHistory(res.data);
-          setPreviousPrice(res.data.c[0]);
+        setHistory(res.data);
+        setPreviousPrice(res.data.c[0]);
+        setLoading(false);
           })
       .catch(err =>{
         console.log(err.message);
@@ -70,6 +75,7 @@ function LineChart(props) {
   },[props.symbol, timeLine]);
 
   useEffect(() => {
+    setLoading(true);
     if(timeLine === 'one_day' || timeLine === 'one_year') {
       axios
       .get(config.apiBaseUrl+"/api/v1/symbols/intraday", {
@@ -79,6 +85,7 @@ function LineChart(props) {
       .then(res => {
           setIntraDay(res.data);
           setPreviousPrice(res.data.current.priceInfo.previousClose);
+          setLoading(false);
           })
       .catch(err =>{
         console.log(err.message);
@@ -87,6 +94,7 @@ function LineChart(props) {
   },[props.symbol, timeLine]);
 
   useEffect(() => {
+    setCurrLoading(true);
     axios
     .get(config.apiBaseUrl+"/api/v1/symbols/current", {
         params: {
@@ -94,6 +102,7 @@ function LineChart(props) {
         }})
     .then(res => {
         setCurrent(res.data);
+        setCurrLoading(false);
         })
     .catch(err =>{
       console.log(err.message);
@@ -172,15 +181,13 @@ function LineChart(props) {
           <a className={timeLine === 'one_year' ? btnClassWithActive : btnClass } href="#!" onClick={(event) => updateTimeLine(event)} name="one_year">1Y</a>
           <a className={timeLine === 'five_years' ? btnClassWithActive : btnClass } href="#!" onClick={(event) => updateTimeLine(event)} name="five_years">5Y</a>
       </div>
-      {current !== undefined ? 
-        <ChartHeader current={current} previousClosing={previousPrice} timeLine={timeLine}/>
-      :
-      <></>
+      {current !== undefined && current.priceInfo !== undefined && 
+        <ChartHeader current={current} previousClosing={previousPrice} timeLine={timeLine} loading={currLoading}/>
       }
       <div className="row">
           <div id="chart">
               <div id="chart-timeline">
-                  {!loading ? 
+                  {!(loading || currLoading) ? 
                   timeLine === 'one_day' ?
                   intraDay !== undefined &&
                   <IntraDayChart chartId="shareChart" symbol={props.symbol} history={intraDay} previousClose={previousPrice} lastPrice={intraDay.current.priceInfo.lastPrice} />
@@ -194,10 +201,8 @@ function LineChart(props) {
               </div>
           </div>
       </div>
-      {current !== undefined ?
+      {current !== undefined && current.priceInfo !== undefined && 
         <ChartFooter current={current} previousClosing={previousPrice} timeLine={timeLine}/>
-      :
-      <></>
       }
       </>
   )

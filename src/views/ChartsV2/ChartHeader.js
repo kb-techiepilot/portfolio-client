@@ -79,7 +79,7 @@ function ChartHeader(props){
     
     return(
         <>
-        {props.current !== undefined && 
+        {!props.loading && props.current !== undefined && 
             <div className="row">
               <div className="col s9">
                 <h5>{props.current.info.companyName}</h5>

@@ -7,6 +7,8 @@ import M from 'materialize-css';
 import config from '../../config';
 import WishlistDetail from './WishlistDetail';
 
+import LineChart from '../ChartsV2/LineChart';
+
 function Wishlist() {
 
     const { getAccessTokenSilently } = useAuth0();
@@ -16,8 +18,10 @@ function Wishlist() {
     const [loading, setLoading] = useState(true);   
     const [symbols, setSymbols] = useState({});
 
+    const [chartSymbol, setChartSymbol] = useState("");
+
         useEffect(()=> {
-        var elems = document.querySelectorAll('.share-autocomplete');
+        var elems = document.querySelectorAll('.wishlist-autocomplete');
         M.Autocomplete.init(elems, {
             data : symbols,
             limit : 5,
@@ -78,6 +82,16 @@ function Wishlist() {
         elems[0].M_Modal.open();
     }
 
+    function openChart(event, symbol){
+        console.log(symbol)
+        setChartSymbol(symbol);
+        event.preventDefault();
+
+        var elems = document.querySelectorAll('#chart-modal');
+        M.Modal.init(elems, {});
+        elems[0].M_Modal.open();
+    }
+
     function openAddModal(event) {
         event.preventDefault();
 
@@ -113,7 +127,7 @@ function Wishlist() {
             Authorization: `Bearer ${token}`,
             }})
         .then(res => {
-            M.toast({html: '<span>Wishlist deleted &nbsp;</span><a href="/wishlist"> see all wishlists </a>'});
+            M.toast({html: '<span>Wishlist added &nbsp;</span><a href="/wishlist"> see all wishlists </a>'});
             setWishlists(res.data.data);
         })
         .catch(err =>{
@@ -153,7 +167,7 @@ function Wishlist() {
                                         <span>1Y Low</span>
                                         <span>1Y High</span>
                                     </th>
-                                    <th style={{"width": "8"}}>
+                                    <th className="revert" style={{"width": "8%"}}>
                                         Actions
                                     </th>
                                 </tr>
@@ -186,6 +200,7 @@ function Wishlist() {
                                         </div>
                                     </td>
                                     <td className="center">
+                                        <a className="wishlist-actions" href="#!" onClick={(event) => openChart(event, wishlist.symbol)}><i className="material-icons">show_chart</i></a>
                                         <a className="wishlist-actions" href="#!" onClick={(event) => openModal(event, wishlist.symbol)}><i className="material-icons">remove_red_eye</i></a>
                                         <a href="#!" className="wishlist-actions"><i className="material-icons" onClick={(event) => deleteWishlist(event, wishlist.wishlist_id)}>delete</i></a>
                                     </td>
@@ -207,7 +222,7 @@ function Wishlist() {
                             <div className="col s12 m12 input-field">
                                 <div className="col s8">
                                     <i className="material-icons prefix hide-on-med-and-down">search</i>
-                                    <input type="text" id="share-symbol" className="share-autocomplete" autoComplete="new-password" placeholder="Search for an Equity"/>
+                                    <input type="text" id="share-symbol" className="wishlist-autocomplete" autoComplete="new-password" placeholder="Search for an Equity"/>
                                 </div>
                                 <div className="col s4">
                                     <button className="waves-effect waves-light btn gradient-45deg-purple-deep-orange gradient-shadow" onClick={(event) => addWishlist(event)}>
@@ -220,6 +235,12 @@ function Wishlist() {
                             </div>
                         </div>
                         <WishlistDetail symbol={symbol}/>
+                    </div>
+                </div>
+
+                <div id="chart-modal" className="modal eq-modal">
+                    <div className="modal-content">
+                        <LineChart symbol={chartSymbol}/>
                     </div>
                 </div>
             </div>
