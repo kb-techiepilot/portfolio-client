@@ -2,7 +2,6 @@ import React from 'react';
 import { useAuth0 } from '@auth0/auth0-react';
 
 import SummaryCards from './SummaryCards';
-// import News from './News';
 import IndexCards from './IndexCards';
 import IndexChart from './IndexChart';
 // import DonutChart from './DonutChart';

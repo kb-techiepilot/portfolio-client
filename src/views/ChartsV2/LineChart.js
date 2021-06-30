@@ -11,9 +11,6 @@ import ChartHeader from './ChartHeader';
 import ChartFooter from './ChartFooter';
 
 function LineChart(props) {
-
-  console.log(props);
-
   const [loading, setLoading] = useState(true);
   const [history, setHistory] = useState([]);
   const [intraDay, setIntraDay] = useState([]);
@@ -60,53 +57,63 @@ function LineChart(props) {
       startDate = Math.floor((startDate.toDate().getTime())/1000);
       endDate = Math.floor((endDate.toDate().getTime())/1000);
 
-      axios
-      .get('https://priceapi.moneycontrol.com/techCharts/techChartController/history?symbol=' + props.symbol + '&resolution=1D&from=' + startDate + '&to=' + endDate, {
-          })
-      .then(res => {
-        setHistory(res.data);
-        setPreviousPrice(res.data.c[0]);
-        setLoading(false);
-          })
-      .catch(err =>{
-        console.log(err.message);
-      });
+      function history(){
+        axios
+        .get('https://priceapi.moneycontrol.com/techCharts/techChartController/history?symbol=' + props.symbol + '&resolution=1D&from=' + startDate + '&to=' + endDate, {
+            })
+        .then(res => {
+          setHistory(res.data);
+          setPreviousPrice(res.data.c[0]);
+          setLoading(false);
+            })
+        .catch(err =>{
+          console.log(err.message);
+        });
+      }
+      props.symbol && history();
     }
   },[props.symbol, timeLine]);
 
   useEffect(() => {
     setLoading(true);
     if(timeLine === 'one_day' || timeLine === 'one_year') {
-      axios
-      .get(config.apiBaseUrl+"/api/v1/symbols/intraday", {
-          params: {
-              'symbol': props.symbol,
-          }})
-      .then(res => {
-          setIntraDay(res.data);
-          setPreviousPrice(res.data.current.priceInfo.previousClose);
-          setLoading(false);
-          })
-      .catch(err =>{
-        console.log(err.message);
-      });
+
+      function getIntraday(){
+        axios
+        .get(config.apiBaseUrl+"/api/v1/symbols/intraday", {
+            params: {
+                'symbol': props.symbol,
+            }})
+        .then(res => {
+            setIntraDay(res.data);
+            setPreviousPrice(res.data.current.priceInfo.previousClose);
+            setLoading(false);
+            })
+        .catch(err =>{
+          console.log(err.message);
+        });
+      }
+      props.symbol && getIntraday();
     }
   },[props.symbol, timeLine]);
 
   useEffect(() => {
     setCurrLoading(true);
-    axios
-    .get(config.apiBaseUrl+"/api/v1/symbols/current", {
-        params: {
-            'symbol': props.symbol,
-        }})
-    .then(res => {
-        setCurrent(res.data);
-        setCurrLoading(false);
-        })
-    .catch(err =>{
-      console.log(err.message);
-    });
+    function getCurrent() {
+      axios
+      .get(config.apiBaseUrl+"/api/v1/symbols/current", {
+          params: {
+              'symbol': props.symbol,
+          }})
+      .then(res => {
+          setCurrent(res.data);
+          setCurrLoading(false);
+          })
+      .catch(err =>{
+        console.log(err.message);
+      });
+    }
+    props.symbol && getCurrent();
   },[props.symbol]);
     
 

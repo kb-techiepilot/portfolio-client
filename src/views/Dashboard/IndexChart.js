@@ -47,12 +47,7 @@ function IndexChart(){
             });
         }
         fetchIndex();
-
-        const intervalId = setInterval(() => { 
-            fetchIndex();
-        }, 5000);
-        return () => clearInterval(intervalId);
-    },[]);
+    },[selectedIndex]);
 
     useEffect(() => {
 
@@ -76,9 +71,9 @@ function IndexChart(){
 
         const intervalId = setInterval(() => { 
             fetchIntraday();
-        }, 5000);
+        }, 10000);
         return () => clearInterval(intervalId);
-    },[indexSymbols.data, selectedIndex, selectedIndexDetails]);
+    },[indexSymbols.data, selectedIndex]);
 
     return(
         <>
