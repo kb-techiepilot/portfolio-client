@@ -6,6 +6,7 @@ import { Dashboard, Transaction } from './views';
 import './App.css';
 import './temp.css';
 import Wishlist from './views/Wishlist/Wishlist';
+import Holdings from './views/Holdings/Holdings';
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
             <Route path="/loading" exact component={ Loading } />
             <PrivateRoute path="/dashboard" exact component={ Dashboard } />
             <PrivateRoute path="/transaction" exact component={ Transaction } />
+            <PrivateRoute path="/holdings" exact component={ Holdings } />
             <PrivateRoute path="/wishlist" exact component={ Wishlist } />
             <Route path="/" exact component={Dashboard} />
           {/* </main> */}

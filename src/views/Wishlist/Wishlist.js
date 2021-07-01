@@ -167,7 +167,7 @@ function Wishlist() {
             :
             <div>
                 <div className="row">
-                {wishlists.length > 0 ?<>
+                {wishlists.length > 0 ? <>
                     <div className="content-wrapper-before blue-grey lighten-5"></div>
                     <div className="col s12">
                         <div className="container">
@@ -182,12 +182,11 @@ function Wishlist() {
                                 <table className="highlight white responsive-table">
                                     <thead>
                                         <tr>
-                                            <th style={{"width": "10%"}}>Symbol</th>
-                                            <th style={{"width": "20%"}}>Company Name</th>
+                                            <th style={{"width": "25%"}}>Stock</th>
                                             <th style={{"width": "15%"}}>Index</th>
-                                            <th style={{"width": "8%"}}>LTP</th>
-                                            <th style={{"width": "8%"}}>Day Change</th>
-                                            <th style={{"width": "8%"}}>% Change</th>
+                                            <th style={{"width": "12%"}}>LTP</th>
+                                            <th style={{"width": "12%"}}>Day Change</th>
+                                            <th style={{"width": "12%"}}>% Change</th>
                                             <th className="flex-apart">
                                                 <span>1Y Low</span>
                                                 <span>1Y High</span>
@@ -201,8 +200,14 @@ function Wishlist() {
                                     <tbody>
                                         {wishlists.map((wishlist, index) => 
                                         <tr key={index}>
-                                            <td>{wishlist.symbol}</td>  
-                                            <td>{wishlist.company_name}</td>  
+                                            <td>
+                                                <div>
+                                                    <span className="holdings-name text-15 font-medium">{wishlist.company_name}</span>
+                                                    <div className="display-flex">
+                                                        <div className="holdings-symbol">{wishlist.symbol}</div>
+                                                    </div>
+                                                </div>
+                                            </td>
                                             <td>{wishlist.index}</td>
                                             <td>&#8377;{wishlist.current_price}</td>  
                                             <td className={wishlist.change > 0 ? "up" : "down"}>{wishlist.change}</td>  
@@ -235,7 +240,7 @@ function Wishlist() {
                             </section>
                         </div>
                     </div></>
-                    :
+                        :
                     <div className="center mt-10">
                         <img src={process.env.PUBLIC_URL + '../../images/empty-dish.png'} alt="" style={{"height" : "100px"}}/>
                         <h5>
@@ -245,7 +250,7 @@ function Wishlist() {
                             Add Wishlist
                         </button>
                     </div>
-                }
+                    }
                 </div>
                 <div id="wishlist-modal" className="modal">
                     <div className="modal-content">

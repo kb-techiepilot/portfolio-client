@@ -21,12 +21,11 @@ function ListingSekelton() {
                         <table className="highlight white responsive-table">
                         <thead>
                             <tr>
-                                <th style={{"width": "10%"}}><Skeleton/></th>
-                                <th style={{"width": "20%"}}><Skeleton/></th>
+                                <th style={{"width": "25%"}}><Skeleton/></th>
                                 <th style={{"width": "15%"}}><Skeleton/></th>
-                                <th style={{"width": "8%"}}><Skeleton/></th>
-                                <th style={{"width": "8%"}}><Skeleton/></th>
-                                <th style={{"width": "8%"}}><Skeleton/></th>
+                                <th style={{"width": "12%"}}><Skeleton/></th>
+                                <th style={{"width": "12%"}}><Skeleton/></th>
+                                <th style={{"width": "12%"}}><Skeleton/></th>
                                 <th className="">
                                     <span><Skeleton/></span>
                                 </th>
@@ -45,21 +44,9 @@ function ListingSekelton() {
                                 <td><Skeleton/></td>
                                 <td><Skeleton/></td>
                                 <td><Skeleton/></td>
-                                <td><Skeleton/></td>
                             </tr>
                             <tr>
                                 <td><Skeleton/></td> 
-                                <td><Skeleton/></td>
-                                <td><Skeleton/></td>
-                                <td><Skeleton/></td>
-                                <td><Skeleton/></td>
-                                <td><Skeleton/></td>
-                                <td><Skeleton/></td>
-                                <td><Skeleton/></td>
-                            </tr>
-                            <tr>
-                                <td><Skeleton/></td> 
-                                <td><Skeleton/></td>
                                 <td><Skeleton/></td>
                                 <td><Skeleton/></td>
                                 <td><Skeleton/></td>
@@ -75,21 +62,9 @@ function ListingSekelton() {
                                 <td><Skeleton/></td>
                                 <td><Skeleton/></td>
                                 <td><Skeleton/></td>
-                                <td><Skeleton/></td>
                             </tr>
                             <tr>
                                 <td><Skeleton/></td> 
-                                <td><Skeleton/></td>
-                                <td><Skeleton/></td>
-                                <td><Skeleton/></td>
-                                <td><Skeleton/></td>
-                                <td><Skeleton/></td>
-                                <td><Skeleton/></td>
-                                <td><Skeleton/></td>
-                            </tr>
-                            <tr>
-                                <td><Skeleton/></td> 
-                                <td><Skeleton/></td>
                                 <td><Skeleton/></td>
                                 <td><Skeleton/></td>
                                 <td><Skeleton/></td>
@@ -105,21 +80,9 @@ function ListingSekelton() {
                                 <td><Skeleton/></td>
                                 <td><Skeleton/></td>
                                 <td><Skeleton/></td>
-                                <td><Skeleton/></td>
                             </tr>
                             <tr>
                                 <td><Skeleton/></td> 
-                                <td><Skeleton/></td>
-                                <td><Skeleton/></td>
-                                <td><Skeleton/></td>
-                                <td><Skeleton/></td>
-                                <td><Skeleton/></td>
-                                <td><Skeleton/></td>
-                                <td><Skeleton/></td>
-                            </tr>
-                            <tr>
-                                <td><Skeleton/></td> 
-                                <td><Skeleton/></td>
                                 <td><Skeleton/></td>
                                 <td><Skeleton/></td>
                                 <td><Skeleton/></td>
@@ -135,11 +98,36 @@ function ListingSekelton() {
                                 <td><Skeleton/></td>
                                 <td><Skeleton/></td>
                                 <td><Skeleton/></td>
+                            </tr>
+                            <tr>
+                                <td><Skeleton/></td> 
+                                <td><Skeleton/></td>
+                                <td><Skeleton/></td>
+                                <td><Skeleton/></td>
+                                <td><Skeleton/></td>
+                                <td><Skeleton/></td>
                                 <td><Skeleton/></td>
                             </tr>
                             <tr>
                                 <td><Skeleton/></td> 
                                 <td><Skeleton/></td>
+                                <td><Skeleton/></td>
+                                <td><Skeleton/></td>
+                                <td><Skeleton/></td>
+                                <td><Skeleton/></td>
+                                <td><Skeleton/></td>
+                            </tr>
+                            <tr>
+                                <td><Skeleton/></td> 
+                                <td><Skeleton/></td>
+                                <td><Skeleton/></td>
+                                <td><Skeleton/></td>
+                                <td><Skeleton/></td>
+                                <td><Skeleton/></td>
+                                <td><Skeleton/></td>
+                            </tr>
+                            <tr>
+                                <td><Skeleton/></td> 
                                 <td><Skeleton/></td>
                                 <td><Skeleton/></td>
                                 <td><Skeleton/></td>
