@@ -11,6 +11,8 @@ import WishlistDetail from './WishlistDetail';
 import LineChart from '../ChartsV2/LineChart';
 import ListingSekelton from './ListingSkeleton';
 
+import BuyShare from './BuyShare';
+
 function Wishlist() {
 
     const { getAccessTokenSilently } = useAuth0();
@@ -101,7 +103,7 @@ function Wishlist() {
 
     function openAddModal(event) {
         event.preventDefault();
-
+        setSymbol("");
         var elems = document.querySelectorAll('#add-wishlist-modal');
         M.Modal.init(elems, {});
         elems[0].M_Modal.open();
@@ -283,6 +285,12 @@ function Wishlist() {
                 <div id="chart-modal" className="modal eq-modal">
                     <div className="modal-content">
                         <LineChart symbol={chartSymbol}/>
+                    </div>
+                </div>
+
+                <div id="buy-modal" className="modal">
+                    <div className="modal-content">
+                        <BuyShare symbol={symbol} />
                     </div>
                 </div>
             </div>

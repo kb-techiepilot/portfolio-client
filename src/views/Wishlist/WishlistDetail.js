@@ -1,16 +1,16 @@
 import React, {useState, useEffect} from 'react';
 import axios from 'axios';
 import { useAuth0 } from '@auth0/auth0-react';
+import M from 'materialize-css';
 
 import config from '../../config';
 import NumberFormat from '../../util/NumberFormat';
 import DetailSkeleton from './DetailSkeleton';
 
 function WishlistDetail(props) {
-
     const { getAccessTokenSilently } = useAuth0();
     const [wishlistDetail, setWishlistDetail] = useState([]);
-    const [loading, setLoading] = useState([]);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         async function fetchWishlist() {
@@ -32,14 +32,29 @@ function WishlistDetail(props) {
         props.symbol && fetchWishlist();
     },[props.symbol, getAccessTokenSilently]); 
 
+
+    function openBuyModal(event){
+        event.preventDefault();
+
+        var elems = document.querySelectorAll('#buy-modal');
+        M.Modal.init(elems, {});
+        elems[0].M_Modal.open();
+    }
+
     return(
         <div>
-            {!loading ?
+            {!loading && props.symbol !== "" ?
             <div className="card">
                 <div className="card-content">
-                    <span className="wishlist-card-title">
-                        {wishlistDetail.company_name}
-                    </span>
+                    <div className="flex-apart full-width">
+                        <span className="wishlist-card-title">
+                            {wishlistDetail.company_name}
+                        </span>
+                        <div className="flex-apart">
+                            <span className="btn waves-effect waves-green gainers-head right-10" onClick={(event) => openBuyModal(event)}>Buy</span>
+                            <span className="btn waves-effect waves-red losers-head">Sell</span>
+                        </div>
+                    </div>
                     <div className="row mrt-10">
                         <div className="wishlist-data col s6">
                             <div className="wishlist-symbol">
@@ -150,7 +165,7 @@ function WishlistDetail(props) {
                     </div>
 
 
-                    <div className="row mrt-10">
+                    <div className="hide row mrt-10">
                         <div className="card">
                             <div className="card-content">
                                 <span className="card-title">
@@ -203,7 +218,18 @@ function WishlistDetail(props) {
                 </div>
             </div>
             :
+                props.symbol !== "" ?
             <DetailSkeleton/>
+            :
+            <div className="center mt-10">
+                <img src={process.env.PUBLIC_URL + '../../images/empty-dish.png'} alt="" style={{"height" : "100px"}}/>
+                <h5>
+                    Find a Stock
+                </h5>
+                <h6>
+                    use the above search bar to find a stock
+                </h6>
+            </div>
             }
         </div>
     )

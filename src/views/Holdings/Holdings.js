@@ -9,6 +9,7 @@ import LineChart from '../ChartsV2/LineChart';
 import NumberFormat from '../../util/NumberFormat';
 
 import config from '../../config';
+import AddHoldingsForm from './AddHoldingsForm';
 
 function Holdings(){
     const { getAccessTokenSilently } = useAuth0(); 
@@ -93,7 +94,7 @@ function Holdings(){
     function openAddModal(event) {
         event.preventDefault();
 
-        var elems = document.querySelectorAll('#add-wishlist-modal');
+        var elems = document.querySelectorAll('#add-holdings-modal');
         M.Modal.init(elems, {});
         elems[0].M_Modal.open();
     }
@@ -165,9 +166,23 @@ function Holdings(){
                                                 <td>{holding.overall_percent}</td>  
                                                 
                                                 <td className="center">
-                                                    <a className="wishlist-actions" href="#!" onClick={(event) => openChart(event, holding.symbol)}><i className="material-icons">show_chart</i></a>
-                                                    <a className="wishlist-actions" href="#!"><span className="chip lighten-5 green green-text">B</span></a>
-                                                    <a href="#!" className="wishlist-actions"><span className="chip lighten-5 orange orange-text">S</span></a>
+                                                    <div className="action-ul">
+                                                        <ul>
+                                                            <li>
+                                                                <a className="wishlist-actions" href="#!" onClick={(event) => openChart(event, holding.symbol)}>
+                                                                    <i className="material-icons">show_chart</i>
+                                                                </a>
+                                                            </li>
+                                                            <li>
+                                                                <a className="wishlist-actions" href="#!" onClick={(event) => openAddModal(event)}><span className="chip lighten-5 green green-text">B</span></a>
+                                                            </li>
+                                                            <li>
+                                                                <a href="#!" className="wishlist-actions"><span className="chip lighten-5 orange orange-text">S</span></a>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                   
+                                                    
                                                 </td>
                                             </tr>)}
                                         </tbody>
@@ -179,13 +194,18 @@ function Holdings(){
                         <div className="center mt-10">
                             <img src={process.env.PUBLIC_URL + '../../images/empty-dish.png'} alt="" style={{"height" : "100px"}}/>
                             <h5>
-                                You haven't added any Stock to your wishlist, use the search bar or clieck below to add Wishlist
+                                You haven't added any Stock to your account, use the search bar or clieck below to add Holdings
                             </h5>
                             <button className="waves-effect waves-light btn gradient-45deg-purple-deep-orange gradient-shadow" onClick={(event) => openAddModal(event)}>
                                 Add Wishlist
                             </button>
                         </div>
                     }
+                    </div>
+                    <div id="add-holdings-modal" className="modal">
+                        <div className="modal-content">
+                            <AddHoldingsForm symbols={symbols}/>
+                        </div>
                     </div>
 
                     <div id="chart-modal" className="modal eq-modal">

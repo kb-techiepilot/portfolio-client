@@ -135,13 +135,13 @@ main {
 }
 
 .gainers-head {
-    background-color: #34A853;
-    color: #ffff;
+    background-color: #34A853 !important;
+    color: #ffff !important;
 }
 
 .losers-head {
-    background-color: #EF6E63;
-    color: #ffff;
+    background-color: #EF6E63 !important;
+    color: #ffff !important;
 }
 
 .gainers-percent {
@@ -357,7 +357,7 @@ main {
     font-weight: 600;
 }
 
-#wishlist-modal, #add-wishlist-modal{
+#wishlist-modal, #add-wishlist-modal, #buy-modal{
     width: 35%;
 }
 
@@ -387,13 +387,21 @@ main {
     color: rgb(129, 135, 140);
 }
 
+.action-ul ul li{
+    display: inline-block;
+}
+
+.right-10 {
+    right: 10px;
+}
+
 @media only screen and (max-width : 992px) {
 	header, main, footer {
 		padding-left: 0px;
 	}
 
 
-    #wishlist-modal, #add-wishlist-modal{
+    #wishlist-modal, #add-wishlist-modal, #buy-modal{
         width: 100%;
 }
 }

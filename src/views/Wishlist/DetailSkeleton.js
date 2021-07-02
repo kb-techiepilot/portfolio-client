@@ -89,35 +89,17 @@ function DetailSkeleton() {
                                 <div className="row">
                                 </div>
                                 <div className="row mt-5">
-                                    <div className="mb4 slider-pos relative wishlist-1D full-width">
-                                        <span className="year-slider">
-                                            <Skeleton/>
-                                        </span>
-                                    </div>
-                                    <div className="flex-apart full-width wishlist-slider">
-                                        <span><Skeleton/></span>
-                                        <span><Skeleton/></span>
-                                        <span><Skeleton/></span>
-                                    </div>
+                                    <Skeleton/>
                                 </div>
                                 <div className="row mt-5">
-                                    <div className="mb4 slider-pos relative wishlist-52 full-width">
-                                        <span className="year-slider">
-                                            <Skeleton/>
-                                        </span>
-                                    </div>
-                                    <div className="flex-apart full-width wishlist-slider">
-                                        <span><Skeleton/></span>
-                                        <span><Skeleton/></span>
-                                        <span><Skeleton/></span>
-                                    </div>
+                                    <Skeleton/>
                                 </div>
                             </div>
                         </div>
                     </div>
 
 
-                    <div className="row mrt-10">
+                    <div className="hide row mrt-10">
                         <div className="card">
                             <div className="card-content">
                                 <span className="card-title">
