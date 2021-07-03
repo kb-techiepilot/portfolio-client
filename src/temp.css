@@ -395,6 +395,105 @@ main {
     right: 10px;
 }
 
+.wd-450 {
+    width: 450px !important;
+}
+
+.wd-100 {
+    width: ;
+}
+
+/* buy-modal */
+.kanban-board .kanban-drag {
+    min-height: 200px;
+    padding: 20px;
+}
+
+.kanban-board {
+    position: relative;
+    background: #e2e4e6;
+    transition: all .3s cubic-bezier(.23,1,.32,1);
+    border-radius: 4px;
+    padding-bottom: 1rem;
+}
+
+.kanban-board-header {
+    background-color: #00bcd4;
+    overflow: hidden;
+}
+
+.kanban-board header {
+    font-size: 16px;
+    padding: 15px;
+}
+
+.blue {
+    background-color: #2196f3!important;
+}
+
+.line-ellipsis {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.kanban-board .kanban-title-board {
+    color: white;
+    width: 200px;
+    display: inline-block;
+    padding: 0 0.5rem;
+}
+
+.kanban-board header .kanban-title-board {
+    font-weight: 700;
+    margin: 0;
+    padding: 0;
+    display: inline;
+}
+
+.kanban-board .kanban-drag .kanban-item {
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.kanban-item {
+    position: relative;
+}
+
+.kanban-item {
+    background: #fff;
+    padding: 15px;
+    margin-bottom: 20px;
+    transition: all .3s cubic-bezier(.23,1,.32,1);
+}
+
+.mt-3 {
+    margin-top: 3%!important;
+}
+
+.kanban-board .kanban-drag .kanban-item .kanban-footer .kanban-due-date {
+    font-size: 12px;
+    padding: .2rem 1rem;
+    border-radius: 2px;
+    font-weight: 700;
+}
+
+.green.lighten-5 {
+    background-color: #e8f5e9!important;
+}
+
+.green {
+    background-color: #4caf50!important;
+}
+
+.green-text {
+    color: #4caf50!important;
+}
+
+.top-30 {
+    top: 30% !important;
+}
+
 @media only screen and (max-width : 992px) {
 	header, main, footer {
 		padding-left: 0px;

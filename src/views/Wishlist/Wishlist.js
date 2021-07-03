@@ -288,8 +288,8 @@ function Wishlist() {
                     </div>
                 </div>
 
-                <div id="buy-modal" className="modal">
-                    <div className="modal-content">
+                <div id="buy-modal" className="modal wd-450 top-30">
+                    <div className="modal-content wishlist-data">
                         <BuyShare symbol={symbol} />
                     </div>
                 </div>

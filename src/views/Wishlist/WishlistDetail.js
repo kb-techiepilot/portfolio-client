@@ -47,9 +47,9 @@ function WishlistDetail(props) {
             <div className="card">
                 <div className="card-content">
                     <div className="flex-apart full-width">
-                        <span className="wishlist-card-title">
+                        <div className="wishlist-card-title">
                             {wishlistDetail.company_name}
-                        </span>
+                        </div>
                         <div className="flex-apart">
                             <span className="btn waves-effect waves-green gainers-head right-10" onClick={(event) => openBuyModal(event)}>Buy</span>
                             <span className="btn waves-effect waves-red losers-head">Sell</span>
