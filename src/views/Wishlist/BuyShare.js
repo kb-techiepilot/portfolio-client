@@ -21,38 +21,42 @@ function BuyShare(props){
     const [date, setDate] = useState(moment().format("YYYY-MM-DD"));
 
     const [loading, setLoading] = useState(true);
+    const [checked, setChecked] = useState(props.checked);
+    const [disableCheck, setDisableCheck] = useState(false);
 
     useEffect(() => {
-        M.updateTextFields();
-        var elems = document.querySelectorAll('.datepicker');
+        var elems = document.querySelectorAll('.tooltipped');
+        M.Tooltip.init(elems, {});
     })
 
     useEffect(() => {
         async function fetchStockDetail() {
-            // axios
-            // .get(config.apiBaseUrl+"/api/v1/symbols/current", {
-            //     params: {
-            //         'symbol': props.symbol,
-            //     }})
-            // .then(res => {
+            const token = await getAccessTokenSilently();
+            axios
+            .get(config.apiBaseUrl+"/api/v2/holdings/"+props.symbol+"?workspace=default",{
+                headers: {
+                Authorization: `Bearer ${token}`,
+                }})
+            .then(res => {
                 setLoading(false);
-                var dummyData = {
-                    "priceInfo" : {
-                        "lastPrice" : 1234
-                    },
-                    "info" : {
-                        "symbol" : "SBIN"
-                    }
+                // var dummyData = {
+                //     "priceInfo" : {
+                //         "lastPrice" : 1234
+                //     },
+                //     "info" : {
+                //         "symbol" : "SBIN"
+                //     }
 
-                }
-                // setStockDetail(res.data);
-                // setPrice(res.data.priceInfo.lastPrice);
-                setStockDetail(dummyData);
-                setPrice(dummyData.priceInfo.lastPrice);
-            // })
-            // .catch(err =>{
-            // console.log(err.message);
-            // });
+                // }
+                setStockDetail(res.data);
+                setPrice(res.data.current_price);
+                setDisableCheck(res.data.holdings_id !== null ? false : true);
+                // setStockDetail(dummyData);
+                // setPrice(dummyData.priceInfo.lastPrice);
+            })
+            .catch(err =>{
+            console.log(err.message);
+            });
         }
         props.symbol && fetchStockDetail();
         const intervalId = setInterval(() => { 
@@ -93,8 +97,12 @@ function BuyShare(props){
     }
 
     function changeQuantity(event){
-        event.preventDefault();
-        setQuantity(event.target.value);
+        console.log(event.target.value > 0)
+        if(event.target.value > 0){
+            setQuantity(event.target.value);
+        } else {
+            setQuantity(quantity);
+        }
     }
 
     function changePrice(event){
@@ -107,17 +115,48 @@ function BuyShare(props){
         setDate(moment(event.target.value).format("YYYY-MM-DD"));
     }
 
+    function changeSwitch(event){
+        setChecked(!checked);
+    }
+
     return(
         <div className="">
-            {stockDetail.info &&
+            {stockDetail &&
                 <div>
                     <div data-id="1" data-order="1" className="kanban-board">
-                        <header className="kanban-board-header blue">
-                            <div className="kanban-title-board line-ellipsis">
-                                <span>Buy </span>
-                                <span>{stockDetail.info.symbol} </span>
-                                x
-                                <span> {quantity}</span> Qty.
+                        <header className={checked ? "kanban-board-header yellow" : "kanban-board-header blue"}>
+                            <div className="row">
+                            { !checked ?
+                                <div className="col s8 kanban-title-board line-ellipsis">
+                                    <span>Buy </span>
+                                    <span>{stockDetail.symbol} </span>
+                                    x
+                                    <span> {quantity}</span> Qty.
+                                </div>
+                                :
+
+                                <div className="col s8 kanban-title-board line-ellipsis">
+                                    <span>Sell </span>
+                                    <span>{stockDetail.symbol} </span>
+                                    x
+                                    <span> {quantity}</span> Qty.
+                                </div>
+                            }
+                                <div className="col s4">
+                                    <div class="switch">
+                                    {disableCheck ?
+                                        <label className="tooltipped" data-position="bottom" data-tooltip="You don't have this stock in your holdings to sell">
+                                            <input disabled type="checkbox" onChange={(event) => changeSwitch(event)} defaultChecked={checked}/>
+                                            <span class="lever" data-on="on"></span>
+                                        </label>
+                                        :
+                                        <label className="tooltipped" data-position="top" data-tooltip="Toggle Buy / Sell">
+                                            <input type="checkbox" onChange={(event) => changeSwitch(event)} defaultChecked={checked}/>
+                                            <span class="lever" data-on="on"></span>
+                                        </label>
+                                    }
+                                    </div>
+                                </div>
                             </div>
                         </header>
                         <div className="kanban-drag">
@@ -128,7 +167,7 @@ function BuyShare(props){
                                         <label className="active" htmlFor="qty">Qty</label>
                                     </div>
                                     <div className="input-field col s4">
-                                        <input id="price" type="number" min="0.01" defaultValue={stockDetail.priceInfo.lastPrice} onChange={(event) => changePrice(event)}/>
+                                        <input id="price" type="number" min="0.01" defaultValue={stockDetail.current_price} onChange={(event) => changePrice(event)}/>
                                         <label className="active" htmlFor="price">Price</label>
                                     </div>
                                     <div className="input-field col s4">
@@ -140,9 +179,15 @@ function BuyShare(props){
                                     <div className="col s6">
                                         <input type="date" name="begin" defaultValue={date} placeholder="dd-mm-yyyy" min="1997-01-01" max={today} onChange={(event) => changeDate(event)}/>
                                     </div>
+                                    {!checked ?
                                     <div className="col s6">
-                                        <span className="btn waves-effect waves-green gainers-head right-10" onClick={(event) => addHoldings(event)}>Buy</span> 
+                                        <span className="btn waves-effect blue gainers-head" onClick={(event) => addHoldings(event)}>Buy</span> 
                                     </div>
+                                    :
+                                    <div className="col s6">
+                                        <span className="btn waves-effect yellow losers-head" onClick={(event) => addHoldings(event)}>Sell</span> 
+                                    </div>
+                                    }
                                 </div>
                                 {/* <div className="kanban-footer mt-3">
                                     <div className="kanban-due-date center mb-5 lighten-5 green">

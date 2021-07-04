@@ -431,6 +431,10 @@ main {
     background-color: #2196f3!important;
 }
 
+.yellow {
+    background-color: #f93 !important;
+}
+
 .line-ellipsis {
     overflow: hidden;
     white-space: nowrap;
@@ -492,6 +496,15 @@ main {
 
 .top-30 {
     top: 30% !important;
+}
+
+/* switch */
+.switch label input[type=checkbox]:checked+.lever {
+    background-color: rgba(0,0,0,0.38);
+}
+  
+.switch label input[type=checkbox]:checked+.lever:after {
+    background-color: white;
 }
 
 @media only screen and (max-width : 992px) {

@@ -84,11 +84,11 @@ function Wishlist() {
     function openModal(event, symbol){
         console.log(symbol)
         setSymbol(symbol);
-        event.preventDefault();
-
+        
         var elems = document.querySelectorAll('#wishlist-modal');
         M.Modal.init(elems, {});
         elems[0].M_Modal.open();
+        event.preventDefault();
     }
 
     function openChart(event, symbol){
@@ -290,7 +290,13 @@ function Wishlist() {
 
                 <div id="buy-modal" className="modal wd-450 top-30">
                     <div className="modal-content wishlist-data">
-                        <BuyShare symbol={symbol} />
+                        <BuyShare symbol={symbol} action="buy" checked={false}/>
+                    </div>
+                </div>
+
+                <div id="sale-modal" className="modal wd-450 top-30">
+                    <div className="modal-content wishlist-data">
+                        <BuyShare symbol={symbol} action="sale" checked={true}/>
                     </div>
                 </div>
             </div>

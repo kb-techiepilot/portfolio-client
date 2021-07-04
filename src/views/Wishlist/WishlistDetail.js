@@ -8,8 +8,10 @@ import NumberFormat from '../../util/NumberFormat';
 import DetailSkeleton from './DetailSkeleton';
 
 function WishlistDetail(props) {
+    console.log('ssss');
     const { getAccessTokenSilently } = useAuth0();
-    const [wishlistDetail, setWishlistDetail] = useState([]);
+    const [wishlistDetail, setWishlistDetail] = useState({});
+    const [holdings, setHoldings] = useState({});
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
@@ -23,7 +25,8 @@ function WishlistDetail(props) {
                 }})
             .then(res => {
                 setLoading(false);
-                setWishlistDetail(res.data);
+                setWishlistDetail(res.data.wishlist);
+                setHoldings(res.data.holdings);
             })
             .catch(err =>{
             console.log(err.message);
@@ -41,6 +44,14 @@ function WishlistDetail(props) {
         elems[0].M_Modal.open();
     }
 
+    function openSaleModal(event){
+        event.preventDefault();
+
+        var elems = document.querySelectorAll('#sale-modal');
+        M.Modal.init(elems, {});
+        elems[0].M_Modal.open();
+    }
+
     return(
         <div>
             {!loading && props.symbol !== "" ?
@@ -51,8 +62,9 @@ function WishlistDetail(props) {
                             {wishlistDetail.company_name}
                         </div>
                         <div className="flex-apart">
-                            <span className="btn waves-effect waves-green gainers-head right-10" onClick={(event) => openBuyModal(event)}>Buy</span>
-                            <span className="btn waves-effect waves-red losers-head">Sell</span>
+                            <span className={holdings.holdings_id !== undefined ? "btn waves-effect waves-green gainers-head right-10 " : "hide"} onClick={(event) => openBuyModal(event)}>Buy More</span>
+                            <span className={holdings.holdings_id === undefined ? "btn waves-effect waves-green gainers-head right-10 " : "hide"} onClick={(event) => openBuyModal(event)}>Buy</span>
+                            <span className={holdings.holdings_id !== undefined ? "btn waves-effect waves-red losers-head " : "hide"} onClick={(event) => openSaleModal(event)}>Sell</span>
                         </div>
                     </div>
                     <div className="row mrt-10">
