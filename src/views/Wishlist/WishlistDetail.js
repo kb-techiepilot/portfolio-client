@@ -7,12 +7,20 @@ import config from '../../config';
 import NumberFormat from '../../util/NumberFormat';
 import DetailSkeleton from './DetailSkeleton';
 
+import BuyShare from './BuyShare';
+
 function WishlistDetail(props) {
-    console.log('ssss');
     const { getAccessTokenSilently } = useAuth0();
     const [wishlistDetail, setWishlistDetail] = useState({});
     const [holdings, setHoldings] = useState({});
     const [loading, setLoading] = useState(true);
+
+    const [checked, setChecked] = useState(false);
+
+    useEffect(()=> {
+        var elems = document.querySelectorAll('#buy-modal');
+        M.Modal.init(elems, {});
+    })
 
     useEffect(() => {
         async function fetchWishlist() {
@@ -47,7 +55,8 @@ function WishlistDetail(props) {
     function openSaleModal(event){
         event.preventDefault();
 
-        var elems = document.querySelectorAll('#sale-modal');
+        setChecked(true);
+        var elems = document.querySelectorAll('#buy-modal');
         M.Modal.init(elems, {});
         elems[0].M_Modal.open();
     }
@@ -243,6 +252,13 @@ function WishlistDetail(props) {
                 </h6>
             </div>
             }
+
+
+            <div id="buy-modal" className="modal wd-450 top-30">
+                <div className="modal-content wishlist-data">
+                    <BuyShare symbol={props.symbol} action="buy" checked={checked}/>
+                </div>
+            </div>
         </div>
     )
 };

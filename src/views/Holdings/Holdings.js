@@ -148,7 +148,7 @@ function Holdings(){
                                                             <div className="holdings-symbol">{holding.symbol}</div>
                                                             <div className="holdings-ltp"> 
                                                                 <span>LTP:</span>
-                                                                <span>{holding.price}</span>
+                                                                <span>{holding.current_price}</span>
                                                                 <span className={holding.day_percent > 0 ? "up" : "down"}>
                                                                     ({holding.day_percent}%)
                                                                 </span>
@@ -197,7 +197,7 @@ function Holdings(){
                                 You haven't added any Stock to your account, use the search bar or clieck below to add Holdings
                             </h5>
                             <button className="waves-effect waves-light btn gradient-45deg-purple-deep-orange gradient-shadow" onClick={(event) => openAddModal(event)}>
-                                Add Wishlist
+                                Add Holdings
                             </button>
                         </div>
                     }

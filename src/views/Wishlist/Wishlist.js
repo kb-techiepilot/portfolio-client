@@ -11,8 +11,6 @@ import WishlistDetail from './WishlistDetail';
 import LineChart from '../ChartsV2/LineChart';
 import ListingSekelton from './ListingSkeleton';
 
-import BuyShare from './BuyShare';
-
 function Wishlist() {
 
     const { getAccessTokenSilently } = useAuth0();
@@ -24,6 +22,7 @@ function Wishlist() {
     const [preloader, setPreloader] = useState(false);
 
     const [chartSymbol, setChartSymbol] = useState("");
+    const [wishSymbol, setWishSymbol] = useState("");
 
     const override = css`
         display: block;
@@ -35,7 +34,7 @@ function Wishlist() {
             data : symbols,
             limit : 5,
             onAutocomplete : function(sym) {
-                setSymbol(sym);
+                setWishSymbol(sym);
             }
         });
     
@@ -77,7 +76,7 @@ function Wishlist() {
 
         const intervalId = setInterval(() => { 
             fetchWishlist();
-        }, 2000 * 100);
+        }, 2000);
         return () => clearInterval(intervalId);
     },[getAccessTokenSilently]);
 
@@ -278,25 +277,13 @@ function Wishlist() {
                                 </div>
                             </div>
                         </div>
-                        <WishlistDetail symbol={symbol}/>
+                        <WishlistDetail symbol={wishSymbol}/>
                     </div>
                 </div>
 
                 <div id="chart-modal" className="modal eq-modal">
                     <div className="modal-content">
                         <LineChart symbol={chartSymbol}/>
-                    </div>
-                </div>
-
-                <div id="buy-modal" className="modal wd-450 top-30">
-                    <div className="modal-content wishlist-data">
-                        <BuyShare symbol={symbol} action="buy" checked={false}/>
-                    </div>
-                </div>
-
-                <div id="sale-modal" className="modal wd-450 top-30">
-                    <div className="modal-content wishlist-data">
-                        <BuyShare symbol={symbol} action="sale" checked={true}/>
                     </div>
                 </div>
             </div>

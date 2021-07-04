@@ -2,28 +2,38 @@ import React, {useState, useEffect} from "react";
 import axios from "axios";
 import { useAuth0 } from '@auth0/auth0-react';
 import M from 'materialize-css';
-import moment from "moment";
+import moment, { max } from "moment";
+import { BarLoader } from 'react-spinners';
+import { css } from '@emotion/react';
 
 import config from "../../config";
 import NumberFormat from "../../util/NumberFormat";
 
 
 function BuyShare(props){
-    console.log('buy : ' + props.symbol)
 
     var today = moment().format("YYYY-MM-DD")
-
+    
     const { getAccessTokenSilently } = useAuth0();
-    const [buySymbol, setBuySymbol] = useState(props.symbol);
     const [stockDetail, setStockDetail] = useState({});
     const [quantity, setQuantity] = useState(1);
     const [price, setPrice] = useState(0);
     const [date, setDate] = useState(moment().format("YYYY-MM-DD"));
-
-    const [loading, setLoading] = useState(true);
+    
+    const [buyPreLoader, setBuyPreloader] = useState(true);
     const [checked, setChecked] = useState(props.checked);
     const [disableCheck, setDisableCheck] = useState(false);
-
+    
+    const [disableButton, setDisableButton] = useState(false);
+    
+    const [maxQty, setMaxQty] = useState(1000000);
+    
+    const [symbol, setSymbol] = useState("");
+    
+    const override = css`
+    display: block;
+    `;
+    
     useEffect(() => {
         var elems = document.querySelectorAll('.tooltipped');
         M.Tooltip.init(elems, {});
@@ -38,7 +48,7 @@ function BuyShare(props){
                 Authorization: `Bearer ${token}`,
                 }})
             .then(res => {
-                setLoading(false);
+                setBuyPreloader(false);
                 // var dummyData = {
                 //     "priceInfo" : {
                 //         "lastPrice" : 1234
@@ -51,6 +61,7 @@ function BuyShare(props){
                 setStockDetail(res.data);
                 setPrice(res.data.current_price);
                 setDisableCheck(res.data.holdings_id !== null ? false : true);
+                setSymbol(res.data.symbol);
                 // setStockDetail(dummyData);
                 // setPrice(dummyData.priceInfo.lastPrice);
             })
@@ -63,32 +74,83 @@ function BuyShare(props){
             props.symbol && fetchStockDetail();
         }, 5000 * 100);
         return () => clearInterval(intervalId);
-    },[props.symbol]); 
+    },[getAccessTokenSilently, props.symbol, symbol, checked]); 
 
     async function addHoldings(event) {
+        setSymbol("");
+        setBuyPreloader(true);
         event.preventDefault();
 
-        const token = await getAccessTokenSilently();
-        axios
-        .post(config.apiBaseUrl+"/api/v2/holdings/", {
+        var param = {
             workspace : 'default',
             date: date,
             symbol : props.symbol,
             quantity: quantity,
             price: price
-        },{
+        };
+
+        var uri = "/api/v2/holdings/";
+
+        if(stockDetail.holdings_id !== null) {
+            param.average=true;
+            uri = "/api/v2/holdings/"+stockDetail.holdings_id;
+        }
+
+        const token = await getAccessTokenSilently();
+        axios
+        .post(config.apiBaseUrl+uri, param,{
             headers: {
             Authorization: `Bearer ${token}`,
             }})
         .then(res => {
-            M.toast({html: 'Wishlist added !'},{
+            setBuyPreloader(false);
+            setStockDetail(res.data);
+            setSymbol(res.data.symbol);
+            M.toast({html: 'Added to holdings!'},{
                 displayLength: 4000
             });
-            // setWishlists(res.data.data);
-            // setPreloader(false)
         })
         .catch(err =>{
-            // setPreloader(false)
+            setBuyPreloader(false)
+            console.log(err.response);
+            M.toast({html: ''+err.response.data.message},{
+                displayLength: 4000
+            });
+        });
+    }
+
+    async function sellHoldings(event) {
+        setBuyPreloader(true);
+        event.preventDefault();
+
+        var param = {
+            workspace : 'default',
+            solddate: date,
+            symbol : props.symbol,
+            quantity: quantity,
+            price: price
+        };
+
+        var uri = "/api/v2/sold/"+stockDetail.holdings_id;
+
+        if(quantity < stockDetail.quantity) {
+            param.partial=true;
+        }
+
+        const token = await getAccessTokenSilently();
+        axios
+        .post(config.apiBaseUrl+uri, param,{
+            headers: {
+            Authorization: `Bearer ${token}`,
+            }})
+        .then(res => {
+            setBuyPreloader(false);
+            M.toast({html: 'sold success!'},{
+                displayLength: 4000
+            });
+        })
+        .catch(err =>{
+            setBuyPreloader(false)
             console.log(err.response);
             M.toast({html: ''+err.response.data.message},{
                 displayLength: 4000
@@ -100,14 +162,20 @@ function BuyShare(props){
         console.log(event.target.value > 0)
         if(event.target.value > 0){
             setQuantity(event.target.value);
+            setDisableButton(false);
         } else {
-            setQuantity(quantity);
+            setDisableButton(true);
         }
     }
 
     function changePrice(event){
         event.preventDefault();
-        setPrice(event.target.value);
+        if(event.target.value > 0) {
+            setPrice(event.target.value);
+            setDisableButton(false);
+        } else {
+            setDisableButton(true);
+        }
     }
 
     function changeDate(event){
@@ -121,6 +189,7 @@ function BuyShare(props){
 
     return(
         <div className="">
+            <BarLoader loading={buyPreLoader} css={override} width={"100%"} />
             {stockDetail &&
                 <div>
                     <div data-id="1" data-order="1" className="kanban-board">
@@ -143,16 +212,16 @@ function BuyShare(props){
                                 </div>
                             }
                                 <div className="col s4">
-                                    <div class="switch">
+                                    <div className="switch">
                                     {disableCheck ?
                                         <label className="tooltipped" data-position="bottom" data-tooltip="You don't have this stock in your holdings to sell">
                                             <input disabled type="checkbox" onChange={(event) => changeSwitch(event)} defaultChecked={checked}/>
-                                            <span class="lever" data-on="on"></span>
+                                            <span className="lever" data-on="on"></span>
                                         </label>
                                         :
                                         <label className="tooltipped" data-position="top" data-tooltip="Toggle Buy / Sell">
                                             <input type="checkbox" onChange={(event) => changeSwitch(event)} defaultChecked={checked}/>
-                                            <span class="lever" data-on="on"></span>
+                                            <span className="lever" data-on="on"></span>
                                         </label>
                                     }
                                     </div>
@@ -160,14 +229,14 @@ function BuyShare(props){
                             </div>
                         </header>
                         <div className="kanban-drag">
-                            <div className="kanban-item" data-eid="1_1" data-border="green" data-duedate="SEPTEMBER 9, 2019" data-comment="1" data-attachment="1" data-users="../../../app-assets/images/avatar/avatar-10.png">
+                            <div className="kanban-item">
                                 <div className="row">
                                     <div className="input-field col s4">
-                                        <input id="qty" type="number" min="1" defaultValue={quantity} onChange={(event) => changeQuantity(event)}/>
+                                        <input id="qty" type="number" min="1" max={(checked && stockDetail.quantity) || maxQty} defaultValue={(checked && stockDetail.quantity) || quantity} onChange={(event) => changeQuantity(event)} className="validate"/>
                                         <label className="active" htmlFor="qty">Qty</label>
                                     </div>
                                     <div className="input-field col s4">
-                                        <input id="price" type="number" min="0.01" defaultValue={stockDetail.current_price} onChange={(event) => changePrice(event)}/>
+                                        <input id="price" type="number" min="0" defaultValue={stockDetail.current_price} onChange={(event) => changePrice(event)} className="validate"/>
                                         <label className="active" htmlFor="price">Price</label>
                                     </div>
                                     <div className="input-field col s4">
@@ -181,11 +250,11 @@ function BuyShare(props){
                                     </div>
                                     {!checked ?
                                     <div className="col s6">
-                                        <span className="btn waves-effect blue gainers-head" onClick={(event) => addHoldings(event)}>Buy</span> 
+                                        <span disabled={disableButton} className="btn waves-effect blue gainers-head" onClick={(event) => addHoldings(event)}>{(setStockDetail.holdings_id !== null && setStockDetail.holdings_id !== undefined )? 'Buy More' : 'Buy'}</span> 
                                     </div>
                                     :
                                     <div className="col s6">
-                                        <span className="btn waves-effect yellow losers-head" onClick={(event) => addHoldings(event)}>Sell</span> 
+                                        <span disabled={disableButton} className="btn waves-effect yellow losers-head" onClick={(event) => sellHoldings(event)}>Sell</span> 
                                     </div>
                                     }
                                 </div>
