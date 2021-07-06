@@ -7,13 +7,15 @@ import config from '../../config';
 import NumberFormat from '../../util/NumberFormat';
 import DetailSkeleton from './DetailSkeleton';
 
-import BuyShare from './BuyShare';
+import TradeShare from './TradeShare';
 
-function WishlistDetail(props) {
+function ShareDetail(props) {
+
     const { getAccessTokenSilently } = useAuth0();
-    const [wishlistDetail, setWishlistDetail] = useState({});
+    const [shareDetail, setShareDetail] = useState({});
     const [holdings, setHoldings] = useState({});
     const [loading, setLoading] = useState(true);
+    const [loader, setLoader] = useState(false);
 
     const [checked, setChecked] = useState(false);
 
@@ -33,7 +35,7 @@ function WishlistDetail(props) {
                 }})
             .then(res => {
                 setLoading(false);
-                setWishlistDetail(res.data.wishlist);
+                setShareDetail(res.data.wishlist);
                 setHoldings(res.data.holdings);
             })
             .catch(err =>{
@@ -41,12 +43,12 @@ function WishlistDetail(props) {
             });
         }
         props.symbol && fetchWishlist();
-    },[props.symbol, getAccessTokenSilently]); 
+    },[props.symbol, getAccessTokenSilently, props.random]); 
 
 
     function openBuyModal(event){
         event.preventDefault();
-
+        
         var elems = document.querySelectorAll('#buy-modal');
         M.Modal.init(elems, {});
         elems[0].M_Modal.open();
@@ -61,36 +63,91 @@ function WishlistDetail(props) {
         elems[0].M_Modal.open();
     }
 
+    async function addWishlist(event) {
+        setLoader(true);
+        event.preventDefault();
+        const token = await getAccessTokenSilently();
+        axios
+        .post(config.apiBaseUrl+"/api/v2/wishlist/", {
+            symbol : props.symbol,
+            workspace : 'default'
+        },{
+            headers: {
+            Authorization: `Bearer ${token}`,
+            }})
+        .then(res => {
+            M.toast({html: 'Wishlist added !'},{
+                displayLength: 4000
+            });
+            setShareDetail(res.data.wishlist);
+            setLoader(false)
+        })
+        .catch(err =>{
+            setLoader(false)
+            err.response.data && M.toast({html: ''+err.response.data.message},{
+                displayLength: 4000
+            });
+        });
+    }
+
+    async function deleteWishlist(event, id) {
+        setLoader(true);
+        event.preventDefault();
+        const token = await getAccessTokenSilently();
+        axios
+        .delete(config.apiBaseUrl+"/api/v2/wishlist/"+id +"?workspace=default",{
+            headers: {
+            Authorization: `Bearer ${token}`,
+            }})
+        .then(res => {
+            setLoader(false);
+            M.toast({html: 'Wishlist deleted !'},{
+                displayLength: 4000
+            });
+            // setWishlists(res.data.data);
+        })
+        .catch(err =>{
+            setLoader(false)
+            console.log(err.response);
+            M.toast({html: ''+err.response.data.message},{
+                displayLength: 4000
+            });
+        });
+    }
+
     return(
         <div>
             {!loading && props.symbol !== "" ?
             <div className="card">
                 <div className="card-content">
                     <div className="flex-apart full-width">
-                        <div className="wishlist-card-title">
-                            {wishlistDetail.company_name}
+                        <div className="wishlist-card-title" style={{"width": "60%"}}>
+                            {shareDetail.company_name}
                         </div>
-                        <div className="flex-apart">
-                            <span className={holdings.holdings_id !== undefined ? "btn waves-effect waves-green gainers-head right-10 " : "hide"} onClick={(event) => openBuyModal(event)}>Buy More</span>
-                            <span className={holdings.holdings_id === undefined ? "btn waves-effect waves-green gainers-head right-10 " : "hide"} onClick={(event) => openBuyModal(event)}>Buy</span>
+                        <div className="flex-apart" style={{"width": "40%"}}>
+                            <span><a href="#!" className={shareDetail.wishlist_id === null ? "" : "hide"} onClick={(event) => addWishlist(event)}><i className="material-icons">star_border</i></a></span>
+                            <span><a href="#!" className={shareDetail.wishlist_id !== null ? "" : "hide"} onClick={(event) => deleteWishlist(event, shareDetail.wishlist_id)}><i className="material-icons">star</i></a></span>
+
+                            <span className={holdings.holdings_id !== undefined ? "btn waves-effect waves-green gainers-head " : "hide"} onClick={(event) => openBuyModal(event)}>Buy</span>
+                            <span className={holdings.holdings_id === undefined ? "btn waves-effect waves-green gainers-head " : "hide"} onClick={(event) => openBuyModal(event)}>Buy</span>
                             <span className={holdings.holdings_id !== undefined ? "btn waves-effect waves-red losers-head " : "hide"} onClick={(event) => openSaleModal(event)}>Sell</span>
                         </div>
                     </div>
                     <div className="row mrt-10">
                         <div className="wishlist-data col s6">
                             <div className="wishlist-symbol">
-                                {wishlistDetail.symbol}
+                                {shareDetail.symbol}
                             </div>
                             <div className="wishlist-index">
-                                {wishlistDetail.index}
+                                {shareDetail.index}
                             </div>
                         </div>
                         <div className="col s6">
                             <div className="wishlist-symbol wishlist-ta-rt">
-                                {NumberFormat(wishlistDetail.current_price)}
+                                {NumberFormat(shareDetail.current_price)}
                             </div>
                             <div className="wishlist-index wishlist-ta-rt">
-                                {wishlistDetail.change}({wishlistDetail.percent_change}%)
+                                {shareDetail.change}({shareDetail.percent_change}%)
                             </div>
                         </div>
                         {/* <div className="col s2">
@@ -111,7 +168,7 @@ function WishlistDetail(props) {
                                             Open
                                         </div>
                                         <div className="wishlist-symbol">
-                                            {wishlistDetail.open}
+                                            {shareDetail.open}
                                         </div>
                                     </div>
                                     <div className="wishlist-data col s4">
@@ -119,7 +176,7 @@ function WishlistDetail(props) {
                                             Upper Circuit
                                         </div>
                                         <div className="wishlist-symbol">
-                                            {wishlistDetail.higher_cp}
+                                            {shareDetail.higher_cp}
                                         </div>
                                     </div>
                                     <div className="wishlist-data col s4">
@@ -127,7 +184,7 @@ function WishlistDetail(props) {
                                             Volume
                                         </div>
                                         <div className="wishlist-symbol">
-                                            {wishlistDetail.trade !== undefined && wishlistDetail.trade.volume}
+                                            {shareDetail.trade !== undefined && shareDetail.trade.volume}
                                         </div>
                                     </div>
                                 </div>
@@ -137,7 +194,7 @@ function WishlistDetail(props) {
                                             Close
                                         </div>
                                         <div className="wishlist-symbol">
-                                            {wishlistDetail.previous_close}
+                                            {shareDetail.previous_close}
                                         </div>
                                     </div>
                                     <div className="wishlist-data col s4">
@@ -145,7 +202,7 @@ function WishlistDetail(props) {
                                             Lower Circuit
                                         </div>
                                         <div className="wishlist-symbol">
-                                            {wishlistDetail.lower_cp}
+                                            {shareDetail.lower_cp}
                                         </div>
                                     </div>
                                     <div className="wishlist-data col s4">
@@ -153,7 +210,7 @@ function WishlistDetail(props) {
                                             Avg. Traded Price
                                         </div>
                                         <div className="wishlist-symbol">
-                                            {wishlistDetail.avg_price}
+                                            {shareDetail.avg_price}
                                         </div>
                                     </div>
                                 </div>
@@ -161,24 +218,24 @@ function WishlistDetail(props) {
                                 </div>
                                 <div className="row mt-5">
                                     <div className="mb4 slider-pos relative wishlist-1D full-width">
-                                        <span className="year-slider" style={{"left" : ((wishlistDetail.current_price - wishlistDetail.day_low) * 100 / (wishlistDetail.day_high - wishlistDetail.day_low) ) + "%"}}>
+                                        <span className="year-slider" style={{"left" : ((shareDetail.current_price - shareDetail.day_low) * 100 / (shareDetail.day_high - shareDetail.day_low) ) + "%"}}>
                                         </span>
                                     </div>
                                     <div className="flex-apart full-width wishlist-slider">
-                                        <span>{wishlistDetail.day_low}</span>
+                                        <span>{shareDetail.day_low}</span>
                                         <span>TODAY's HIGH/LOW</span>
-                                        <span>{wishlistDetail.day_high}</span>
+                                        <span>{shareDetail.day_high}</span>
                                     </div>
                                 </div>
                                 <div className="row mt-5">
                                     <div className="mb4 slider-pos relative wishlist-52 full-width">
-                                        <span className="year-slider" style={{"left" : ((wishlistDetail.current_price - wishlistDetail.year_low) * 100 / (wishlistDetail.year_high - wishlistDetail.year_low) ) + "%"}}>
+                                        <span className="year-slider" style={{"left" : ((shareDetail.current_price - shareDetail.year_low) * 100 / (shareDetail.year_high - shareDetail.year_low) ) + "%"}}>
                                         </span>
                                     </div>
                                     <div className="flex-apart full-width wishlist-slider">
-                                        <span>{wishlistDetail.year_low}</span>
+                                        <span>{shareDetail.year_low}</span>
                                         <span>52 WEEK HIGH/LOW</span>
-                                        <span>{wishlistDetail.year_high}</span>
+                                        <span>{shareDetail.year_high}</span>
                                     </div>
                                 </div>
                             </div>
@@ -201,14 +258,14 @@ function WishlistDetail(props) {
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            {wishlistDetail.trade !== undefined && wishlistDetail.trade.bids.map((bid, index) => 
+                                            {shareDetail.trade !== undefined && shareDetail.trade.bids.map((bid, index) => 
                                             <tr key={index}>
                                                 <td>{bid.price}</td>
                                                 <td className="wishlist-ta-rt">{bid.quantity}</td>
                                             </tr>)}
                                             <tr>
                                                 <th>TBQ</th>
-                                                <th className="wishlist-ta-rt">{wishlistDetail.trade !== undefined && wishlistDetail.trade.total_buy_qty}</th>
+                                                <th className="wishlist-ta-rt">{shareDetail.trade !== undefined && shareDetail.trade.total_buy_qty}</th>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -221,14 +278,14 @@ function WishlistDetail(props) {
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            {wishlistDetail.trade !== undefined && wishlistDetail.trade.asks.map((ask, index) => 
+                                            {shareDetail.trade !== undefined && shareDetail.trade.asks.map((ask, index) => 
                                             <tr key={index}>
                                                 <td>{ask.price}</td>
                                                 <td className="wishlist-ta-rt">{ask.quantity}</td>
                                             </tr>)}
                                             <tr>
                                                 <th>TSQ</th>
-                                                <th className="wishlist-ta-rt">{wishlistDetail.trade !== undefined && wishlistDetail.trade.total_sell_qty}</th>
+                                                <th className="wishlist-ta-rt">{shareDetail.trade !== undefined && shareDetail.trade.total_sell_qty}</th>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -256,11 +313,11 @@ function WishlistDetail(props) {
 
             <div id="buy-modal" className="modal wd-450 top-30">
                 <div className="modal-content wishlist-data">
-                    <BuyShare symbol={props.symbol} action="buy" checked={checked}/>
+                    <TradeShare symbol={props.symbol} action="buy" checked={checked}/>
                 </div>
             </div>
         </div>
     )
 };
 
-export default WishlistDetail;
+export default ShareDetail;

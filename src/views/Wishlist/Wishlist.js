@@ -6,7 +6,8 @@ import { BarLoader } from 'react-spinners';
 import { css } from '@emotion/react';
 
 import config from '../../config';
-import WishlistDetail from './WishlistDetail';
+import ShareDetail from '../Share/ShareDetail'
+import ShareSearch from '../Share/ShareSearch';
 
 import LineChart from '../ChartsV2/LineChart';
 import ListingSekelton from './ListingSkeleton';
@@ -18,42 +19,13 @@ function Wishlist() {
     const [token, setToken] = useState("");
     const [symbol, setSymbol] = useState("");
     const [loading, setLoading] = useState(true);   
-    const [symbols, setSymbols] = useState({});
     const [preloader, setPreloader] = useState(false);
 
     const [chartSymbol, setChartSymbol] = useState("");
-    const [wishSymbol, setWishSymbol] = useState("");
 
     const override = css`
         display: block;
     `;
-
-    useEffect(()=> {
-        var elems = document.querySelectorAll('.wishlist-autocomplete');
-        M.Autocomplete.init(elems, {
-            data : symbols,
-            limit : 5,
-            onAutocomplete : function(sym) {
-                setWishSymbol(sym);
-            }
-        });
-    
-    });
-
-    useEffect(() => {
-        axios
-        .get(config.apiBaseUrl+"/api/v1/symbols")
-        .then(res => {
-            var symbolsJson = {};
-            res.data.forEach((data) => {
-                symbolsJson[data] = null;
-            });
-            setSymbols(symbolsJson);
-        })
-        .catch(err =>{
-          console.log(err.message);
-        });
-    },[]);
 
     useEffect(() => {
         async function fetchWishlist() {
@@ -76,7 +48,7 @@ function Wishlist() {
 
         const intervalId = setInterval(() => { 
             fetchWishlist();
-        }, 2000);
+        }, 1000 * 100);
         return () => clearInterval(intervalId);
     },[getAccessTokenSilently]);
 
@@ -122,33 +94,6 @@ function Wishlist() {
                 displayLength: 4000
             });
             setWishlists(res.data.data);
-        })
-        .catch(err =>{
-            setPreloader(false)
-            console.log(err.response);
-            M.toast({html: ''+err.response.data.message},{
-                displayLength: 4000
-            });
-        });
-    }
-
-    async function addWishlist(event) {
-        setPreloader(true);
-        event.preventDefault();
-        axios
-        .post(config.apiBaseUrl+"/api/v2/wishlist/", {
-            symbol : symbol,
-            workspace : 'default'
-        },{
-            headers: {
-            Authorization: `Bearer ${token}`,
-            }})
-        .then(res => {
-            M.toast({html: 'Wishlist added !'},{
-                displayLength: 4000
-            });
-            setWishlists(res.data.data);
-            setPreloader(false)
         })
         .catch(err =>{
             setPreloader(false)
@@ -255,30 +200,11 @@ function Wishlist() {
                 </div>
                 <div id="wishlist-modal" className="modal">
                     <div className="modal-content">
-                        <WishlistDetail symbol={symbol}/>
+                        <ShareDetail symbol={symbol}/>
                     </div>
                 </div>
                 <div id="add-wishlist-modal" className="modal">
-                    <div className="modal-content">
-                        <div className="header mt-0 row">
-                            <BarLoader loading={preloader} css={override} width={"100%"} />
-                            <div className="col s12 m12 input-field">
-                                <div className="col s8">
-                                    <i className="material-icons prefix hide-on-med-and-down">search</i>
-                                    <input type="text" id="share-symbol" className="wishlist-autocomplete" autoComplete="new-password" placeholder="Search for an Equity"/>
-                                </div>
-                                <div className="col s4">
-                                    <button className="waves-effect waves-light btn gradient-45deg-purple-deep-orange gradient-shadow" onClick={(event) => addWishlist(event)}>
-                                        Add
-                                    </button>
-                                    {/* <button className="waves-effect waves-light btn gradient-45deg-purple-deep-orange gradient-shadow">
-                                        Delete
-                                    </button> */}
-                                </div>
-                            </div>
-                        </div>
-                        <WishlistDetail symbol={wishSymbol}/>
-                    </div>
+                    <ShareSearch symbol=""/>
                 </div>
 
                 <div id="chart-modal" className="modal eq-modal">

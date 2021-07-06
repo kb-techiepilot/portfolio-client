@@ -357,7 +357,7 @@ main {
     font-weight: 600;
 }
 
-#wishlist-modal, #add-wishlist-modal, #buy-modal{
+#wishlist-modal, #add-wishlist-modal, #add-holdings-modal{
     width: 35%;
 }
 
@@ -498,6 +498,7 @@ main {
     top: 30% !important;
 }
 
+
 /* switch */
 .switch label input[type=checkbox]:checked+.lever {
     background-color: rgba(0,0,0,0.38);
@@ -513,7 +514,7 @@ main {
 	}
 
 
-    #wishlist-modal, #add-wishlist-modal, #buy-modal{
+    #wishlist-modal, #add-wishlist-modal, #add-holdings-modal{
         width: 100%;
 }
 }

@@ -9,7 +9,9 @@ import LineChart from '../ChartsV2/LineChart';
 import NumberFormat from '../../util/NumberFormat';
 
 import config from '../../config';
-import AddHoldingsForm from './AddHoldingsForm';
+
+import ShareSearch from '../Share/ShareSearch';
+import ShareDetail from '../Share/ShareDetail';
 
 function Holdings(){
     const { getAccessTokenSilently } = useAuth0(); 
@@ -203,9 +205,7 @@ function Holdings(){
                     }
                     </div>
                     <div id="add-holdings-modal" className="modal">
-                        <div className="modal-content">
-                            <AddHoldingsForm symbols={symbols}/>
-                        </div>
+                        <ShareSearch symbol=""/>
                     </div>
 
                     <div id="chart-modal" className="modal eq-modal">
