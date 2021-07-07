@@ -42,7 +42,7 @@ function Transaction() {
                 <div className="col s12">
                     <div className="container">
                         <section className="wishlist-wrapper section">
-                        <table className="highlight white responsive-table">
+                        <table className="highlight white responsive-table display-in-block">
                             <thead>
                                 <tr>
                                     <th>Symbol</th>

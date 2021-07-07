@@ -50,7 +50,7 @@ function IndexChart(){
     },[selectedIndex]);
 
     useEffect(() => {
-
+        setLoading(true);
         function fetchIntraday(){
             axios
             .get(config.apiBaseUrl+"/api/v2/indexes/intraday/" + selectedIndex)
@@ -86,9 +86,8 @@ function IndexChart(){
                 </div>
             </div>
             {
-                loading ? <Loading /> : <></>
-            }
-            {(intraDay.intra !== undefined && selectedIndexDetails !== undefined) &&
+                loading ? <Loading /> : <>
+            {intraDay.intra !== undefined && selectedIndexDetails !== undefined &&
             <div>
                 <ul className="index-header">
                     <li className="tbVal">
@@ -112,7 +111,8 @@ function IndexChart(){
                     </li> */}
                 </ul>
                 <IntraDayChart chartId="indexChart" symbol={selectedIndex} history={intraDay} previousClose={selectedIndexDetails.previousClose} lastPrice={selectedIndexDetails.last} />
-            </div>
+            </div>}
+            </>
             }
         </div>
         </>

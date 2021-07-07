@@ -34,7 +34,7 @@ function Transactions(){
         <div className="card animate fadeUp">
             <div className="card-content">
                 <span className="card-title">Recent Transactions</span>
-                <table className="highlight responsive-table">
+                <table className="highlight responsive-table display-in-block">
                     <thead>
                         <tr>
                             <th>Symbol</th>

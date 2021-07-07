@@ -97,12 +97,15 @@ function SummaryCards() {
                                     <BeatLoader loading={loading} css={override} size={15} />
                                     { !loading ? 
                                     <>
-                                    <h4 className="col s7 m12 mb-0 white-text">{NumberFormat(summary.difference)}</h4>
+                                    <h4 className="col s7 m12 mb-0 white-text">
+                                        {NumberFormat(summary.difference)}
+                                        <span className="font-medium text-30"> ({summary.percentage}%)</span>
+                                    </h4>
                                     </>
                                     : <></> }
                                 </div>
                                 <div className="col s7 m8">
-                                    <h5>P&L</h5>
+                                    <h5>Net P&L</h5>
                                 </div>
                                 <div className="col s7 m2 right-align hide-on-med-and-down">
                                     <i className="material-icons background-round mt-5">timeline</i>
@@ -118,11 +121,14 @@ function SummaryCards() {
                                 <div className="row">
                                     <BeatLoader loading={loading} css={override} size={15} />
                                     { !loading ? 
-                                    <h4 className="col s7 m12 mb-0 white-text">{summary.percentage}%</h4>
+                                    <h4 className="col s7 m12 mb-0 white-text">
+                                        {NumberFormat(summary.day_change)}
+                                        <span className="font-medium text-30"> ({summary.day_prechent}%)</span>
+                                    </h4>
                                     : <></> }
                                 </div>
                                 <div className="col s7 m8">
-                                    <h5>Percentage</h5>
+                                    <h5>Day P&L</h5>
                                 </div>
                                 <div className="col s7 m2 right-align hide-on-med-and-down">
                                     <i className="material-icons background-round mt-5">attach_money</i>

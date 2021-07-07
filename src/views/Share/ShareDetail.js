@@ -2,6 +2,8 @@ import React, {useState, useEffect} from 'react';
 import axios from 'axios';
 import { useAuth0 } from '@auth0/auth0-react';
 import M from 'materialize-css';
+import { BarLoader } from 'react-spinners';
+import { css } from '@emotion/react';
 
 import config from '../../config';
 import NumberFormat from '../../util/NumberFormat';
@@ -16,8 +18,14 @@ function ShareDetail(props) {
     const [holdings, setHoldings] = useState({});
     const [loading, setLoading] = useState(true);
     const [loader, setLoader] = useState(false);
+    const [wishlists,setWishlists] = useState({});
 
     const [checked, setChecked] = useState(false);
+    const [toggle, setToggle] = useState(false);
+
+    const override = css`
+        display: block;
+    `;
 
     useEffect(()=> {
         var elems = document.querySelectorAll('#buy-modal');
@@ -25,8 +33,8 @@ function ShareDetail(props) {
     })
 
     useEffect(() => {
+        setLoading(true);
         async function fetchWishlist() {
-            setLoading(true);
             const token = await getAccessTokenSilently();
             axios
             .get(config.apiBaseUrl+"/api/v2/wishlist/"+ props.symbol +"?workspace=default",{
@@ -43,25 +51,7 @@ function ShareDetail(props) {
             });
         }
         props.symbol && fetchWishlist();
-    },[props.symbol, getAccessTokenSilently, props.random]); 
-
-
-    function openBuyModal(event){
-        event.preventDefault();
-        
-        var elems = document.querySelectorAll('#buy-modal');
-        M.Modal.init(elems, {});
-        elems[0].M_Modal.open();
-    }
-
-    function openSaleModal(event){
-        event.preventDefault();
-
-        setChecked(true);
-        var elems = document.querySelectorAll('#buy-modal');
-        M.Modal.init(elems, {});
-        elems[0].M_Modal.open();
-    }
+    },[props.symbol, getAccessTokenSilently, props.random, wishlists]); 
 
     async function addWishlist(event) {
         setLoader(true);
@@ -104,7 +94,7 @@ function ShareDetail(props) {
             M.toast({html: 'Wishlist deleted !'},{
                 displayLength: 4000
             });
-            // setWishlists(res.data.data);
+            setWishlists(res.data.data);
         })
         .catch(err =>{
             setLoader(false)
@@ -115,22 +105,41 @@ function ShareDetail(props) {
         });
     }
 
+    function openBuyModal(event){
+        setChecked(false);
+        setToggle(!toggle);
+    }
+
+    function openSaleModal(event){
+        setChecked(true);
+        setToggle(!toggle);
+    }
+
+    useEffect(()=>{
+        var elems = document.querySelectorAll('#buy-modal');
+        M.Modal.init(elems, {});
+        elems[0].M_Modal.open();
+    },[checked, toggle])
+
     return(
         <div>
-            {!loading && props.symbol !== "" ?
+            {!loading && props.symbol !== "" && shareDetail !== undefined && holdings !== undefined?
             <div className="card">
+
+                <BarLoader loading={loader} css={override} width={"100%"} />
                 <div className="card-content">
                     <div className="flex-apart full-width">
                         <div className="wishlist-card-title" style={{"width": "60%"}}>
                             {shareDetail.company_name}
                         </div>
                         <div className="flex-apart" style={{"width": "40%"}}>
-                            <span><a href="#!" className={shareDetail.wishlist_id === null ? "" : "hide"} onClick={(event) => addWishlist(event)}><i className="material-icons">star_border</i></a></span>
-                            <span><a href="#!" className={shareDetail.wishlist_id !== null ? "" : "hide"} onClick={(event) => deleteWishlist(event, shareDetail.wishlist_id)}><i className="material-icons">star</i></a></span>
-
-                            <span className={holdings.holdings_id !== undefined ? "btn waves-effect waves-green gainers-head " : "hide"} onClick={(event) => openBuyModal(event)}>Buy</span>
-                            <span className={holdings.holdings_id === undefined ? "btn waves-effect waves-green gainers-head " : "hide"} onClick={(event) => openBuyModal(event)}>Buy</span>
-                            <span className={holdings.holdings_id !== undefined ? "btn waves-effect waves-red losers-head " : "hide"} onClick={(event) => openSaleModal(event)}>Sell</span>
+                            <span>
+                                {shareDetail.wishlist_id === null ?
+                                    <a href="#!" onClick={(event) => addWishlist(event)}><i className="material-icons small">star_border</i></a>
+                                :
+                                <a href="#!" onClick={(event) => deleteWishlist(event, shareDetail.wishlist_id)}><i className="material-icons small">star</i></a>
+                                }
+                            </span>
                         </div>
                     </div>
                     <div className="row mrt-10">
@@ -241,7 +250,18 @@ function ShareDetail(props) {
                             </div>
                         </div>
                     </div>
-
+                    <div className="row">
+                        <div className="col s7 offset-s5 flex-apart hide-on-med-and-down">
+                            <span className="btn waves-effect waves-green gainers-head" onClick={(event) => openBuyModal(event)}>Buy</span>
+                            <span className={holdings.holdings_id !== undefined ? "btn waves-effect waves-red losers-head " : "hide"} onClick={(event) => openSaleModal(event)}>Sell</span>
+                            <span class="btn waves-effect waves-purple cancel-btn modal-close">Cancel</span>
+                        </div>
+                        <div className="col s9 offset-s3 flex-apart hide-on-med-and-up">
+                            <span className="btn waves-effect waves-green gainers-head" onClick={(event) => openBuyModal(event)}>Buy</span>
+                            <span className={holdings.holdings_id !== undefined ? "btn waves-effect waves-red losers-head " : "hide"} onClick={(event) => openSaleModal(event)}>Sell</span>
+                            <span class="btn waves-effect waves-purple modal-close">Cancel</span>
+                        </div>
+                    </div>
 
                     <div className="hide row mrt-10">
                         <div className="card">
@@ -313,7 +333,7 @@ function ShareDetail(props) {
 
             <div id="buy-modal" className="modal wd-450 top-30">
                 <div className="modal-content wishlist-data">
-                    <TradeShare symbol={props.symbol} action="buy" checked={checked}/>
+                    <TradeShare symbol={props.symbol} checked={checked}/>
                 </div>
             </div>
         </div>

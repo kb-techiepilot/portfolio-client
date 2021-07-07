@@ -3,6 +3,11 @@
 main {
     padding-left: 300px;
 }
+
+/* .btn, .btn:hover, .btn-large:hover, .btn-small:hover {
+    background-color: white !important;
+} */
+
 .news-img {
     height: 100px !important;
     width: 150px !important;
@@ -27,6 +32,10 @@ main {
 
 .text-15 {
     font-size: 15px;
+}
+
+.text-30 {
+    font-size: 30px;
 }
 
 .font-medium {
@@ -359,6 +368,7 @@ main {
 
 #wishlist-modal, #add-wishlist-modal, #add-holdings-modal{
     width: 35%;
+    max-height: 80%;
 }
 
 .revert{
@@ -498,6 +508,18 @@ main {
     top: 30% !important;
 }
 
+.overflow-hide {
+    overflow: hidden;
+}
+
+.display-in-table {
+    display: inline-table !important;
+}
+
+.cancel-btn{
+    background-color: white !important;
+    color: black;
+}
 
 /* switch */
 .switch label input[type=checkbox]:checked+.lever {

@@ -53,7 +53,6 @@ function Wishlist() {
     },[getAccessTokenSilently]);
 
     function openModal(event, symbol){
-        console.log(symbol)
         setSymbol(symbol);
         
         var elems = document.querySelectorAll('#wishlist-modal');
@@ -125,7 +124,7 @@ function Wishlist() {
                                 <div className="right mb-2">
                                     <a className="gradient-45deg-purple-deep-orange gradient-shadow btn-floating pulse" href="#!" onClick={(event) => openAddModal(event)}><i className="material-icons">add</i></a>
                                 </div>
-                                <table className="highlight white responsive-table">
+                                <table className="highlight white responsive-table display-in-table">
                                     <thead>
                                         <tr>
                                             <th style={{"width": "25%"}}>Stock</th>
@@ -203,7 +202,7 @@ function Wishlist() {
                         <ShareDetail symbol={symbol}/>
                     </div>
                 </div>
-                <div id="add-wishlist-modal" className="modal">
+                <div id="add-wishlist-modal" className="modal overflow-hide">
                     <ShareSearch symbol=""/>
                 </div>
 

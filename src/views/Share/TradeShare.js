@@ -2,7 +2,7 @@ import React, {useState, useEffect} from "react";
 import axios from "axios";
 import { useAuth0 } from '@auth0/auth0-react';
 import M from 'materialize-css';
-import moment, { max } from "moment";
+import moment from "moment";
 import { BarLoader } from 'react-spinners';
 import { css } from '@emotion/react';
 
@@ -26,7 +26,7 @@ function BuyShare(props){
     
     const [disableButton, setDisableButton] = useState(false);
     
-    const [maxQty, setMaxQty] = useState(1000000);
+    const [maxQty] = useState(1000000);
     
     const [symbol, setSymbol] = useState("");
     
@@ -38,6 +38,10 @@ function BuyShare(props){
         var elems = document.querySelectorAll('.tooltipped');
         M.Tooltip.init(elems, {});
     })
+
+    useEffect(()=> {
+        setChecked(props.checked);
+    },[props.checked])
 
     useEffect(() => {
         async function fetchStockDetail() {
@@ -215,13 +219,13 @@ function BuyShare(props){
                                     <div className="switch">
                                     {disableCheck ?
                                         <label className="tooltipped" data-position="bottom" data-tooltip="You don't have this stock in your holdings to sell">
-                                            <input disabled type="checkbox" onChange={(event) => changeSwitch(event)} defaultChecked={checked}/>
+                                            <input disabled type="checkbox" onChange={(event) => changeSwitch(event)} defaultChecked={false}/>
                                             <span className="lever" data-on="on"></span>
                                         </label>
                                         :
                                         <label className="tooltipped" data-position="top" data-tooltip="Toggle Buy / Sell">
-                                            <input type="checkbox" onChange={(event) => changeSwitch(event)} defaultChecked={checked}/>
-                                            <span className="lever" data-on="on"></span>
+                                            <input defaultChecked={checked} id="check1" type="checkbox" onChange={(event) => changeSwitch(event)}/>
+                                            <span className="lever"></span>
                                         </label>
                                     }
                                     </div>
