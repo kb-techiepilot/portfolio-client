@@ -124,7 +124,7 @@ function Wishlist() {
                                 <div className="right mb-2">
                                     <a className="gradient-45deg-purple-deep-orange gradient-shadow btn-floating pulse" href="#!" onClick={(event) => openAddModal(event)}><i className="material-icons">add</i></a>
                                 </div>
-                                <table className="highlight white responsive-table display-in-table">
+                                <table className="highlight white responsive-table">
                                     <thead>
                                         <tr>
                                             <th style={{"width": "25%"}}>Stock</th>

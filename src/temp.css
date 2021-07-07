@@ -512,15 +512,10 @@ main {
     overflow: hidden;
 }
 
-.display-in-table {
-    display: inline-table !important;
-}
-
 .cancel-btn{
     background-color: white !important;
     color: black;
 }
-
 /* switch */
 .switch label input[type=checkbox]:checked+.lever {
     background-color: rgba(0,0,0,0.38);
