@@ -48,7 +48,7 @@ function Wishlist() {
 
         const intervalId = setInterval(() => { 
             fetchWishlist();
-        }, 1000 * 100);
+        }, 1000 * 5);
         return () => clearInterval(intervalId);
     },[getAccessTokenSilently]);
 
@@ -125,15 +125,15 @@ function Wishlist() {
                                 :
                                 <>
                                 {wishlists.length > 0 ?
-                                    <table className="highlight white responsive-table">
+                                    <table className="highlight white">
                                         <thead>
                                             <tr>
                                                 <th style={{"width": "25%"}}>Stock</th>
-                                                <th style={{"width": "15%"}}>Index</th>
+                                                <th className="hide-on-small-only" style={{"width": "15%"}}>Index</th>
                                                 <th style={{"width": "12%"}}>LTP</th>
                                                 <th style={{"width": "12%"}}>Day Change</th>
                                                 <th style={{"width": "12%"}}>% Change</th>
-                                                <th className="flex-apart">
+                                                <th className="hide-on-small-only flex-apart">
                                                     <span>1Y Low</span>
                                                     <span>1Y High</span>
                                                 </th>
@@ -154,7 +154,7 @@ function Wishlist() {
                                                         </div>
                                                     </div>
                                                 </td>
-                                                <td>{wishlist.index}</td>
+                                                <td className="hide-on-small-only">{wishlist.index}</td>
                                                 <td>&#8377;{wishlist.current_price}</td>  
                                                 <td className={wishlist.change > 0 ? "up" : "down"}>{wishlist.change}</td>  
                                                 <td className={wishlist.change > 0 ? "up" : "down"}>
@@ -165,7 +165,7 @@ function Wishlist() {
                                                         <i className="material-icons Small">arrow_drop_down</i>
                                                     }
                                                 </td>  
-                                                <td>
+                                                <td className="hide-on-small-only">
                                                     <div className="flex-apart full-width">
                                                         <span className="text-14">{wishlist.year_low}</span>
                                                         <span className="text-14">{wishlist.year_high}</span>
@@ -216,7 +216,6 @@ function Wishlist() {
                     </div>
                 </div>
             </div>
-            }
         </main>
     )
 }

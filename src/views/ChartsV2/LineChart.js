@@ -145,10 +145,8 @@ function LineChart(props) {
       chart: {
         id: 'area-datetime',
         type: 'area',
-        height: 350,
-        zoom: {
-          autoScaleYaxis: true
-        },
+        width: '20%',
+        height: '10%'
       },
       dataLabels: {
         enabled: false
@@ -211,7 +209,7 @@ function LineChart(props) {
                   :
                   <Chart options={lineOptions}
                       series={getLineData(history)}
-                      type="area" height={350} />
+                      type="area" />
                       :
                       <Loading />
                   }
