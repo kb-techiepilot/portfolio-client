@@ -12,6 +12,7 @@ import config from '../../config';
 
 import ShareSearch from '../Share/ShareSearch';
 import SummaryCards from '../Dashboard/SummaryCards';
+import HoldingsSkeleton from './HoldingsSkeleton';
 
 function Holdings(){
     const { getAccessTokenSilently } = useAuth0(); 
@@ -28,6 +29,7 @@ function Holdings(){
         async function fetchHoldings() {
             const token = await getAccessTokenSilently();
                 axios
+                
                 .get(config.apiBaseUrl+"/api/v2/holdings?workspace=default",{
                     headers: {
                     Authorization: `Bearer ${token}`,
@@ -73,10 +75,9 @@ function Holdings(){
     }
     return(
         <main>
-            <BarLoader loading={preload} css={override} width={"100%"} />
+            {/* <BarLoader loading={preload} css={override} width={"100%"} /> */}
             <div>
                 <div className="row">
-                {holdings !== undefined && holdings.length > 0 ?<>
                     <div className="hide-on-med-and-down" >
                         <SummaryCards/>
                     </div>
@@ -97,6 +98,7 @@ function Holdings(){
                                 <div className="right mb-2">
                                     <a className="gradient-45deg-purple-deep-orange gradient-shadow btn-floating pulse" href="#!" onClick={(event) => openAddModal(event)}><i className="material-icons">add</i></a>
                                 </div>
+                            {holdings !== undefined && holdings.length > 0 ?
                                 <table className="highlight white responsive-table">
                                     <thead>
                                         <tr>
@@ -106,7 +108,6 @@ function Holdings(){
                                             <th>Invested Amt.</th>
                                             <th>Current Value</th>
                                             <th>Day P&L</th>
-                                            <th>Day %</th>
                                             <th>Overall P&L</th>
                                             <th>Overall %</th>
                                             <th className="revert" style={{"width": "8%"}}>
@@ -125,7 +126,7 @@ function Holdings(){
                                                         <div className="holdings-symbol">{holding.symbol}</div>
                                                         <div className="holdings-ltp"> 
                                                             <span>LTP:</span>
-                                                            <span>{holding.current_price}</span>
+                                                            <span>{holding.current_price} </span>
                                                             <span className={holding.day_percent > 0 ? "up" : "down"}>
                                                                 ({holding.day_percent}%)
                                                             </span>
@@ -137,8 +138,7 @@ function Holdings(){
                                             <td>{NumberFormat(holding.price)}</td>
                                             <td>{NumberFormat(holding.invested_value)}</td>
                                             <td>{NumberFormat(holding.current_value)}</td>
-                                            <td>{NumberFormat(holding.day_pl)}</td>  
-                                            <td>{holding.day_percent}</td>  
+                                            <td>{NumberFormat(holding.day_pl)}</td>
                                             <td>{NumberFormat(holding.overall_pl)}</td>  
                                             <td>{holding.overall_percent}</td>  
                                             
@@ -164,20 +164,25 @@ function Holdings(){
                                         </tr>)}
                                     </tbody>
                                 </table>
+                                :
+                                <>
+                                {!preload ?
+                                <div className="center mt-10">
+                                    <img src={process.env.PUBLIC_URL + '../../images/empty-dish.png'} alt="" style={{"height" : "100px"}}/>
+                                    <h5>
+                                        You haven't added any Stock to your account, use the search bar or clieck below to add Holdings
+                                    </h5>
+                                    <button className="waves-effect waves-light btn gradient-45deg-purple-deep-orange gradient-shadow" onClick={(event) => openAddModal(event)}>
+                                        Add Holdings
+                                    </button>
+                                </div>
+                                :
+                                <HoldingsSkeleton/>}
+                                </>
+                            }
                             </section>
                         </div>
-                    </div></>
-                    :
-                    !preload && <div className="center mt-10">
-                        <img src={process.env.PUBLIC_URL + '../../images/empty-dish.png'} alt="" style={{"height" : "100px"}}/>
-                        <h5>
-                            You haven't added any Stock to your account, use the search bar or clieck below to add Holdings
-                        </h5>
-                        <button className="waves-effect waves-light btn gradient-45deg-purple-deep-orange gradient-shadow" onClick={(event) => openAddModal(event)}>
-                            Add Holdings
-                        </button>
                     </div>
-                }
                 </div>
                 <div id="add-holdings-modal" className="modal overflow-hide">
                     <ShareSearch symbol=""/>

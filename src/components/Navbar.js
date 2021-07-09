@@ -15,6 +15,9 @@ import LineChart from '../views/ChartsV2/LineChart';
 function Navbar() {
     const { isAuthenticated, loginWithRedirect, logout, getAccessTokenSilently } = useAuth0();
 
+    const [navSymbol, setNavSymbol] = useState("");
+    const [symbols, setSymbols] = useState({});
+
     useEffect(()=> {
         var elems = document.querySelectorAll('.sidenav');
         M.Sidenav.init(elems, {
@@ -23,8 +26,10 @@ function Navbar() {
         });
     },[]);
 
-    const [navSymbol, setNavSymbol] = useState("");
-    const [symbols, setSymbols] = useState({});
+    useEffect(()=> {
+        var elems = document.querySelectorAll('.modal');
+        M.Modal.init(elems, {});
+    },[navSymbol]);
 
     useEffect(()=> {
         var elems = document.querySelectorAll('.share-autocomplete');
@@ -66,6 +71,14 @@ function Navbar() {
           console.log(error);
         }
     };
+    
+    function openGraph(event, symbol){
+        
+        var elems = document.querySelectorAll('#graph-modal');
+        M.Modal.init(elems, {});
+        elems[0].M_Modal.open();
+        event.preventDefault();
+    }
 
     return (
         <div>
@@ -86,7 +99,7 @@ function Navbar() {
                                             {/* <label htmlFor="share-symbol">Search for an Equity</label> */}
                                         </div>
                                         <div className="col s4">
-                                            <button data-target="modal" className="waves-effect waves-light btn gradient-45deg-purple-deep-orange gradient-shadow modal-trigger">
+                                            <button onClick={(event) => openGraph(event)} className="waves-effect waves-light btn gradient-45deg-purple-deep-orange gradient-shadow modal-trigger">
                                                 Search
                                             </button>
                                         </div>
@@ -152,7 +165,7 @@ function Navbar() {
             </ul>
 
             <main>
-                <div id="modal" className="modal eq-modal">
+                <div id="graph-modal" className="modal eq-modal">
                     <div className="modal-content">
                         <LineChart symbol = {navSymbol}/>
                     </div>

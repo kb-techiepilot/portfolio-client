@@ -531,7 +531,7 @@ main {
 	}
 
 
-    #wishlist-modal, #add-wishlist-modal, #add-holdings-modal{
+    #wishlist-modal, #add-wishlist-modal, #add-holdings-modal, #graph-modal{
         width: 100%;
 }
 }

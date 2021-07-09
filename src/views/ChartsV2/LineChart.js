@@ -3,6 +3,7 @@ import axios from 'axios';
 import moment from 'moment';
 import Chart from 'react-apexcharts';
 // import ApexCharts from 'apexcharts';
+import M from 'materialize-css';
 
 import Loading from '../../components/Loading';
 import config from '../../config';
@@ -24,6 +25,10 @@ function LineChart(props) {
   const btnClass = "btn white black-text btn-group-border";
   const btnClassWithActive = "btn white black-text btn-group-border btn-group-active-border";
 
+  useEffect(()=> {
+    var elems = document.querySelectorAll('.tooltipped');
+    M.Tooltip.init(elems, {});
+  })
 
   useEffect(() => {
     setLoading(true);
@@ -179,14 +184,19 @@ function LineChart(props) {
 
   return(
       <>
-      <div className="btn-group" role="group">
-          <a className={timeLine === 'one_day' ? btnClassWithActive : btnClass } href="#!" onClick={(event) => updateTimeLine(event)} name="one_day">1D</a>
-          <a className={timeLine === 'five_days' ? btnClassWithActive : btnClass } href="#!" onClick={(event) => updateTimeLine(event)} name="five_days">5D</a>
-          <a className={timeLine === 'one_month' ? btnClassWithActive : btnClass } href="#!" onClick={(event) => updateTimeLine(event)} name="one_month">1M</a>
-          <a className={timeLine === 'six_months' ? btnClassWithActive : btnClass } href="#!" onClick={(event) => updateTimeLine(event)} name="six_months">6M</a>
-          <a className={timeLine === 'ytd' ? btnClassWithActive : btnClass } href="#!" onClick={(event) => updateTimeLine(event)} name="ytd">YTD</a>
-          <a className={timeLine === 'one_year' ? btnClassWithActive : btnClass } href="#!" onClick={(event) => updateTimeLine(event)} name="one_year">1Y</a>
-          <a className={timeLine === 'five_years' ? btnClassWithActive : btnClass } href="#!" onClick={(event) => updateTimeLine(event)} name="five_years">5Y</a>
+      <div className="flex-apart">
+        <div className="btn-group" role="group">
+            <a className={timeLine === 'one_day' ? btnClassWithActive : btnClass } href="#!" onClick={(event) => updateTimeLine(event)} name="one_day">1D</a>
+            <a className={timeLine === 'five_days' ? btnClassWithActive : btnClass } href="#!" onClick={(event) => updateTimeLine(event)} name="five_days">5D</a>
+            <a className={timeLine === 'one_month' ? btnClassWithActive : btnClass } href="#!" onClick={(event) => updateTimeLine(event)} name="one_month">1M</a>
+            <a className={timeLine === 'six_months' ? btnClassWithActive : btnClass } href="#!" onClick={(event) => updateTimeLine(event)} name="six_months">6M</a>
+            <a className={timeLine === 'ytd' ? btnClassWithActive : btnClass } href="#!" onClick={(event) => updateTimeLine(event)} name="ytd">YTD</a>
+            <a className={timeLine === 'one_year' ? btnClassWithActive : btnClass } href="#!" onClick={(event) => updateTimeLine(event)} name="one_year">1Y</a>
+            <a className={timeLine === 'five_years' ? btnClassWithActive : btnClass } href="#!" onClick={(event) => updateTimeLine(event)} name="five_years">5Y</a>
+        </div>
+        <label className="tooltipped" data-position="top" data-tooltip="close">
+          <i class="material-icons modal-close">close</i>
+        </label>
       </div>
       {current !== undefined && current.priceInfo !== undefined && 
         <ChartHeader current={current} previousClosing={previousPrice} timeLine={timeLine} loading={currLoading}/>

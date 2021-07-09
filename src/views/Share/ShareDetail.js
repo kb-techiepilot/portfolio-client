@@ -51,7 +51,7 @@ function ShareDetail(props) {
             });
         }
         props.symbol && fetchWishlist();
-    },[props.symbol, getAccessTokenSilently, props.random, wishlists]); 
+    },[props.symbol, getAccessTokenSilently, wishlists]); 
 
     async function addWishlist(event) {
         setLoader(true);

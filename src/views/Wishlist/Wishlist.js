@@ -106,12 +106,8 @@ function Wishlist() {
         <main>
             
             <BarLoader loading={preloader} css={override} width={"100%"} />
-            {loading ?
-                <ListingSekelton/>
-            :
             <div>
                 <div className="row">
-                {wishlists.length > 0 ? <>
                     <div className="content-wrapper-before blue-grey lighten-5"></div>
                     <div className="col s12">
                         <div className="container">
@@ -123,78 +119,87 @@ function Wishlist() {
                                 <div className="right mb-2">
                                     <a className="gradient-45deg-purple-deep-orange gradient-shadow btn-floating pulse" href="#!" onClick={(event) => openAddModal(event)}><i className="material-icons">add</i></a>
                                 </div>
-                                <table className="highlight white responsive-table">
-                                    <thead>
-                                        <tr>
-                                            <th style={{"width": "25%"}}>Stock</th>
-                                            <th style={{"width": "15%"}}>Index</th>
-                                            <th style={{"width": "12%"}}>LTP</th>
-                                            <th style={{"width": "12%"}}>Day Change</th>
-                                            <th style={{"width": "12%"}}>% Change</th>
-                                            <th className="flex-apart">
-                                                <span>1Y Low</span>
-                                                <span>1Y High</span>
-                                            </th>
-                                            <th className="revert" style={{"width": "8%"}}>
-                                                Actions
-                                            </th>
-                                        </tr>
-                                    </thead>
 
-                                    <tbody>
-                                        {wishlists.map((wishlist, index) => 
-                                        <tr key={index}>
-                                            <td>
-                                                <div>
-                                                    <span className="holdings-name text-15 font-medium">{wishlist.company_name}</span>
-                                                    <div className="display-flex">
-                                                        <div className="holdings-symbol">{wishlist.symbol}</div>
+                                {loading ?
+                                    <ListingSekelton/>
+                                :
+                                <>
+                                {wishlists.length > 0 ?
+                                    <table className="highlight white responsive-table">
+                                        <thead>
+                                            <tr>
+                                                <th style={{"width": "25%"}}>Stock</th>
+                                                <th style={{"width": "15%"}}>Index</th>
+                                                <th style={{"width": "12%"}}>LTP</th>
+                                                <th style={{"width": "12%"}}>Day Change</th>
+                                                <th style={{"width": "12%"}}>% Change</th>
+                                                <th className="flex-apart">
+                                                    <span>1Y Low</span>
+                                                    <span>1Y High</span>
+                                                </th>
+                                                <th className="revert" style={{"width": "8%"}}>
+                                                    Actions
+                                                </th>
+                                            </tr>
+                                        </thead>
+
+                                        <tbody>
+                                            {wishlists.map((wishlist, index) => 
+                                            <tr key={index}>
+                                                <td>
+                                                    <div>
+                                                        <span className="holdings-name text-15 font-medium">{wishlist.company_name}</span>
+                                                        <div className="display-flex">
+                                                            <div className="holdings-symbol">{wishlist.symbol}</div>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                            </td>
-                                            <td>{wishlist.index}</td>
-                                            <td>&#8377;{wishlist.current_price}</td>  
-                                            <td className={wishlist.change > 0 ? "up" : "down"}>{wishlist.change}</td>  
-                                            <td className={wishlist.change > 0 ? "up" : "down"}>
-                                                {wishlist.percent_change}
-                                                {wishlist.change > 0 ? 
-                                                    <i className="material-icons Small">arrow_drop_up</i>
-                                                :
-                                                    <i className="material-icons Small">arrow_drop_down</i>
-                                                }
-                                            </td>  
-                                            <td>
-                                                <div className="flex-apart full-width">
-                                                    <span className="text-14">{wishlist.year_low}</span>
-                                                    <span className="text-14">{wishlist.year_high}</span>
-                                                </div>
-                                                <div className="mb4 slider-pos relative full-width">
-                                                    <span className="year-slider" style={{"left" : ((wishlist.current_price - wishlist.year_low) * 100 / (wishlist.year_high - wishlist.year_low) ) + "%"}}>
-                                                    </span>
-                                                </div>
-                                            </td>
-                                            <td className="center">
-                                                <a className="wishlist-actions" href="#!" onClick={(event) => openChart(event, wishlist.symbol)}><i className="material-icons">show_chart</i></a>
-                                                <a className="wishlist-actions" href="#!" onClick={(event) => openModal(event, wishlist.symbol)}><i className="material-icons">remove_red_eye</i></a>
-                                                <a href="#!" className="wishlist-actions"><i className="material-icons" onClick={(event) => deleteWishlist(event, wishlist.wishlist_id)}>delete</i></a>
-                                            </td>
-                                        </tr>)}
-                                    </tbody>
-                                </table>
+                                                </td>
+                                                <td>{wishlist.index}</td>
+                                                <td>&#8377;{wishlist.current_price}</td>  
+                                                <td className={wishlist.change > 0 ? "up" : "down"}>{wishlist.change}</td>  
+                                                <td className={wishlist.change > 0 ? "up" : "down"}>
+                                                    {wishlist.percent_change}
+                                                    {wishlist.change > 0 ? 
+                                                        <i className="material-icons Small">arrow_drop_up</i>
+                                                    :
+                                                        <i className="material-icons Small">arrow_drop_down</i>
+                                                    }
+                                                </td>  
+                                                <td>
+                                                    <div className="flex-apart full-width">
+                                                        <span className="text-14">{wishlist.year_low}</span>
+                                                        <span className="text-14">{wishlist.year_high}</span>
+                                                    </div>
+                                                    <div className="mb4 slider-pos relative full-width">
+                                                        <span className="year-slider" style={{"left" : ((wishlist.current_price - wishlist.year_low) * 100 / (wishlist.year_high - wishlist.year_low) ) + "%"}}>
+                                                        </span>
+                                                    </div>
+                                                </td>
+                                                <td className="center">
+                                                    <a className="wishlist-actions" href="#!" onClick={(event) => openChart(event, wishlist.symbol)}><i className="material-icons">show_chart</i></a>
+                                                    <a className="wishlist-actions" href="#!" onClick={(event) => openModal(event, wishlist.symbol)}><i className="material-icons">remove_red_eye</i></a>
+                                                    <a href="#!" className="wishlist-actions"><i className="material-icons" onClick={(event) => deleteWishlist(event, wishlist.wishlist_id)}>delete</i></a>
+                                                </td>
+                                            </tr>)}
+                                        </tbody>
+                                    </table>
+
+                                    :
+                                    <div className="center mt-10">
+                                        <img src={process.env.PUBLIC_URL + '../../images/empty-dish.png'} alt="" style={{"height" : "100px"}}/>
+                                        <h5>
+                                            You haven't added any Stock to your wishlist, use the search bar or clieck below to add Wishlist
+                                        </h5>
+                                        <button className="waves-effect waves-light btn gradient-45deg-purple-deep-orange gradient-shadow" onClick={(event) => openAddModal(event)}>
+                                            Add Wishlist
+                                        </button>
+                                    </div>
+
+                                }</>
+                            }
                             </section>
                         </div>
-                    </div></>
-                        :
-                    <div className="center mt-10">
-                        <img src={process.env.PUBLIC_URL + '../../images/empty-dish.png'} alt="" style={{"height" : "100px"}}/>
-                        <h5>
-                            You haven't added any Stock to your wishlist, use the search bar or clieck below to add Wishlist
-                        </h5>
-                        <button className="waves-effect waves-light btn gradient-45deg-purple-deep-orange gradient-shadow" onClick={(event) => openAddModal(event)}>
-                            Add Wishlist
-                        </button>
                     </div>
-                    }
                 </div>
                 <div id="wishlist-modal" className="modal">
                     <div className="modal-content">

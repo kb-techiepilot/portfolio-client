@@ -99,20 +99,20 @@ function ChartHeader(props){
                     <div className="row">
                     <div className="col s4">
                         <a onClick={(event) => handleWishlist(event)} className="tooltipped" data-position="bottom" data-tooltip="Bookmark" href="#!">
-                            <i className="material-icons">bookmark_border</i>
+                            <i className="material-icons">star</i>
                         </a>
                     </div>
                     <div className="col s4">
                         <a className="tooltipped" data-position="bottom" data-tooltip="Buy" href="#!">
                             <div className="chip lighten-5 green green-text">
-                                Buy
+                                B
                             </div>
                         </a>
                     </div>
                     <div className="col s4">
                         <a className="tooltipped" data-position="bottom" data-tooltip="Sell" href="#!">
                             <div className="chip lighten-5 orange orange-text">
-                                Sell
+                                S
                             </div>
                         </a>
                     </div>
