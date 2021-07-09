@@ -73,7 +73,6 @@ function Wishlist() {
 
     function openAddModal(event) {
         event.preventDefault();
-        setSymbol("");
         var elems = document.querySelectorAll('#add-wishlist-modal');
         M.Modal.init(elems, {});
         elems[0].M_Modal.open();

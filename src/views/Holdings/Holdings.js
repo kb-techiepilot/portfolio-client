@@ -25,7 +25,7 @@ function Holdings(){
     `;
 
     useEffect(() => {
-        async function fetchWishlist() {
+        async function fetchHoldings() {
             const token = await getAccessTokenSilently();
                 axios
                 .get(config.apiBaseUrl+"/api/v2/holdings?workspace=default",{
@@ -40,15 +40,18 @@ function Holdings(){
                 console.log(err.message);
                 });
         }
-        fetchWishlist();
+        fetchHoldings();
 
         const intervalId = setInterval(() => { 
-            fetchWishlist();
+            fetchHoldings();
         }, 2000 * 100);
         return () => clearInterval(intervalId);
     },[getAccessTokenSilently]);
 
-
+    useEffect(()=> {
+        var elems = document.querySelectorAll('.collapsible');
+        M.Collapsible.init(elems, {});
+    })
 
 
     function openChart(event, symbol){
@@ -73,10 +76,16 @@ function Holdings(){
             <BarLoader loading={preload} css={override} width={"100%"} />
             <div>
                 <div className="row">
-                {holdings.length > 0 ?<>
-                <div className="hide-on-med-and-down" >
-                    <SummaryCards/>
-                </div>
+                {holdings !== undefined && holdings.length > 0 ?<>
+                    <div className="hide-on-med-and-down" >
+                        <SummaryCards/>
+                    </div>
+                    <ul class="collapsible hide-on-med-and-up">
+                        <li>
+                            <div class="collapsible-header"><i class="material-icons">filter_drama</i>Summary</div>
+                            <div class="collapsible-body"><SummaryCards/></div>
+                        </li>
+                    </ul>
                     <div className="content-wrapper-before blue-grey lighten-5"></div>
                     <div className="col s12">
                         <div className="container">
@@ -159,7 +168,7 @@ function Holdings(){
                         </div>
                     </div></>
                     :
-                    <div className="center mt-10">
+                    !preload && <div className="center mt-10">
                         <img src={process.env.PUBLIC_URL + '../../images/empty-dish.png'} alt="" style={{"height" : "100px"}}/>
                         <h5>
                             You haven't added any Stock to your account, use the search bar or clieck below to add Holdings

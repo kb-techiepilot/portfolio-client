@@ -40,9 +40,6 @@ function Navbar() {
         M.FormSelect.init(elems, {});
 
         M.updateTextFields();
-
-        elems = document.querySelectorAll('.modal');
-        M.Modal.init(elems, {});
     },[navSymbol, symbols]);
 
     useEffect(() => {
@@ -102,7 +99,7 @@ function Navbar() {
             </header>
 
 
-            <ul id="sidenav-1" className="sidenav sidenav-fixed sidenav-dark">
+            <ul id="sidenav-1" className="sidenav sidenav-fixed sidenav-dark sidenav-close">
             <h5 className="logo-wrapper" style={{
                 fontFamily: "monospace"
               }}>
@@ -155,7 +152,7 @@ function Navbar() {
             </ul>
 
             <main>
-                <div id="modal" className="modal eq-modal" style={{display: "block"}}>
+                <div id="modal" className="modal eq-modal">
                     <div className="modal-content">
                         <LineChart symbol = {navSymbol}/>
                     </div>

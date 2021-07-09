@@ -42,9 +42,9 @@ function ShareDetail(props) {
                 Authorization: `Bearer ${token}`,
                 }})
             .then(res => {
-                setLoading(false);
                 setShareDetail(res.data.wishlist);
                 setHoldings(res.data.holdings);
+                setLoading(false);
             })
             .catch(err =>{
             console.log(err.message);
@@ -118,7 +118,7 @@ function ShareDetail(props) {
     useEffect(()=>{
         var elems = document.querySelectorAll('#buy-modal');
         M.Modal.init(elems, {});
-        elems[0].M_Modal.open();
+        elems[0] !== undefined && elems[0].M_Modal.open();
     },[checked, toggle])
 
     return(
@@ -254,12 +254,12 @@ function ShareDetail(props) {
                         <div className="col s7 offset-s5 flex-apart hide-on-med-and-down">
                             <span className="btn waves-effect waves-green gainers-head" onClick={(event) => openBuyModal(event)}>Buy</span>
                             <span className={holdings.holdings_id !== undefined ? "btn waves-effect waves-red losers-head " : "hide"} onClick={(event) => openSaleModal(event)}>Sell</span>
-                            <span class="btn waves-effect waves-purple cancel-btn modal-close">Cancel</span>
+                            <span className="btn waves-effect waves-purple cancel-btn modal-close">Cancel</span>
                         </div>
                         <div className="col s9 offset-s3 flex-apart hide-on-med-and-up">
                             <span className="btn waves-effect waves-green gainers-head" onClick={(event) => openBuyModal(event)}>Buy</span>
                             <span className={holdings.holdings_id !== undefined ? "btn waves-effect waves-red losers-head " : "hide"} onClick={(event) => openSaleModal(event)}>Sell</span>
-                            <span class="btn waves-effect waves-purple modal-close">Cancel</span>
+                            <span className="btn waves-effect waves-purple modal-close cancel-btn ">Cancel</span>
                         </div>
                     </div>
 
@@ -314,6 +314,12 @@ function ShareDetail(props) {
                         </div>
                     </div>
                 </div>
+
+            <div id="buy-modal" className="modal wd-450 top-30">
+                <div className="modal-content wishlist-data">
+                    <TradeShare symbol={props.symbol} checked={checked}/>
+                </div>
+            </div>
             </div>
             :
                 props.symbol !== "" ?
@@ -329,13 +335,6 @@ function ShareDetail(props) {
                 </h6>
             </div>
             }
-
-
-            <div id="buy-modal" className="modal wd-450 top-30">
-                <div className="modal-content wishlist-data">
-                    <TradeShare symbol={props.symbol} checked={checked}/>
-                </div>
-            </div>
         </div>
     )
 };
