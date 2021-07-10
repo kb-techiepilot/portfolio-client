@@ -1,5 +1,5 @@
 const config = {
-    apiBaseUrl : 'https://kb-shares.azurewebsites.net'
+    apiBaseUrl : 'http://localhost:2000'
 }
 
 export default config;

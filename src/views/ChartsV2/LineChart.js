@@ -145,8 +145,10 @@ function LineChart(props) {
       chart: {
         id: 'area-datetime',
         type: 'area',
-        width: '20%',
-        height: '10%'
+        height: 350,
+        zoom: {
+          autoScaleYaxis: true
+        },
       },
       dataLabels: {
         enabled: false
@@ -193,7 +195,7 @@ function LineChart(props) {
             <a className={timeLine === 'five_years' ? btnClassWithActive : btnClass } href="#!" onClick={(event) => updateTimeLine(event)} name="five_years">5Y</a>
         </div>
         <label className="tooltipped" data-position="top" data-tooltip="close">
-          <i class="material-icons modal-close">close</i>
+          <i className="material-icons modal-close">close</i>
         </label>
       </div>
       {current !== undefined && current.priceInfo !== undefined && 
@@ -209,7 +211,7 @@ function LineChart(props) {
                   :
                   <Chart options={lineOptions}
                       series={getLineData(history)}
-                      type="area" />
+                      type="area" height={350}/>
                       :
                       <Loading />
                   }
