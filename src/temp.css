@@ -516,6 +516,188 @@ main {
     background-color: white !important;
     color: black;
 }
+
+.br50{
+    border-radius: 50%;
+}
+
+.m-top50{
+    margin-top: 50px;
+}
+
+.m-top25{
+    margin-top: 25px;
+}
+
+
+
+
+/* //from cir */
+.w-cd-hdr-box {
+    padding: 25px 0 25px 30px;
+    width: 100%;
+    border-bottom: 1px solid #f1f1f1;
+    background: #fff;
+    height: auto;
+    overflow: hidden;
+    box-sizing: border-box;
+    box-shadow: 0 5px 8px -3px #e6e6e6;
+    background-repeat: repeat-x;
+    background-size: 2.5%;
+}
+
+.logo-box {
+    width: 9.5rem;
+    height: 9.5rem;
+    border-radius: 0.5rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    text-transform: uppercase;
+}
+
+.w-cd-hdr-box .logo {
+    width: 9.5rem;
+    height: 9.5rem;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    font-size: 50px;
+    line-height: 9.9rem;
+    margin: auto;
+}
+
+.vat {
+    vertical-align: top;
+}
+
+.cp-name-box {
+    border-bottom: 1px solid #e8e7e7;
+    padding: 0 2rem 1.5rem 2rem;
+    width: 100%;
+    box-sizing: border-box;
+    display: block;
+    position: relative;
+}
+
+.w-cd-hdr-box .cp-name-box .label {
+    font-size: 14px;
+    color: #666;
+}
+
+.w-cd-hdr-box .cp-name-box .cname {
+    font-size: 1.6rem;
+    color: #000;
+}
+
+.w-cd-hdr-box .cp-info-box {
+    padding: 0 1.8rem 0rem 2rem;
+    width: 100%;
+    box-sizing: border-box;
+    display: block;
+}
+
+.w-cd-body-box .cp-info-box {
+    padding: 1.5rem 1rem;
+    margin-bottom: 1.5rem;
+    width: 100%;
+    box-sizing: border-box;
+    display: block;
+    border: 1px solid #e8e7e7;
+    background: #fff;
+    border-radius: 2px;
+}
+
+.w-cd-hdr-box .cp-info-box ul li .icon-box {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 50px;
+    display: inline-block;
+    vertical-align: top;
+}
+.w-cd-hdr-box .cp-info-box ul {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    display: flex;
+}
+.icon-box.bluebg {
+    background: #d4f1fc;
+}
+.w-cd-hdr-box .cp-info-box ul li {
+    list-style: none;
+    padding: 22px 20px 0 0;
+    min-width: 1px;
+    width: 24%;
+    display: inline-block;
+    float: left;
+    text-align: left;
+}
+.w-cd-hdr-box .cp-info-box ul li .icon-box .icon1 {
+    font-size: 13px !important;
+    color: #00b5f2;
+    line-height: 50px;
+}
+.w-cd-hdr-box .cp-info-box ul li .label-box {
+    display: inline-block;
+    vertical-align: top;
+    padding: 0rem 0 0 0.8rem;
+    margin-top: .2rem;
+    width: 72%;
+}
+
+.w-cd-hdr-box .cp-info-box ul li .label-box .label-name {
+    font-size: 13px;
+    color: #333;
+    padding-bottom: 0.4rem;
+    max-width: 95%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.w-cd-hdr-box .cp-info-box ul li .label-box .label-text {
+    font-size: 16px;
+    color: #333;
+    max-width: 95%;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.w-cd-hdr-box .cp-info-box ul li.w30 {
+    width: 30px;
+}
+
+.w-cd-hdr-box .cp-info-box ul li .vline {
+    height: 3rem;
+    width: 1px;
+    background: #e8e7e7;
+    vertical-align: middle;
+}
+
+.w-cd-body-box {
+    padding: 2rem;
+    box-sizing: border-box;
+    width: 100%;
+    background: #f9f9f9;
+    height: calc(100vh - 13.8rem);
+    overflow: hidden;
+}
+
+.w-cd-body-box .section-title-box {
+    padding-bottom: 1rem;
+}
+
+.w-cd-body-box .section-title-box .title {
+    font-size: 1.3rem;
+    color: #000;
+    padding-bottom: 1rem;
+}
+
+
 /* switch */
 .switch label input[type=checkbox]:checked+.lever {
     background-color: rgba(0,0,0,0.38);
