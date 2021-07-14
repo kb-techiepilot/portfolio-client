@@ -23,12 +23,16 @@ function BuyShare(props){
     const [buyPreLoader, setBuyPreloader] = useState(true);
     const [checked, setChecked] = useState(props.checked);
     const [disableCheck, setDisableCheck] = useState(false);
+
+    const [brokers, setBrokers] = useState({});
+    const [broker, setBroker] = useState(-1);
     
     const [disableButton, setDisableButton] = useState(false);
     
     const [maxQty] = useState(1000000);
     
     const [symbol, setSymbol] = useState("");
+    const [loading, setLoading] = useState(true);
     
     const override = css`
     display: block;
@@ -37,6 +41,9 @@ function BuyShare(props){
     useEffect(() => {
         var elems = document.querySelectorAll('.tooltipped');
         M.Tooltip.init(elems, {});
+
+        elems = document.querySelectorAll('select');
+        M.FormSelect.init(elems, {});
     })
 
     useEffect(()=> {
@@ -45,32 +52,24 @@ function BuyShare(props){
 
     useEffect(() => {
         async function fetchStockDetail() {
+            setBuyPreloader(true);
             const token = await getAccessTokenSilently();
+            broker > 0 &&
             axios
-            .get(config.apiBaseUrl+"/api/v2/holdings/"+props.symbol+"?workspace=default",{
+            .get(config.apiBaseUrl+"/api/v2/holdings/"+props.symbol+"?workspace=default&broker_id="+broker,{
                 headers: {
                 Authorization: `Bearer ${token}`,
                 }})
             .then(res => {
+                console.log(res.data)
                 setBuyPreloader(false);
-                // var dummyData = {
-                //     "priceInfo" : {
-                //         "lastPrice" : 1234
-                //     },
-                //     "info" : {
-                //         "symbol" : "SBIN"
-                //     }
-
-                // }
-                setStockDetail(res.data);
-                setPrice(res.data.current_price);
-                setDisableCheck(res.data.holdings_id !== null ? false : true);
-                setSymbol(res.data.symbol);
-                // setStockDetail(dummyData);
-                // setPrice(dummyData.priceInfo.lastPrice);
+                setStockDetail(res.data.data[0]);
+                setPrice(res.data.data[0].current_price);
+                setDisableCheck(res.data.data[0].holdings_id !== null ? false : true);
+                setSymbol(res.data.data[0].symbol);
             })
             .catch(err =>{
-            console.log(err.message);
+            console.log(err);
             });
         }
         props.symbol && fetchStockDetail();
@@ -78,7 +77,28 @@ function BuyShare(props){
             props.symbol && fetchStockDetail();
         }, 5000 * 100);
         return () => clearInterval(intervalId);
-    },[getAccessTokenSilently, props.symbol, symbol, checked]); 
+    },[getAccessTokenSilently, props.symbol, symbol, checked, broker, brokers]); 
+
+    useEffect(()=> {
+        async function fetchBroker() {
+            setLoading(true);
+            const token = await getAccessTokenSilently();
+            axios
+            .get(config.apiBaseUrl+"/api/v2/broker",{
+                headers: {
+                Authorization: `Bearer ${token}`,
+                }},{ validateStatus: false })
+            .then(res => {
+                setBrokers(res.data);
+                setBroker(res.data[0].broker_id)
+                setLoading(false);
+            })
+            .catch(err =>{
+            console.log(err.message);
+            });
+        }
+        fetchBroker();
+    },[getAccessTokenSilently]);
 
     async function addHoldings(event) {
         setSymbol("");
@@ -90,7 +110,8 @@ function BuyShare(props){
             date: date,
             symbol : props.symbol,
             quantity: quantity,
-            price: price
+            price: price,
+            broker_id: broker
         };
 
         var uri = "/api/v2/holdings/";
@@ -132,7 +153,8 @@ function BuyShare(props){
             solddate: date,
             symbol : props.symbol,
             quantity: quantity,
-            price: price
+            price: price,
+            broker_id: broker
         };
 
         var uri = "/api/v2/sold/"+stockDetail.holdings_id;
@@ -191,6 +213,11 @@ function BuyShare(props){
         setChecked(!checked);
     }
 
+    function changeBroker(event){
+        setBroker(event.target.value);
+        event.preventDefault();
+    }
+
     return(
         <div className="">
             <BarLoader loading={buyPreLoader} css={override} width={"100%"} />
@@ -217,17 +244,10 @@ function BuyShare(props){
                             }
                                 <div className="col s4">
                                     <div className="switch">
-                                    {disableCheck ?
-                                        <label className="tooltipped" data-position="bottom" data-tooltip="You don't have this stock in your holdings to sell">
-                                            <input disabled type="checkbox" onChange={(event) => changeSwitch(event)} defaultChecked={false}/>
-                                            <span className="lever" data-on="on"></span>
-                                        </label>
-                                        :
                                         <label className="tooltipped" data-position="top" data-tooltip="Toggle Buy / Sell">
                                             <input defaultChecked={checked} id="check1" type="checkbox" onChange={(event) => changeSwitch(event)}/>
                                             <span className="lever"></span>
                                         </label>
-                                    }
                                     </div>
                                 </div>
                             </div>
@@ -235,6 +255,16 @@ function BuyShare(props){
                         <div className="kanban-drag">
                             <div className="kanban-item">
                                 <div className="row">
+
+                                    <div className="input-field col s12">
+                                        <select onChange={(event) => changeBroker(event)}>
+                                            {!loading && brokers.map((broker, index) => 
+
+                                                <option value={broker.broker_id}>{broker.name}</option>
+                                            )}
+                                        </select>
+                                        <label>Select Broker</label>
+                                    </div>
                                     <div className="input-field col s4">
                                         <input id="qty" type="number" min="1" max={(checked && stockDetail.quantity) || maxQty} defaultValue={(checked && stockDetail.quantity) || quantity} onChange={(event) => changeQuantity(event)} className="validate"/>
                                         <label className="active" htmlFor="qty">Qty</label>
@@ -258,7 +288,7 @@ function BuyShare(props){
                                     </div>
                                     :
                                     <div className="col s6">
-                                        <span disabled={disableButton} className="btn waves-effect yellow losers-head" onClick={(event) => sellHoldings(event)}>Sell</span> 
+                                        <span disabled={disableButton} disableButton={disableCheck} className="btn waves-effect yellow losers-head" onClick={(event) => sellHoldings(event)}>Sell</span> 
                                     </div>
                                     }
                                 </div>

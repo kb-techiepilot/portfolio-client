@@ -253,12 +253,12 @@ function ShareDetail(props) {
                     <div className="row">
                         <div className="col s7 offset-s5 flex-apart hide-on-small-only">
                             <span className="btn waves-effect waves-green gainers-head" onClick={(event) => openBuyModal(event)}>Buy</span>
-                            <span className={holdings.holdings_id !== undefined ? "btn waves-effect waves-red losers-head " : "hide"} onClick={(event) => openSaleModal(event)}>Sell</span>
+                            <span className="btn waves-effect waves-red losers-head" onClick={(event) => openSaleModal(event)}>Sell</span>
                             <span className="btn waves-effect waves-purple cancel-btn modal-close">Cancel</span>
                         </div>
                         <div className="col s9 offset-s3 flex-apart hide-on-large-only">
                             <span className="btn waves-effect waves-green gainers-head" onClick={(event) => openBuyModal(event)}>Buy</span>
-                            <span className={holdings.holdings_id !== undefined ? "btn waves-effect waves-red losers-head " : "hide"} onClick={(event) => openSaleModal(event)}>Sell</span>
+                            <span className="btn waves-effect waves-red losers-head" onClick={(event) => openSaleModal(event)}>Sell</span>
                             <span className="btn waves-effect waves-purple modal-close cancel-btn ">Cancel</span>
                         </div>
                     </div>

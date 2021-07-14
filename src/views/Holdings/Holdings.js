@@ -21,22 +21,30 @@ function Holdings(){
     const [chartSymbol, setChartSymbol] = useState("");
     const [preload, setPreload] = useState(true);
 
+    const [brokers, setBrokers] = useState({});
+    const [broker, setBroker] = useState(-1);
+
+    const [loading, setLoading] = useState(true);
+
+    const [skeletonLoad, setSkeletonLoad] = useState(true);
+
     const override = css`
         display: block;
     `;
 
     useEffect(() => {
         async function fetchHoldings() {
+            setSkeletonLoad(true);
             const token = await getAccessTokenSilently();
                 axios
-                
-                .get(config.apiBaseUrl+"/api/v2/holdings?workspace=default",{
+                .get(config.apiBaseUrl+"/api/v2/holdings?workspace=default&broker_id="+broker,{
                     headers: {
                     Authorization: `Bearer ${token}`,
                     }},{ validateStatus: false })
                 .then(res => {
                     setHoldings(res.data.data);
                     setPreload(false);
+                    setSkeletonLoad(false);
                 })
                 .catch(err =>{
                 console.log(err.message);
@@ -48,13 +56,41 @@ function Holdings(){
             fetchHoldings();
         }, 2000 * 100);
         return () => clearInterval(intervalId);
-    },[getAccessTokenSilently]);
+    },[getAccessTokenSilently,broker]);
 
     useEffect(()=> {
         var elems = document.querySelectorAll('.collapsible');
         M.Collapsible.init(elems, {});
+
+        elems = document.querySelectorAll('select');
+        M.FormSelect.init(elems, {});
     })
 
+    useEffect(()=> {
+        async function fetchBroker() {
+            setLoading(true);
+            const token = await getAccessTokenSilently();
+            axios
+            .get(config.apiBaseUrl+"/api/v2/broker",{
+                headers: {
+                Authorization: `Bearer ${token}`,
+                }},{ validateStatus: false })
+            .then(res => {
+                setBrokers(res.data);
+                setBroker(res.data[0].broker_id)
+                setLoading(false);
+            })
+            .catch(err =>{
+            console.log(err.message);
+            });
+        }
+        fetchBroker();
+    },[getAccessTokenSilently]);
+
+    function changeBroker(event){
+        setBroker(event.target.value);
+        event.preventDefault();
+    }
 
     function openChart(event, symbol){
         console.log(symbol)
@@ -77,14 +113,27 @@ function Holdings(){
         <main>
             {/* <BarLoader loading={preload} css={override} width={"100%"} /> */}
             <div>
+
+
+            <div className="row">
+                    <div className="input-field col offset-s8 s4">
+                        <select onChange={(event) => changeBroker(event)}>
+                            <option value="-1">All</option>
+                            {!loading && brokers.map((broker, index) => 
+                                <option value={broker.broker_id}>{broker.name}</option>
+                            )}
+                        </select>
+                        {/* <label>Select Broker</label> */}
+                    </div>
+                </div>
                 <div className="row">
                     <div className="hide-on-med-and-down" >
-                        <SummaryCards/>
+                        <SummaryCards broker={broker}/>
                     </div>
-                    <ul class="collapsible hide-on-med-and-up">
+                    <ul className="collapsible hide-on-med-and-up">
                         <li>
-                            <div class="collapsible-header"><i class="material-icons">filter_drama</i>Summary</div>
-                            <div class="collapsible-body"><SummaryCards/></div>
+                            <div className="collapsible-header"><i className="material-icons">filter_drama</i>Summary</div>
+                            <div className="collapsible-body"><SummaryCards/></div>
                         </li>
                     </ul>
                     <div className="content-wrapper-before blue-grey lighten-5"></div>
@@ -98,8 +147,12 @@ function Holdings(){
                                 <div className="right mb-2">
                                     <a className="gradient-45deg-purple-deep-orange gradient-shadow btn-floating pulse" href="#!" onClick={(event) => openAddModal(event)}><i className="material-icons">add</i></a>
                                 </div>
+                                {skeletonLoad ?
+                                <HoldingsSkeleton/>
+                                :
+                               <>
                             {holdings !== undefined && holdings.length > 0 ?
-                                <table className="highlight white responsive-table">
+                                <table className="highlight white">
                                     <thead>
                                         <tr>
                                             <th>Stock</th>
@@ -110,6 +163,7 @@ function Holdings(){
                                             <th>Day P&L</th>
                                             <th>Overall P&L</th>
                                             <th>Overall %</th>
+                                            <th>Broker</th>
                                             <th className="revert" style={{"width": "8%"}}>
                                                 Actions
                                             </th>
@@ -141,6 +195,7 @@ function Holdings(){
                                             <td>{NumberFormat(holding.day_pl)}</td>
                                             <td>{NumberFormat(holding.overall_pl)}</td>  
                                             <td>{holding.overall_percent}</td>  
+                                            <td>{holding.broker_name}</td>  
                                             
                                             <td className="center">
                                                 <div className="action-ul">
@@ -166,7 +221,6 @@ function Holdings(){
                                 </table>
                                 :
                                 <>
-                                {!preload ?
                                 <div className="center mt-10">
                                     <img src={process.env.PUBLIC_URL + '../../images/empty-dish.png'} alt="" style={{"height" : "100px"}}/>
                                     <h5>
@@ -176,10 +230,8 @@ function Holdings(){
                                         Add Holdings
                                     </button>
                                 </div>
-                                :
-                                <HoldingsSkeleton/>}
                                 </>
-                            }
+                            }</>}
                             </section>
                         </div>
                     </div>

@@ -6,6 +6,7 @@ import { BarLoader } from 'react-spinners';
 
 import config from '../../config';
 import moment from 'moment';
+import ProfileSkeleton from './ProfileSkeleton';
 
 function Profile(){
 
@@ -61,7 +62,9 @@ function Profile(){
             });
         })
         .catch(err =>{
-        console.log(err.message);
+            M.toast({html: ''+err.response.data.message},{
+                displayLength: 4000
+            });
         });
     }
 
@@ -95,6 +98,7 @@ function Profile(){
 
     function openBrokerModal(event){
 
+        setBrokerId(0);
         event.preventDefault();
         var elems = document.querySelectorAll('#broker-modal');
         M.Modal.init(elems, {});
@@ -126,6 +130,9 @@ function Profile(){
     return(
         <main>
             <div>
+                {loading ? 
+                <ProfileSkeleton/>
+                :
                 <div className="row">
                     <div className="content-wrapper-before blue-grey lighten-5"></div>
                     <div className="col s12">
@@ -208,6 +215,7 @@ function Profile(){
                         </div>
                     </div>
                 </div>
+                }
             </div>
 
             <div id="broker-modal" className="modal wd-450 top-30">
@@ -217,7 +225,7 @@ function Profile(){
                     <header className="kanban-board-header blue">
                         <div className="row">
                             <div className="col s8 kanban-title-board line-ellipsis">
-                                <span>Add Broker</span>
+                                <span>{brokerId > 0 ? 'Update Broker' : 'Add Broker'}</span>
                             </div>
                         </div>
                     </header>

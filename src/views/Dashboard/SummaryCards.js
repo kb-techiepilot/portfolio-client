@@ -9,13 +9,14 @@ import config from '../../config';
 
 import '../../assets/css/summary.css';
 
-function SummaryCards() {
+function SummaryCards(props) {
 
     const { getAccessTokenSilently } = useAuth0();
 
     const [loading, setLoading] = useState(true);
 
     const [summary, setSummary] = useState({});
+
 
     const override = css`
         display: block;
@@ -24,11 +25,12 @@ function SummaryCards() {
         padding: 32px;
     `;
 
+
     useEffect(() => {
         async function fetchSummary() {
             const token = await getAccessTokenSilently();
                 axios
-                .get(config.apiBaseUrl+"/api/v2/summary/", {
+                .get(config.apiBaseUrl+"/api/v2/summary?broker_id="+props.broker,{
                     headers: {
                     Authorization: `Bearer ${token}`,
                     }})
@@ -44,9 +46,10 @@ function SummaryCards() {
 
         const intervalId = setInterval(() => { 
             fetchSummary();
-        }, 10000);
+        }, 10000 * 1000);
         return () => clearInterval(intervalId);
-    },[getAccessTokenSilently]);
+    },[props.broker, getAccessTokenSilently]);
+
     return(
             <div className="row pt-0">
                 <div className="col s12 m6 l6 xl3">
