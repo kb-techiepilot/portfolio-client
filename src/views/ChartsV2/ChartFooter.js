@@ -37,8 +37,8 @@ function ChartFooter(props){
                     <tr>
                         <td>Low</td>
                         <td>{props.current.priceInfo.intraDayHighLow.min.toFixed(2)}</td>
-                        <td></td>
-                        <td></td>
+                        <td>P/E Ratio</td>
+                        <td>{props.current.metadata.pdSymbolPe}</td>
                         <td>52-wk low</td>
                         <td>{props.current.priceInfo.weekHighLow.min.toFixed(2)}</td>
                     </tr>
@@ -68,13 +68,13 @@ function ChartFooter(props){
                             <td>High CP</td>
                             <td>52-wk high</td>
                             <td>52-wk low</td>
-                            <td></td>
+                            <td>P/E Ratio</td>
                         </tr>
                         <tr>
                             <td>{props.current.priceInfo.upperCP}</td>
                             <td>{props.current.priceInfo.weekHighLow.max.toFixed(2)}</td>
                             <td>{props.current.priceInfo.weekHighLow.min.toFixed(2)}</td>
-                            <td></td>
+                            <td>{props.current.metadata.pdSymbolP}</td>
                         </tr>
                     </tbody>
                 </table>
