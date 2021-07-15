@@ -113,17 +113,17 @@ function Holdings(){
         <main>
             {/* <BarLoader loading={preload} css={override} width={"100%"} /> */}
             <div>
-
-
-            <div className="row">
-                    <div className="input-field col offset-s8 s4">
+                <div className="row">
+                    <div className="col s4 left mb-2">
+                        <h4 className="blue-text">Holdings</h4>
+                    </div>
+                    <div className="input-field col offset-s4 s4">
                         <select onChange={(event) => changeBroker(event)}>
                             <option value="-1">All</option>
                             {!loading && brokers.map((broker, index) => 
-                                <option value={broker.broker_id}>{broker.name}</option>
+                                <option key={index} value={broker.broker_id}>{broker.name}</option>
                             )}
                         </select>
-                        {/* <label>Select Broker</label> */}
                     </div>
                 </div>
                 <div className="row">
@@ -140,10 +140,6 @@ function Holdings(){
                     <div className="col s12">
                         <div className="container">
                             <section className="wishlist-wrapper section">
-
-                                <div className="left mb-2">
-                                    <h4 className="blue-text">Holdings</h4>
-                                </div>
                                 <div className="right mb-2">
                                     <a className="gradient-45deg-purple-deep-orange gradient-shadow btn-floating pulse" href="#!" onClick={(event) => openAddModal(event)}><i className="material-icons">add</i></a>
                                 </div>

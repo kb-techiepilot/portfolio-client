@@ -64,7 +64,7 @@ function Dashboard(){
                         <select onChange={(event) => changeBroker(event)}>
                             <option value="-1">All</option>
                             {!loading && brokers.map((broker, index) => 
-                                <option value={broker.broker_id}>{broker.name}</option>
+                                <option key={index} value={broker.broker_id}>{broker.name}</option>
                             )}
                         </select>
                         {/* <label>Select Broker</label> */}

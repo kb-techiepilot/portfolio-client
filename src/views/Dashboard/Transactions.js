@@ -9,7 +9,7 @@ import NumberFormat from '../../util/NumberFormat';
 function Transactions(){
 
     const { getAccessTokenSilently } = useAuth0();
-    const [transactions, setTransactions] = useState([])
+    const [transactions, setTransactions] = useState([]);
 
     useEffect(() => {
         async function fetchTrasancations() {
@@ -34,6 +34,14 @@ function Transactions(){
         <div className="card animate fadeUp">
             <div className="card-content">
                 <span className="card-title">Recent Transactions</span>
+                {transactions !== undefined && transactions.length === 0 ?
+                    <div className="center mt-10">
+                        <img src={process.env.PUBLIC_URL + '../../images/empty-dish.png'} alt="" style={{"height" : "100px"}}/>
+                        <h5>
+                            You haven't done any transactions in your account
+                        </h5>
+                    </div>
+                :
                 <table className="highlight responsive-table display-in-block">
                     <thead>
                         <tr>
@@ -64,6 +72,7 @@ function Transactions(){
                         </tr>)}
                     </tbody>
                 </table>
+            }
             </div>
         </div>
         </>
