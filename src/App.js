@@ -8,6 +8,7 @@ import './temp.css';
 import Wishlist from './views/Wishlist/Wishlist';
 import Holdings from './views/Holdings/Holdings';
 import Profile from './views/Profile/Profile';
+import Scan from './views/Scan/Scan';
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
             <PrivateRoute path="/wishlist" exact component={ Wishlist } />
             <PrivateRoute path="/profile" exact component={ Profile } />
             <Route path="/" exact component={Dashboard} />
+            <Route path="/scan" exact component={Scan} />
           {/* </main> */}
         </Switch>
       </div>
