@@ -10,53 +10,10 @@ function Scan(){
     const [cookie, setCookie] = useState("");
     const [stop, setStop] = useState(true);
 
-    const [oldData, setOldData] = useState([]);
-    const [newData, setNewData] = useState([]);
+    const [restData, setRestData] = useState([]);
+    const [allData, setAllData] = useState([]);
     const [diffData, setDiffData] = useState([]);
 
-
-    // useEffect(() => {
-    //     async function startScan() {
-    //         if(cookie !== "" && csrf !== "") {
-    //             axios
-    //             .get(config.apiBaseUrl+"/api/v2/scan", {
-    //                 params: {
-    //                     'cookie': cookie,
-    //                     'csrf': csrf
-    //                 }})
-    //             .then(res => {
-    //                 // console.log("response " + JSON.stringify(res.data.data));
-    //                 setDiffData([]);
-    //                 var diffArr = [];
-    //                 var restArr = [];
-    //                 for(var i = 0; i < res.data.data.length; i++){
-    //                     var jsonObj = res.data.data[i];
-    //                     if(!JSON.stringify(oldData).includes("\"nsecode\":\""+jsonObj.nsecode+"\"")){
-    //                         diffArr.push(jsonObj);
-    //                     } else {
-    //                         restArr.push(jsonObj);
-    //                     }
-    //                 }
-    //                 setDiffData(diffArr);
-    //                 setOldData(res.data.data);
-    //                 setNewData(restArr);
-    //                 console.log("diffArr : -> " + diffArr);
-    //                 console.log("restArr : -> " + restArr);
-    //                 })
-    //             .catch(err =>{
-    //             console.log(err.message);
-    //             });
-    
-    //         } else {
-    //             alert('Enter Url');
-    //         }
-    //     }
-    //     !stop && startScan();
-    //     const intervalId = setInterval(() => { 
-    //         !stop && startScan();
-    //     }, 10000);
-    //     return () => clearInterval(intervalId);
-    // },[stop, cookie, csrf]);
     useEffect(() => {
         async function startScan() {
             if(cookie !== "" && csrf !== "") {
@@ -68,7 +25,26 @@ function Scan(){
                     }});
                 var response = stocks.data.data;
 
-                setDiffData(response);
+                var diffArr = [];
+                var restArr = [];
+                for(var i = 0; i < response.length; i++) {
+                    var jsonObj = response[i];
+
+                    if(!JSON.stringify(allData).includes(jsonObj.nsecode)){
+                        diffArr.push(jsonObj);
+                    } else {
+                        restArr.push(jsonObj);
+                    }
+                }
+
+                if(allData.length === 0 ) {
+                    setAllData(response);
+                }
+                if(diffArr.length !== 0) {
+                    setDiffData(diffArr);
+                    setAllData(response);
+                    setRestData(restArr);
+                }
 
             } else {
                 alert('Enter Url');
@@ -79,7 +55,7 @@ function Scan(){
             !stop && startScan();
         }, 10000);
         return () => clearInterval(intervalId);
-    },[stop, csrf, cookie]);
+    },[stop, csrf, cookie, allData, diffData]);
 
     function changeCSRF(event){
         setCsrf(event.target.value);
@@ -128,32 +104,34 @@ function Scan(){
                                     </div>
                                 </div>
 
-                                {diffData.length > 0 ?
-                                    <table className="highlight white">
-                                        <thead>
-                                            <tr>
-                                                <th style={{"width": "25%"}}>NSE Code</th>
-                                            </tr>
-                                        </thead>
-
-                                        <tbody>
-                                            {diffData.map((diff, index) => 
-                                                <div className="col s2">
-                                                        <div className="card">
-                                                            <div className="card-content white-text">
-                                                                <div className="holdings-name text-15 font-medium">{diff.nsecode}</div>
-                                                            </div>
-                                                        </div>
-                                                    </div>)}
-                                        </tbody>
-                                    </table>
-
-                                    :
-                                    <div className="center mt-10">
-                                        
+                                {diffData.length > 0 &&
+                                    <div>
+                                    <h6>New Data</h6>
+                                        {diffData.map((diff, index) => 
+                                            <div className="col s2">
+                                                <div className="card">
+                                                    <div className="card-content green white-text">
+                                                        <div className="holdings-name text-15 font-medium">{diff.nsecode}</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        )}
                                     </div>
-
                                 }
+                                {restData.length > 0 &&
+                                    <div>
+                                        {restData.map((all, index) => 
+                                            <div className="col s2">
+                                                <div className="card">
+                                                    <div className="card-content white-text">
+                                                        <div className="holdings-name text-15 font-medium">{all.nsecode}</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        )}
+                                    </div>
+                                }
+                                
                             </section>
                         </div>
                     </div> 

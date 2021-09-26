@@ -143,6 +143,11 @@ function Navbar() {
                     </NavLink>
                 </li>
                 <li>
+                    <NavLink to="/scan" className="sidenav-a" activeClassName="link-active">
+                        Scan
+                    </NavLink>
+                </li>
+                <li>
                     <a href="#!" onClick={ () => callSecureAPI() } className="sidenav-a" name="token">Print Token</a>
                 </li>
                 {isAuthenticated ?
