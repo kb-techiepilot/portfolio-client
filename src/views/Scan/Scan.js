@@ -13,6 +13,7 @@ function Scan(){
     const [restData, setRestData] = useState([]);
     const [allData, setAllData] = useState([]);
     const [diffData, setDiffData] = useState([]);
+    const [lastUpdate, setLastUpdate] = useState("");
 
     useEffect(() => {
         async function startScan() {
@@ -45,6 +46,7 @@ function Scan(){
                     setAllData(response);
                     setRestData(restArr);
                 }
+                setLastUpdate(moment().format("DD MM YYYY hh:mm:ss"));
 
             } else {
                 alert('Enter Url');
@@ -53,7 +55,7 @@ function Scan(){
         !stop && startScan();
         const intervalId = setInterval(() => { 
             !stop && startScan();
-        }, 10000);
+        }, 28000);
         return () => clearInterval(intervalId);
     },[stop, csrf, cookie, allData, diffData]);
 
@@ -106,7 +108,7 @@ function Scan(){
 
                                 {diffData.length > 0 &&
                                     <div>
-                                    <h6>New Data</h6>
+                                    <h6>New Data - Last Updated at {lastUpdate}</h6>
                                         {diffData.map((diff, index) => 
                                             <div className="col s2">
                                                 <div className="card">
